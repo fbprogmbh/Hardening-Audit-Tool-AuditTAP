@@ -856,9 +856,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "1.6.5"
     Task = "Ensure access to /etc/issue is configured"
     Test = {
-        $output = stat -L /etc/issue | grep "Access:\s*(0644/-rw-r--r--)\s*Uid:\s*(\s*0/\s*root)\s*Gid:\s*(\s*0/\s*root)"
-        
-        if($output -ne $null){
+        $output = stat -c '%#a' /etc/issue | grep -q "0644"
+        if($?){
             return $retCompliant
         }
         return $retNonCompliant
@@ -868,9 +867,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "1.6.6"
     Task = "Ensure access to /etc/issue.net is configured"
     Test = {
-        $output = stat -L /etc/issue.net | grep "Access:\s*(0644/-rw-r--r--)\s*Uid:\s*(\s*0/\s*root)\s*Gid:\s*(\s*0/\s*root)"
-        
-        if($output -ne $null){
+        $output = stat -c '%#a' /etc/issue.net | grep -q "0644"
+        if($?){
             return $retCompliant
         }
         return $retNonCompliant
@@ -939,9 +937,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "1.7.4"
     Task = "Ensure permissions on /etc/motd are configured"
     Test = {
-        $output = stat -L /etc/motd | grep "Access:\s*(0644/-rw-r--r--)\s*Uid:\s*(\s*0/\s*root)\s*Gid:\s*(\s*0/\s*root)"
-        
-        if($output -eq $null -or $output -match "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $output = stat -c '%#a' /etc/motd | grep "0644"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -958,9 +955,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "1.7.5"
     Task = "Ensure permissions on /etc/issue are configured"
     Test = {
-        $output = stat -L /etc/issue | grep "Access:\s*(0644/-rw-r--r--)\s*Uid:\s*(\s*0/\s*root)\s*Gid:\s*(\s*0/\s*root)"
-        
-        if($output -ne $null){
+        $output = stat -c '%#a' /etc/issue | grep -q "0644"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -977,9 +973,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "1.7.6"
     Task = "Ensure permissions on /etc/issue.net are configured"
     Test = {
-        $output = stat -L /etc/issue.net | grep "Access:\s*(0644/-rw-r--r--)\s*Uid:\s*(\s*0/\s*root)\s*Gid:\s*(\s*0/\s*root)"
-        
-        if($output -ne $null){
+        $output = stat -c '%#a' /etc/issue.net | grep -q "0644"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -1471,8 +1466,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.4.1.2"
     Task = "Ensure permissions on /etc/crontab are configured"
     Test = {
-        $test1 = stat /etc/crontab
-        if($test1 -eq "Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/crontab | grep -q "0600"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -1489,8 +1484,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.4.1.3"
     Task = "Ensure permissions on /etc/cron.hourly are configured"
     Test = {
-        $test1 = stat /etc/cron.hourly/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/cron.hourly/ | grep -q 0700
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -1507,8 +1502,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.4.1.4"
     Task = "Ensure permissions on /etc/cron.daily are configured"
     Test = {
-        $test1 = stat /etc/cron.daily/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/cron.daily/ grep -q "0700"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -1525,8 +1520,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.4.1.5"
     Task = "Ensure permissions on /etc/cron.weekly are configured"
     Test = {
-        $test1 = stat /etc/cron.weekly/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/cron.weekly/ | grep -q "0700"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -1543,8 +1538,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.4.1.6"
     Task = "Ensure permissions on /etc/cron.monthly are configured"
     Test = {
-        $test1 = stat /etc/cron.monthly/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat c '%#a' /etc/cron.monthly/ | grep -q "0700"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -1561,8 +1556,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.4.1.7"
     Task = "Ensure permissions on /etc/cron.d are configured"
     Test = {
-        $test1 = stat /etc/cron.d/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/cron.d/ | grep -q "0700"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -2396,8 +2391,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "5.1.2"
     Task = "Ensure permissions on /etc/crontab are configured"
     Test = {
-        $test1 = stat /etc/crontab
-        if($test1 -eq "Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/crontab | grep -q "0600"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -2428,8 +2423,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "5.1.4"
     Task = "Ensure permissions on /etc/cron.daily are configured"
     Test = {
-        $test1 = stat /etc/cron.daily/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/cron.daily/ | grep -q "0700"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -2446,8 +2441,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "5.1.5"
     Task = "Ensure permissions on /etc/cron.weekly are configured"
     Test = {
-        $test1 = stat /etc/cron.weekly/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/cron.weekly/ | grep -q "0700"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -2704,7 +2699,7 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         try{
             try{
-                $test1 = stat /etc/ssh/sshd_config | grep 0600
+                $test1 = stat -c '%#a' /etc/ssh/sshd_config | grep -q "0600"
             }
             catch{
                 return @{
@@ -2713,7 +2708,7 @@ $retNonCompliantManualReviewRequired = @{
                 }
             }
 
-            if($test1 -eq "Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)"){
+            if($?){
                 return @{
                     Message = "Compliant"
                     Status = "True"
@@ -3400,8 +3395,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "6.1.1"
     Task = "Ensure permissions on /etc/passwd are configured"
     Test = {
-        $test1 = stat /etc/passwd
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/passwd | grep -q "06440"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -3418,8 +3413,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "6.1.2"
     Task = "Ensure permissions on /etc/passwd- are configured"
     Test = {
-        $test1 = stat /etc/passwd-
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/passwd- | grep -q "0644"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -4083,8 +4078,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "7.1.1"
     Task = "Ensure permissions on /etc/passwd are configured"
     Test = {
-        $test1 = stat /etc/passwd
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/passwd | grep -q "0644"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -4101,8 +4096,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "7.1.2"
     Task = "Ensure permissions on /etc/passwd- are configured"
     Test = {
-        $test1 = stat /etc/passwd-
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/passwd- | grep -q "0644"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -4119,8 +4114,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "7.1.3"
     Task = "Ensure permissions on /etc/group are configured"
     Test = {
-        $test1 = stat /etc/group
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/group | grep -q "0644"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -4137,8 +4132,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "7.1.4"
     Task = "Ensure permissions on /etc/group- are configured"
     Test = {
-        $test1 = stat /etc/group- | grep 0644
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/group- | grep -q "0644"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -4155,8 +4150,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "7.1.5"
     Task = "Ensure permissions on /etc/shadow are configured"
     Test = {
-        $test1 = stat /etc/shadow | grep 0640
-        if($test1 -eq "Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (    0/    root)"){
+        $test1 = stat -c '%#a' /etc/shadow | grep -q "0640"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -4173,8 +4168,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "7.1.6"
     Task = "Ensure permissions on /etc/shadow- are configured"
     Test = {
-        $test1 = stat /etc/shadow- | grep 0640
-        if($test1 -eq "Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (   42/  shadow)"){
+        $test1 = stat -c '%#a' /etc/shadow- | grep -q "0640"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -4191,8 +4186,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "7.1.7"
     Task = "Ensure permissions on /etc/gshadow are configured"
     Test = {
-        $test1 = stat /etc/gshadow | grep 0640
-        if($test1 -eq "Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (   42/  shadow)"){
+        $test1 = stat -c '%#a' /etc/gshadow | grep -q "0640"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
@@ -4209,8 +4204,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "7.1.8"
     Task = "Ensure permissions on /etc/gshadow- are configured"
     Test = {
-        $test1 = stat /etc/gshadow- | grep 0640
-        if($test1 -eq "Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (   42/  shadow)"){
+        $test1 = stat -c '%#a' /etc/gshadow- | grep -q "0640"
+        if($?){
             return @{
                 Message = "Compliant"
                 Status = "True"
