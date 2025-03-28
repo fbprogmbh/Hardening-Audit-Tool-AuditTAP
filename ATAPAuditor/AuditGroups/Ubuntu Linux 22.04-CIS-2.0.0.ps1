@@ -825,29 +825,35 @@ $retNonCompliantManualReviewRequired = @{
     }
 }
 
-[AuditTest] @{
-    Id = "1.7.5"
-    Task = "Ensure permissions on /etc/issue are configured"
-    Test = {
-        $output = stat -c '%#a' /etc/issue | grep -q "0644"
-        if($?){
-            return $retCompliant
-        }
-        return $retNonCompliant
-    }
-}
+# 1.7.5 should be "Ensure GDM screen locks cannot be overridden"
+# it was moven from 1.8.5 in 1.0.0
+# the rule below had previously the number 1.7.5
+# [AuditTest] @{
+#     Id = "1.7.5"
+#     Task = "Ensure permissions on /etc/issue are configured"
+#     Test = {
+#         $output = stat -c '%#a' /etc/issue | grep -q "0644"
+#         if($?){
+#             return $retCompliant
+#         }
+#         return $retNonCompliant
+#     }
+# }
 
-[AuditTest] @{
-    Id = "1.7.6"
-    Task = "Ensure permissions on /etc/issue.net are configured"
-    Test = {
-        $output = stat -c '%#a' /etc/issue.net | grep -q "0644"
-        if($?){
-            return $retCompliant
-        }
-        return $retNonCompliant
-    }
-}
+# 1.7.6 should be "Ensure GDM automatic mounting of removable media is disabled"
+# it was moved from 1.8.6 in 1.0.0
+# the rule below had previously the number 1.7.6
+# [AuditTest] @{
+#     Id = "1.7.6"
+#     Task = "Ensure permissions on /etc/issue.net are configured"
+#     Test = {
+#         $output = stat -c '%#a' /etc/issue.net | grep -q "0644"
+#         if($?){
+#             return $retCompliant
+#         }
+#         return $retNonCompliant
+#     }
+# }
 
 [AuditTest] @{
     Id = "1.7.7"
@@ -2020,29 +2026,36 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-[AuditTest] @{
-    Id = "5.1.4"
-    Task = "Ensure permissions on /etc/cron.daily are configured"
-    Test = {
-        $test1 = stat -c '%#a' /etc/cron.daily/ | grep -q "0700"
-        if($?){
-            return #
-        }
-        return $retNonCompliant
-    }
-}
 
-[AuditTest] @{
-    Id = "5.1.5"
-    Task = "Ensure permissions on /etc/cron.weekly are configured"
-    Test = {
-        $test1 = stat -c '%#a' /etc/cron.weekly/ | grep -q "0700"
-        if($?){
-            return $retCompliant
-        }
-        return $retNonCompliant
-    }
-}
+# 5.1.4 should be "Ensure sshd access is configured"
+# it got added in 2.0.0
+# the rule below had 5.1.4 previously
+# [AuditTest] @{
+#     Id = "5.1.4"
+#     Task = "Ensure permissions on /etc/cron.daily are configured"
+#     Test = {
+#         $test1 = stat -c '%#a' /etc/cron.daily/ | grep -q "0700"
+#         if($?){
+#             return #
+#         }
+#         return $retNonCompliant
+#     }
+# }
+
+# 5.1.5 should be "Ensure sshd Banner is configured"
+# it got added in 2.0.0
+# the rule below had 5.1.5 previously
+# [AuditTest] @{
+#     Id = "5.1.5"
+#     Task = "Ensure permissions on /etc/cron.weekly are configured"
+#     Test = {
+#         $test1 = stat -c '%#a' /etc/cron.weekly/ | grep -q "0700"
+#         if($?){
+#             return $retCompliant
+#         }
+#         return $retNonCompliant
+#     }
+# }
 
 [AuditTest] @{
     Id = "5.1.6"
