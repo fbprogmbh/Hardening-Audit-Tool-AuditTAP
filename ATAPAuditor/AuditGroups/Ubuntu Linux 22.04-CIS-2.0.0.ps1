@@ -145,16 +145,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /tmp
         if($result -match "/tmp"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -192,16 +186,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result =  findmnt --kernel /tmp | grep noexec
         if($result -match "noexec"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -254,16 +242,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /home
         if($result -match "/home"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -301,16 +283,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /var
         if($result -match !$null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -348,16 +324,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /var/tmp
         if($result -match "/var/tmp"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -409,16 +379,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /var/log
         if($result -match !$null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -470,16 +434,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /var/log/audit
         if($result -match "/var/log/audit"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -531,16 +489,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = apt-key list
         if($result -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -550,16 +502,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = apt-cache policy
         if($result -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{ # added: 1.9 Ensure updates, patches, and additional security software are installed
@@ -569,15 +515,9 @@ $retNonCompliantManualReviewRequired = @{
         $output = apt -s upgrade
         $output = $?
         if($output -match "True"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -587,15 +527,9 @@ $retNonCompliantManualReviewRequired = @{
         $result = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' apparmor
         
         if($result -match "Status: install ok installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -625,15 +559,9 @@ $retNonCompliantManualReviewRequired = @{
         $unconfinedProcesses = apparmor_status | grep processes | sed '4!d' | cut -d ' ' -f 1
 
         if($result -eq $profileMode1 -and $unconfinedProcesses -eq 0){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -658,15 +586,9 @@ $retNonCompliantManualReviewRequired = @{
         $result1 = grep "^set superusers" /boot/grub/grub.cfg
         $result2 = grep "^password" /boot/grub/grub.cfg
         if($result1 -match "set superusers=" -and $result2 -match "password_pbkdf2"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -750,16 +672,10 @@ $retNonCompliantManualReviewRequired = @{
                     Status = "True"
                 }
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retCompliant
         }
         catch{
-            return @{
-                Message = "Command not found!"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
     }
 }
@@ -772,15 +688,9 @@ $retNonCompliantManualReviewRequired = @{
         $result1 = dpkg-query -s apport > /dev/null 2>&1 && grep -Psi -- '^\h*enabled\h*=\h*[^0]\b' /etc/default/apport
         $result2 = systemctl is-active apport.service | grep '^active'
         if($result1 -eq $null -and $result2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -806,15 +716,9 @@ $retNonCompliantManualReviewRequired = @{
         $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue
         
         if($output1 -ne $null -and $output2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -826,15 +730,9 @@ $retNonCompliantManualReviewRequired = @{
         $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue.net
         
         if($output1 -ne $null -and $output2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -881,15 +779,9 @@ $retNonCompliantManualReviewRequired = @{
         $output = grep -Eis "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/motd
 
         if($output -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -901,15 +793,9 @@ $retNonCompliantManualReviewRequired = @{
         $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue
         
         if($output1 -ne $null -and $output2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -921,15 +807,9 @@ $retNonCompliantManualReviewRequired = @{
         $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue.net
         
         if($output1 -ne $null -and $output2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -939,15 +819,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $output = stat -c '%#a' /etc/motd | grep "0644"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -957,15 +831,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $output = stat -c '%#a' /etc/issue | grep -q "0644"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -975,15 +843,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $output = stat -c '%#a' /etc/issue.net | grep -q "0644"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -995,16 +857,10 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-1.8.7.sh"
         $result=bash $path | grep " PASS "
         if($result -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1016,16 +872,10 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-1.8.8.sh"
         $result=bash $path
         if($result -match " PASS "){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1037,16 +887,10 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-1.8.9.sh"
         $result=bash $path
         if($result -match " PASS "){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1271,15 +1115,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = ss -lntu | grep -E ':25\s' | grep -E -v '\s(127.0.0.1|::1):25\s'
         if($test1 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1293,15 +1131,9 @@ $retNonCompliantManualReviewRequired = @{
         $test1 = dpkg -s nis
         $test1 = $?
         if($test1 -match "False"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1311,15 +1143,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $status = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' avahi-daemon
         if($status -match "avahi-daemon unknown ok not-installed not-installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1329,15 +1155,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' cups
         if($test1 -match "cups unknown ok not-installed not-installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1347,15 +1167,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' isc-dhcp-server
         if($test1 -match "isc-dhcp-server unknown ok not-installed not-installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1365,15 +1179,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' slapd
         if($test1 -match "slapd unknown ok not-installed not-installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1383,15 +1191,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' nfs-kernel-server
         if($test1 -match "nfs-kernel-server unknown ok not-installed not-installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1403,16 +1205,10 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-2.1.1.1.sh"
         $result=bash $path
         if($result -match "PASS:"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1468,15 +1264,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/crontab | grep -q "0600"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1486,15 +1276,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/cron.hourly/ | grep -q 0700
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1504,15 +1288,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/cron.daily/ grep -q "0700"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1522,15 +1300,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/cron.weekly/ | grep -q "0700"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1540,15 +1312,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat c '%#a' /etc/cron.monthly/ | grep -q "0700"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1558,15 +1324,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/cron.d/ | grep -q "0700"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1849,15 +1609,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = dpkg -s ufw | grep 'Status: install'
         if($test1 -match "Status: install ok installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1867,15 +1621,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = dpkg -l | grep -o iptables-persistent
         if($test1 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1887,15 +1635,9 @@ $retNonCompliantManualReviewRequired = @{
         $test2 = systemctl is-active ufw
         $test3 = ufw status | grep Status
         if($test1 -match "enabled" -and $test2 -match "active" -and $test3 -match "Status: aktiv"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1905,15 +1647,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = ufw status verbose
         if($test1 -notmatch "Status: inactive"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1923,15 +1659,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = ufw status numbered
         if($test1 -notmatch "Status: inactive"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1943,15 +1673,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-3.5.1.6.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1961,15 +1685,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = ufw status verbose
         if($test1 -match "deny" -or $test1 -match "reject" -or $test1 -match "disabled"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1979,15 +1697,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = dpkg-query -s nftables | grep 'Status: install ok installed'
         if($test1 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1998,15 +1710,9 @@ $retNonCompliantManualReviewRequired = @{
         $test1 = dpkg-query -s ufw | grep 'Status: install ok installed'
         $test2 = ufw status | grep 'Status: Inaktiv'
         if($test1 -eq $null -and $test2 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2018,15 +1724,9 @@ $retNonCompliantManualReviewRequired = @{
             $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-4.2.3.sh"
             $result = $path | grep "PASS"
             if($result -match "PASS"){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
 }
 
@@ -2037,15 +1737,9 @@ $retNonCompliantManualReviewRequired = @{
         try{
             $test1 = nft list tables
             if($test1 -match "table"){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2065,15 +1759,9 @@ $retNonCompliantManualReviewRequired = @{
             $test2 = nft list ruleset | grep 'hook forward'
             $test3 = nft list ruleset | grep 'hook output'
             if($test1 -match "type filter hook input" -and $test2 -match "type filter hook forward" -and $test3 -match "type filter hook output"){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2093,25 +1781,16 @@ $retNonCompliantManualReviewRequired = @{
                 $test1 = nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
                 $test2 = nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
                 if($test1 -match 'iif "lo" accept' -and $test2 -match "ip saddr 127.0.0.0/8 counter packets 0 bytes 0 drop"){
-                    return @{
-                        Message = "Compliant"
-                        Status = "True"
-                    }
+                    return $retCompliant
                 }
             }
             else{
                 $test = nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
                 if($test -match 'ip6 saddr ::1 counter packets 0 bytes 0 drop'){
-                    return @{
-                        Message = "Compliant"
-                        Status = "True"
-                    }
+                    return $retCompliant
                 }
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2130,15 +1809,9 @@ $retNonCompliantManualReviewRequired = @{
             $test1 = nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
             $test2 = nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
             if($test1 -match "ip protocol tcp ct state established accept" -and $test1 -match "p protocol udp ct state established accept" -and $test1 -match "ip protocol icmp ct state established accept" -and $test2 -match "ip protocol tcp ct state established,related,new accep" -and $test2 -match "ip protocol udp ct state established,related,new accept" -and $test2 -match "ip protocol icmp ct state established,related,new accept"){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2158,15 +1831,9 @@ $retNonCompliantManualReviewRequired = @{
             $test2 = nft list ruleset | grep 'hook forward'
             $test3 = nft list ruleset | grep 'hook output'
             if($test1 -match "policy drop" -and $test2 -match "policy drop" -and $test3 -match "policy drop"){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2183,15 +1850,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = systemctl is-enabled nftables
         if($test1 -match "enabled"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2204,15 +1865,9 @@ $retNonCompliantManualReviewRequired = @{
         $path2 = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-3.5.2.10_2.sh"
         $path3 = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-3.5.2.10_3.sh"
         if($path1 -ne $null -and $path2 -ne $null -and $path3 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2222,15 +1877,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = apt list iptables iptables-persistent | grep installed
         if($test1 -match "iptables-persistent"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2240,15 +1889,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' nftables
         if($test1 -match "install ok installed"){
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
-        return @{
-            Message = "Compliant"
-            Status = "True"
-        }
+        return $retCompliant
     }
 }
 
@@ -2260,15 +1903,9 @@ $retNonCompliantManualReviewRequired = @{
         $test2 = ufw status
         $test3 = systemctl is-enabled ufw
         if($test1 -match "not-installed" -and $test2 -match "Status: Inaktiv" -and $test3 -match "masked"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2281,15 +1918,9 @@ $retNonCompliantManualReviewRequired = @{
         $test2 = $output -match "DROP" | grep "Chain FORWARD (policy DROP)"
         $test3 = $output -match "DROP" | grep "Chain OUTPUT (policy DROP)"
         if($test1 -ne $null -and $test2 -ne $null -and $test3 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2300,15 +1931,9 @@ $retNonCompliantManualReviewRequired = @{
         $test1 = iptables -L INPUT -v -n | grep "Chain\s*INPUT\s*(policy\s*DROP"
         $test2 = iptables -L OUTPUT -v -n | grep "Chain\s*OUTPUT\s*(policy\s*DROP"
         if($test1 -ne $null -and $test2 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2318,15 +1943,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = iptables -L -v -n
         if($test1 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 # 3.5.3.2.4 ...
@@ -2351,15 +1970,9 @@ $retNonCompliantManualReviewRequired = @{
             }
         }
         if(($test11 -ne $null -or $test12 -ne $null) -and ($test21 -ne $null -or $test22 -ne $null) -and ($test31 -ne $null -or $test32 -ne $null)){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 # MISSING RULE: 4.3.3.2 - Ensure ip6tables loopback traffic is configured
@@ -2375,15 +1988,9 @@ $retNonCompliantManualReviewRequired = @{
         $test1 = systemctl is-enabled cron
         $test2 = systemctl status cron | grep 'Active: active (running) '
         if($test1 -eq "enabled" -and $test2 -match "running"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2393,15 +2000,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/crontab | grep -q "0600"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2425,15 +2026,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/cron.daily/ | grep -q "0700"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return #
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2443,15 +2038,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/cron.weekly/ | grep -q "0700"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -2709,15 +2298,9 @@ $retNonCompliantManualReviewRequired = @{
             }
 
             if($?){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2764,15 +2347,9 @@ $retNonCompliantManualReviewRequired = @{
             $result = bash -c "sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname)/etc/hosts | awk '{print $1}')" | grep -Ei '^\s*(allow|deny)(users|groups)\s+\S+'"
             $result2 = bash -c "grep -rPi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$' /etc/ssh/sshd_config*"
             if(($result -match "allowusers" -or $result -match "allowgroups" -or $result -match "denyusers" -or $result -match "denygroups") -and ($result2 -match "allowusers" -or $result2 -match "allowgroups" -or $result2 -match "denyusers" -or $result2 -match "denygroups")){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2799,15 +2376,9 @@ $retNonCompliantManualReviewRequired = @{
                 }
             }
             if(($test1 -match "loglevel VERBOSE" -or $test1 -match "loglevel INFO") -and $test2 -eq $null){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2848,15 +2419,9 @@ $retNonCompliantManualReviewRequired = @{
                 }
             }
             if($test1 -match "permitrootlogin no" -and $test2 -eq $null){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -3244,15 +2809,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-5.5.1.5.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -3262,15 +2821,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = awk -F: '($3 == 0) { print $1 }' /etc/passwd
         if($test1 -match "root"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -3297,15 +2850,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-6.2.9.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -3397,15 +2944,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/passwd | grep -q "06440"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -3415,15 +2956,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/passwd- | grep -q "0644"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -3495,15 +3030,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' systemd-journal-remote
         if($test1 -match "systemd-journal-remote install ok installed installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -3785,15 +3314,9 @@ $retNonCompliantManualReviewRequired = @{
         $result22 = bash $path2 | grep "\-w /var/log/wtmp -p wa -k session"
         $result23 = bash $path2 | grep "\-w /var/log/btmp -p wa -k session"
         if($result11 -ne $null -and $result12 -ne $null -and $result13 -ne $null -and $result21 -ne $null -and $result22 -ne $null -and $result23 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -3915,15 +3438,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = grep "^\s*[^#]" /etc/audit/rules.d/*.rules | tail -l
         if($test1 -match "-e 2"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -3933,15 +3450,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = augenrules --check
         if($test1 -match "/usr/sbin/augenrules: No change"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4080,15 +3591,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/passwd | grep -q "0644"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4098,15 +3603,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/passwd- | grep -q "0644"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4116,15 +3615,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/group | grep -q "0644"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4134,15 +3627,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/group- | grep -q "0644"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4152,15 +3639,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/shadow | grep -q "0640"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4170,15 +3651,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/shadow- | grep -q "0640"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4188,15 +3663,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/gshadow | grep -q "0640"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4206,15 +3675,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = stat -c '%#a' /etc/gshadow- | grep -q "0640"
         if($?){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4272,15 +3735,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = awk -F: '($2 != "x" ) { print $1 " is not set to shadowed passwords "}'/etc/passwd
         if($test1 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4290,15 +3747,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = awk -F: '($2 == "" ) { print $1 " does not have a password "}' /etc/shadow
         if($test1 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4310,15 +3761,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-6.2.3.sh"
         $result=bash $path
         if($result -match $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4329,15 +3774,9 @@ $retNonCompliantManualReviewRequired = @{
         $test1 = awk -F: '($1=="shadow") {print $NF}' /etc/group
         $test2 = awk -F: -v GID="$(awk -F: '($1=="shadow") {print $3}' /etc/group)" '($4==GID) {print $1}' /etc/passwd
         if($test1.Length -eq 0 -and $test2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4349,15 +3788,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-6.2.5.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4369,15 +3802,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-6.2.6.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4389,15 +3816,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-6.2.7.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -4409,15 +3830,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-6.2.8.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
