@@ -193,7 +193,21 @@ $retNonCompliantManualReviewRequired = @{
     }
 }
 
-# MISSING RULE: 1.1.2.2.1 - Ensure /dev/shm is a separate partition
+[AuditTest] @{
+    Id = "1.1.2.2.1"
+    Task = "Ensure /dev/shm is a separate partition"
+    Test = {
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.2.1.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
+            return $retNonCompliant
+        }
+    }
+}
+
 [AuditTest] @{
     Id = "1.1.2.2.2"
     Task = "Ensure nodev option set on /dev/shm partition"
@@ -508,7 +522,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 1.9 Ensure updates, patches, and additional security software are installed
+[AuditTest] @{
     Id = "1.2.2.1"
     Task = "Ensure updates, patches, and additional security software are installed"
     Test = {
@@ -750,7 +764,7 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-[AuditTest] @{ # added: 1.7.5 Ensure permissions on /etc/issue are configured
+[AuditTest] @{
     Id = "1.6.5"
     Task = "Ensure access to /etc/issue is configured"
     Test = {
@@ -761,7 +775,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 1.7.6 Ensure permissions on /etc/issue.net are configured
+[AuditTest] @{
     Id = "1.6.6"
     Task = "Ensure access to /etc/issue.net is configured"
     Test = {
@@ -914,7 +928,7 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-[AuditTest] @{ # added: 1.1.23 Disable Automounting
+[AuditTest] @{
     Id = "2.1.1"
     Task = "Ensure autofs services are not in use"
     Test = {
@@ -931,7 +945,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.3 Ensure Avahi Server is not installed
+[AuditTest] @{
     Id = "2.1.2"
     Task = "Ensure avahi daemon services are not in use"
     Test = {
@@ -942,7 +956,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.5 Ensure DHCP Server is not installed
+[AuditTest] @{
     Id = "2.1.3"
     Task = "Ensure dhcp server services are not in use"
     Test = {
@@ -953,7 +967,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.8 Ensure DNS Server is not installed
+[AuditTest] @{
     Id = "2.1.4"
     Task = "Ensure dns server services are not in use"
     Test = {
@@ -965,7 +979,8 @@ $retNonCompliantManualReviewRequired = @{
     }
 }
 # MISSING RULE: 2.1.5 - Ensure dnsmasq services are not in use
-[AuditTest] @{ # added: 2.1.9 Ensure FTP Server is not installed
+# Benchmark Composer id 32840
+[AuditTest] @{
     Id = "2.1.6"
     Task = "Ensure ftp server services are not in use"
     Test = {
@@ -976,7 +991,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.6 Ensure LDAP server is not installed
+[AuditTest] @{
     Id = "2.1.7"
     Task = "Ensure ldap server services are not in use"
     Test = {
@@ -987,7 +1002,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.11 Ensure IMAP and POP3 server are not installed
+[AuditTest] @{
     Id = "2.1.8"
     Task = "Ensure message access server services are not in use"
     Test = {
@@ -999,7 +1014,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.7 Ensure NFS is not installed
+[AuditTest] @{
     Id = "2.1.9"
     Task = "Ensure network file system services are not in use"
     Test = {
@@ -1010,7 +1025,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.17 Ensure NIS Server is not installed
+[AuditTest] @{
     Id = "2.1.10"
     Task = "Ensure nis server services are not in use"
     Test = {
@@ -1022,7 +1037,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.4 Ensure CUPS is not installed
+[AuditTest] @{
     Id = "2.1.11"
     Task = "Ensure print server services are not in use"
     Test = {
@@ -1034,7 +1049,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.2.6 Ensure RPC is not installed
+[AuditTest] @{
     Id = "2.1.12"
     Task = "Ensure rpcbind services are not in use"
     Test = {
@@ -1045,19 +1060,20 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.16 Ensure rsync service is not installed
+[AuditTest] @{
     Id = "2.1.13"
     Task = "Ensure rsync services are not in use"
     Test = {
-        dpkg -s rsync | grep -E '(Status:|not installed)'
-        $test1 = $?
-        if($test1 -match "False"){
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/2.1.13.sh"
+        $result = bash $script
+        if ($?){
             return $retCompliant
         }
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.12 Ensure Samba is not installed
+[AuditTest] @{
     Id = "2.1.14"
     Task = "Ensure samba file server services are not in use"
     Test = {
@@ -1069,7 +1085,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.14 Ensure SNMP Server is not installed
+[AuditTest] @{
     Id = "2.1.15"
     Task = "Ensure snmp services are not in use"
     Test = {
@@ -1081,7 +1097,8 @@ $retNonCompliantManualReviewRequired = @{
     }
 }
 # MISSING RULE: 2.1.16 - Ensure tftp server services are not in use
-[AuditTest] @{ # added: 2.1.13 Ensure HTTP Proxy Server is not installed
+# Benchmark Composer id 32846
+[AuditTest] @{
     Id = "2.1.17"
     Task = "Ensure web proxy server services are not in use"
     Test = {
@@ -1092,7 +1109,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 2.1.10 Ensure HTTP server is not installed
+[AuditTest] @{
     Id = "2.1.18"
     Task = "Ensure web server services are not in use"
     Test = {
@@ -1221,7 +1238,7 @@ $retNonCompliantManualReviewRequired = @{
 # MISSING RULE: 2.3.2.1 - Ensure systemd-timesyncd configured with authorized timeserver
 # ^ this one's manual; 2.1.3.1 Ensure systemd-timesyncd configured with authorized timeserver
 
-[AuditTest] @{ # added: 2.1.1.2 Ensure systemd-timesyncd is configured
+[AuditTest] @{
     Id = "2.3.2.2"
     Task = "Ensure systemd-timesyncd is enabled and running"
     Test = {
@@ -2897,7 +2914,7 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-[AuditTest] @{ # added: 5.5.2 Ensure system accounts are secured
+[AuditTest] @{
     Id = "5.4.2.8"
     Task = "Ensure accounts without a valid login shell are locked"
     Test = {
@@ -3068,7 +3085,7 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-[AuditTest] @{ # added: 4.2.3 Ensure permissions on all logfiles are configured
+[AuditTest] @{
     Id = "6.2.2.1"
     Task = "Ensure access to all logfiles has been configured"
     Test = {
@@ -3080,7 +3097,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 4.1.1.1 Ensure auditd is installed
+[AuditTest] @{
     Id = "6.3.1.1"
     Task = "Ensure auditd packages are installed"
     Test = {
@@ -3092,7 +3109,7 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # added: 4.1.1.2 Ensure auditd service is enabled
+[AuditTest] @{
     Id = "6.3.1.2"
     Task = "Ensure auditd service is enabled and active"
     Test = {
@@ -3159,7 +3176,7 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 } 
-[AuditTest] @{ # added: 4.1.2.3 Ensure system is disabled when audit logs are full
+[AuditTest] @{
     Id = "6.3.2.3"
     Task = "Ensure system is disabled when audit logs are full"
     Test = {
