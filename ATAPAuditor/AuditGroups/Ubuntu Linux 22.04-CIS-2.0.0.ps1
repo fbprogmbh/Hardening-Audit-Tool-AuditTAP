@@ -536,11 +536,11 @@ $retNonCompliantManualReviewRequired = @{
 }
 [AuditTest] @{
     Id = "1.3.1.1"
-    Task = "Ensure AppArmor is installed"
+    Task = "Ensure AppArmor is installed" # one round
     Test = {
-        $result = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' apparmor
+        $result = dpkg-query -W -f='${db:Status-Abbrev}' apparmor
         
-        if($result -match "Status: install ok installed"){
+        if($result -match "ii"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1151,9 +1151,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.2.1"
     Task = "Ensure NIS Client is not installed"
     Test = {
-        $test1 = dpkg -s nis
-        $test1 = $?
-        if($test1 -match "False"){
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nis
+        if($test1 -match "rc|un"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1164,8 +1163,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.2.2"
     Task = "Ensure Avahi Server is not installed"
     Test = {
-        $status = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' avahi-daemon
-        if($status -match "avahi-daemon unknown ok not-installed not-installed"){
+        $status = dpkg-query -f='${db:Status-Abbrev}' -W avahi-daemon
+        if($status -match "rc|un"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1176,8 +1175,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.2.3"
     Task = "Ensure CUPS is not installed"
     Test = {
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' cups
-        if($test1 -match "cups unknown ok not-installed not-installed"){
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W cups
+        if($test1 -match "rc|un"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1188,8 +1187,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.2.4"
     Task = "Ensure DHCP Server is not installed"
     Test = {
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' isc-dhcp-server
-        if($test1 -match "isc-dhcp-server unknown ok not-installed not-installed"){
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W isc-dhcp-server
+        if($test1 -match "rc|un"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1200,8 +1199,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.2.5"
     Task = "Ensure LDAP server is not installed"
     Test = {
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' slapd
-        if($test1 -match "slapd unknown ok not-installed not-installed"){
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W slapd
+        if($test1 -match "rc|un"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1212,8 +1211,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.2.6"
     Task = "Ensure NFS is not installed"
     Test = {
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' nfs-kernel-server
-        if($test1 -match "nfs-kernel-server unknown ok not-installed not-installed"){
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nfs-kernel-server
+        if($test1 -match "rc|un"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1630,8 +1629,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.1.1"
     Task = "Ensure ufw is installed"
     Test = {
-        $test1 = dpkg -s ufw | grep 'Status: install'
-        if($test1 -match "Status: install ok installed"){
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw
+        if($test1 -match "ii"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1718,8 +1717,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.2.1"
     Task = "Ensure nftables is installed"
     Test = {
-        $test1 = dpkg-query -s nftables | grep 'Status: install ok installed'
-        if($test1 -ne $null){
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nftables
+        if($test1 -match "ii"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1729,11 +1728,23 @@ $retNonCompliantManualReviewRequired = @{
 [AuditTest] @{
     Id = "4.2.2"
     Task = "Ensure ufw is uninstalled or disabled with nftables"
+    # Test = {
+    #     $test1 = dpkg-query -s ufw | grep 'Status: install ok installed'
+    #     $test2 = ufw status | grep 'Status: Inaktiv'
+    #     if($test1 -eq $null -and $test2 -ne $null){
+    #         return $retCompliant
+    #     }
+    #     return $retNonCompliant
+    # }
     Test = {
-        $test1 = dpkg-query -s ufw | grep 'Status: install ok installed'
-        $test2 = ufw status | grep 'Status: Inaktiv'
-        if($test1 -eq $null -and $test2 -ne $null){
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw
+        if ($test1 -match "rc|un"){
             return $retCompliant
+        } elseif ($test1 -match "ii") {
+            $test2 = ufw status | grep 'Status: Inaktiv'
+            if ($test2 -ne $null){
+                return $retCompliant
+            }
         }
         return $retNonCompliant
     }
