@@ -586,7 +586,7 @@ $FirewallStatus = GetFirewallStatus
 }
 [AuditTest] @{
     Id = "1.3.1.1"
-    Task = "Ensure AppArmor is installed" # one round
+    Task = "Ensure AppArmor is installed"
     Test = {
         $result = dpkg-query -W -f='${db:Status-Abbrev}' apparmor
         
@@ -2067,8 +2067,8 @@ $FirewallStatus = GetFirewallStatus
         if ($FirewallStatus -match 2) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' nftables
-        if($test1 -match "install ok installed"){
+        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W nftables
+        if($test1 -match "rc|un"){
             return $retNonCompliant
         }
         return $retCompliant
@@ -2085,10 +2085,10 @@ $FirewallStatus = GetFirewallStatus
         if ($FirewallStatus -match 2) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' ufw
-        $test2 = ufw status
+        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W ufw
+        $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
         $test3 = systemctl is-enabled ufw
-        if($test1 -match "not-installed" -and $test2 -match "Status: Inaktiv" -and $test3 -match "masked"){
+        if($test1 -match "rc|un" -and $test2 -ne $null -and $test3 -match "masked"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -2650,9 +2650,9 @@ $FirewallStatus = GetFirewallStatus
     }
 }
 
-# MISSING RULE: 5.3.1.1 - Ensure latest version of pam is installed
-# MISSING RULE: 5.3.1.2 - Ensure libpam-modules is installed
-# MISSING RULE: 5.3.1.3 - Ensure libpam-pwquality is installed
+# MISSING RULE: 5.3.1.1 - Ensure latest version of pam is installed ; BCID 32879
+# MISSING RULE: 5.3.1.2 - Ensure libpam-modules is installed ; BCID 34603
+# MISSING RULE: 5.3.1.3 - Ensure libpam-pwquality is installed ; BCID 32878
 [AuditTest] @{
     Id = "5.3.2.1"
     Task = "Ensure pam_unix module is enabled"
@@ -3246,8 +3246,8 @@ $FirewallStatus = GetFirewallStatus
     Id = "6.2.1.2.1"
     Task = "Ensure systemd-journal-remote is installed"
     Test = {
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' systemd-journal-remote
-        if($test1 -match "systemd-journal-remote install ok installed installed"){
+        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W systemd-journal-remote
+        if($test1 -match "ii"){
             return $retCompliant
         }
         return $retNonCompliant
