@@ -5,6 +5,9 @@ $rcNone = "None"
 $rcNonCompliant = "Non-Compliant"
 $rcNonCompliantManualReviewRequired = "Manual review required"
 $rcCompliantIPv6isDisabled = "IPv6 is disabled"
+$rcFirewallStatus1 = "Using nftables with disabled ufw"
+$rcFirewallStatus2 = "Using nftables"
+$rcFirewallStatus3 = "Using ufw"
 
 $retCompliant = @{
     Message = $rcCompliant
@@ -22,6 +25,53 @@ $retNonCompliantManualReviewRequired = @{
     Message = $rcNonCompliantManualReviewRequired
     Status = $rcNone
 }
+$retUsingFW1 = @{
+    Message = $rcFirewallStatus1
+    Status = $rcNone
+}
+$retUsingFW2 = @{
+    Message = $rcFirewallStatus2
+    Status = $rcNone
+}
+$retUsingFW3 = @{
+    Message = $rcFirewallStatus3
+    Status = $rcNone
+}
+
+# Firewall evaluation
+function GetFirewallStatus {
+    # 0 - undefined
+	# 1 - using nftables
+	# 2 - using ufw
+	# 3 - using iptables
+
+	$t_UFW = dpkg-query -f='${db:Status-Abbrev}' -W ufw
+	$t_NFT = dpkg-query -f='${db:Status-Abbrev}' -W nftables
+	$t_IPT = dpkg-query -f='${db:Status-Abbrev}' -W iptables
+	$t_UFW_en = systemctl is-enabled ufw 2>/dev/null
+	$t_UFW_inac = ufw status 2>/dev/null | grep -iE "Status: Ina[ck]tive?"
+    $t_UFW_ac = ufw status 2>/dev/null | grep -iE "Status: A[ck]tive?"
+	$t_NFT_en = systemctl is-enabled nftables.service 2>/dev/null
+	
+	# Testing 1 - nftable installed, ufw not or inactive
+	if ($t_NFT -match "ii" -and $t_IPT -match "rc|un" -and ($t_UFW -match "rc|un" -or $t_UFW_inac -ne $null) -and $t_NFT_en -match "enabled"){
+        return 1
+    }
+	
+	# Testing 2 - ufw, iptables installed, nftables not 
+	if ( $t_UFW -match "ii" -and $t_UFW_ac -ne $null -and $t_UFW_en -match "enabled" -and $t_IPT -match "ii" -and $t_NFT -match "rc|un"){
+        return 2
+    }
+	
+	# Testing 3 - only iptables
+	if ($t_NFT -match "rc|un" -and $t_UFW -match "rc|un" -and $t_IPT -match "ii"){
+        return 3
+    }
+
+    return 0
+}
+
+$FirewallStatus = GetFirewallStatus
 
 # Ubuntu Linux 22.04-CIS-2.0.0.ps1
 # Generated from benchmarks_ubuntu.txt and Ubuntu Linux 22.04-CIS-1.0.0.ps1
@@ -1629,6 +1679,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.1.1"
     Task = "Ensure ufw is installed"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw
         if($test1 -match "ii"){
             return $retCompliant
@@ -1641,6 +1697,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.1.2"
     Task = "Ensure iptables-persistent is not installed with ufw"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $test1 = dpkg -l | grep -o iptables-persistent
         if($test1 -eq $null){
             return $retCompliant
@@ -1653,10 +1715,16 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.1.3"
     Task = "Ensure ufw service is enabled"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $test1 = systemctl is-enabled ufw
         $test2 = systemctl is-active ufw
-        $test3 = ufw status | grep Status
-        if($test1 -match "enabled" -and $test2 -match "active" -and $test3 -match "Status: aktiv"){
+        $test3 = ufw status | grep -iE "Status: A[ck]tive?"
+        if($test1 -match "enabled" -and $test2 -match "active" -and $test3 -ne $null){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1667,8 +1735,14 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.1.4"
     Task = "Ensure ufw loopback traffic is configured"
     Test = {
-        $test1 = ufw status verbose
-        if($test1 -notmatch "Status: inactive"){
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
+        $test1 = ufw status verbose | grep -iE "Status: A[ck]tive?"
+        if($test1 -ne $null){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1679,8 +1753,14 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.1.5"
     Task = "Ensure ufw outbound connections are configured"
     Test = {
-        $test1 = ufw status numbered
-        if($test1 -notmatch "Status: inactive"){
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
+        $test1 = ufw status numbered | grep -iE "Status: Ina[ck]tive?"
+        if($test1 -eq $null){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1691,6 +1771,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.1.6"
     Task = "Ensure ufw firewall rules exist for all open ports"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
         $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-3.5.1.6.sh"
         $result=bash $path
@@ -1705,8 +1791,8 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.1.7"
     Task = "Ensure ufw default deny firewall policy"
     Test = {
-        $test1 = ufw status verbose
-        if($test1 -match "deny" -or $test1 -match "reject" -or $test1 -match "disabled"){
+        $test1 = ufw status verbose | grep -iE "allow"
+        if($test1 -eq $null){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1717,6 +1803,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.2.1"
     Task = "Ensure nftables is installed"
     Test = {
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nftables
         if($test1 -match "ii"){
             return $retCompliant
@@ -1728,32 +1820,32 @@ $retNonCompliantManualReviewRequired = @{
 [AuditTest] @{
     Id = "4.2.2"
     Task = "Ensure ufw is uninstalled or disabled with nftables"
-    # Test = {
-    #     $test1 = dpkg-query -s ufw | grep 'Status: install ok installed'
-    #     $test2 = ufw status | grep 'Status: Inaktiv'
-    #     if($test1 -eq $null -and $test2 -ne $null){
-    #         return $retCompliant
-    #     }
-    #     return $retNonCompliant
-    # }
     Test = {
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw
-        if ($test1 -match "rc|un"){
+        $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
+        if($test1 -match "rc|un" -or $test2 -ne $null){
             return $retCompliant
-        } elseif ($test1 -match "ii") {
-            $test2 = ufw status | grep 'Status: Inaktiv'
-            if ($test2 -ne $null){
-                return $retCompliant
-            }
         }
         return $retNonCompliant
     }
 }
 
-[AuditTest] @{
+[AuditTest] @{ # diff : should be 4.2.3 - Ensure iptables are flushed with nftables (Manual); old one got droped!!!
         Id = "4.2.3"
         Task = "Ensure all logfiles have appropriate permissions and ownership"
         Test = {
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             $parentPath = Split-Path -Parent -Path $PSScriptRoot
             $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-4.2.3.sh"
             $result = $path | grep "PASS"
@@ -1769,6 +1861,12 @@ $retNonCompliantManualReviewRequired = @{
     Task = "Ensure a nftables table exists"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             $test1 = nft list tables
             if($test1 -match "table"){
                 return $retCompliant
@@ -1789,6 +1887,12 @@ $retNonCompliantManualReviewRequired = @{
     Task = "Ensure nftables base chains exist"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             $test1 = nft list ruleset | grep 'hook input'
             $test2 = nft list ruleset | grep 'hook forward'
             $test3 = nft list ruleset | grep 'hook output'
@@ -1811,6 +1915,12 @@ $retNonCompliantManualReviewRequired = @{
     Task = "Ensure nftables loopback traffic is configured"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             if($isIPv6Disabled -ne $true){
                 $test1 = nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
                 $test2 = nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
@@ -1840,6 +1950,12 @@ $retNonCompliantManualReviewRequired = @{
     Task = "Ensure nftables outbound and established connections are configured"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             $test1 = nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
             $test2 = nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
             if($test1 -match "ip protocol tcp ct state established accept" -and $test1 -match "p protocol udp ct state established accept" -and $test1 -match "ip protocol icmp ct state established accept" -and $test2 -match "ip protocol tcp ct state established,related,new accep" -and $test2 -match "ip protocol udp ct state established,related,new accept" -and $test2 -match "ip protocol icmp ct state established,related,new accept"){
@@ -1861,6 +1977,12 @@ $retNonCompliantManualReviewRequired = @{
     Task = "Ensure nftables default deny firewall policy"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             $test1 = nft list ruleset | grep 'hook input'
             $test2 = nft list ruleset | grep 'hook forward'
             $test3 = nft list ruleset | grep 'hook output'
@@ -1882,6 +2004,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.2.9"
     Task = "Ensure nftables service is enabled"
     Test = {
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $test1 = systemctl is-enabled nftables
         if($test1 -match "enabled"){
             return $retCompliant
@@ -1894,6 +2022,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.2.10"
     Task = "Ensure nftables rules are permanent"
     Test = {
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
         $path1 = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-3.5.2.10_1.sh"
         $path2 = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-3.5.2.10_2.sh"
@@ -1909,6 +2043,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.3.1.1"
     Task = "Ensure iptables packages are installed"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $test1 = apt list iptables iptables-persistent | grep installed
         if($test1 -match "iptables-persistent"){
             return $retCompliant
@@ -1921,6 +2061,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.3.1.2"
     Task = "Ensure nftables is not installed with iptables"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' nftables
         if($test1 -match "install ok installed"){
             return $retNonCompliant
@@ -1933,6 +2079,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.3.1.3"
     Task = "Ensure ufw is uninstalled or disabled with iptables"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' ufw
         $test2 = ufw status
         $test3 = systemctl is-enabled ufw
@@ -1947,6 +2099,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.3.2.1"
     Task = "Ensure iptables default deny firewall policy"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $output = iptables -L
         $test1 = $output -match "DROP" | grep "Chain INPUT (policy DROP)"
         $test2 = $output -match "DROP" | grep "Chain FORWARD (policy DROP)"
@@ -1962,6 +2120,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.3.2.2"
     Task = "Ensure iptables loopback traffic is configured"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $test1 = iptables -L INPUT -v -n | grep "Chain\s*INPUT\s*(policy\s*DROP"
         $test2 = iptables -L OUTPUT -v -n | grep "Chain\s*OUTPUT\s*(policy\s*DROP"
         if($test1 -ne $null -and $test2 -ne $null){
@@ -1975,6 +2139,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.3.2.3"
     Task = "Ensure iptables outbound and established connections are configured"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $test1 = iptables -L -v -n
         if($test1 -ne $null){
             return $retCompliant
@@ -1985,10 +2155,17 @@ $retNonCompliantManualReviewRequired = @{
 # 3.5.3.2.4 ...
 
 # MISSING RULE: 4.3.2.4 - Ensure iptables firewall rules exist for all open ports
+# ^this one is manual in Excel, but not in CIS Ubuntu 2.0.0
 [AuditTest] @{
     Id = "4.3.3.1"
     Task = "Ensure ip6tables default deny firewall policy"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $output = ip6tables -L
         $test11 = $output -match "DROP" | grep "Chain INPUT (policy DROP)"
         $test12 = $output -match "REJECT" | grep "Chain INPUT (policy REJECT)"
@@ -2010,11 +2187,11 @@ $retNonCompliantManualReviewRequired = @{
     }
 }
 # MISSING RULE: 4.3.3.2 - Ensure ip6tables loopback traffic is configured
-# 3.5.3.3.2 ...
+# ^this one is manual in Excel, but not in CIS Ubuntu 2.0.0; 3.5.3.3.2 ...
 # MISSING RULE: 4.3.3.3 - Ensure ip6tables outbound and established connections are configured
 # ^this one's manual; 3.5.3.3.3 "
 # MISSING RULE: 4.3.3.4 - Ensure ip6tables firewall rules exist for all open ports
-# 3.5.3.3.4 ...
+# ^this one is manual in Excel, but not in CIS Ubuntu 2.0.0; 3.5.3.3.4 ...
 [AuditTest] @{
     Id = "5.1.1"
     Task = "Ensure cron daemon is enabled and running"
