@@ -1742,7 +1742,7 @@ $FirewallStatus = GetFirewallStatus
             return $retUsingFW3
         }
         $test1 = ufw status verbose | grep -iE "Status: A[ck]tive?"
-        if($test1 -ne $null){
+        if($test1 -eq $null){
             return $retCompliant
         }
         return $retNonCompliant
@@ -3194,7 +3194,7 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 6.2.1.1.1 - Ensure journald service is enabled and active
+# MISSING RULE: 6.2.1.1.1 - Ensure journald service is enabled and active ; BCID 33782
 # 4.2.1.2 Ensure journald service is enabled
 # MISSING RULE: 6.2.1.1.2 - Ensure journald log file access is configured
 # ^this one's manual
@@ -3256,9 +3256,18 @@ $FirewallStatus = GetFirewallStatus
 
 # MISSING RULE: 6.2.1.2.2 - Ensure systemd-journal-remote authentication is configured
 # # ^this one's manual; 4.2.1.1.2 Ensure systemd-journal-remote is configured 
-# MISSING RULE: 6.2.1.2.3 - Ensure systemd-journal-upload is enabled and active
-# the rule was manual: 4.2.1.1.3 Ensure systemd-journal-remote is enabled
-# but isn't anymore!
+[AuditTest] @{
+    Id = "6.2.1.2.3"
+    Task = "Ensure systemd-journal-upload is enabled and active"
+    Test = {
+        $test1 = systemctl is-enabled systemd-journal-upload.service
+        $test2 = systemctl is-active systemd-journal-upload.service
+        if($test1 -eq "enabled" -and $test2 -match "active"){
+            return $retCompliant
+        }
+        return $retCompliant
+    }
+}
 [AuditTest] @{
     Id = "6.2.1.2.4"
     Task = "Ensure systemd-journal-remote service is not in use"
@@ -3368,16 +3377,27 @@ $FirewallStatus = GetFirewallStatus
     Id = "6.3.2.3"
     Task = "Ensure system is disabled when audit logs are full"
     Test = {
+       $test1 = grep disk_full_action /etc/audit/auditd.conf
+       $test2 = grep disk_error_action /etc/audit/auditd.conf
+       if($test1 -match "disk_full_action\s*=\s*single" -and $test2 -match "disk_error_action\s*=\s*single"){
+            return $retCompliant
+       }
+       return $retNonCompliant
+    }
+}
+[AuditTest] @{
+    Id = "6.3.2.4"
+    Task = "Ensure system warns when audit logs are low on space"
+    Test = {
         $test1 = grep space_left_action /etc/audit/auditd.conf
         $test2 = grep action_mail_acct /etc/audit/auditd.conf
         $test3 = grep admin_space_left_action /etc/audit/auditd.conf
-        if($test1 -match "space_left_action = email" -and $test2 -match "action_mail_acct = root" -and $test3 -match "admin_space_left_action = halt"){
+        if($test1 -match "space_left_action\s*=\s*email" -and $test2 -match "action_mail_acct\s*=\s*root" -and $test3 -match "admin_space_left_action\s*=\s*halt"){
             return $retCompliant
         }
         return $retNonCompliant
     }
 }
-# MISSING RULE: 6.3.2.4 - Ensure system warns when audit logs are low on space
 [AuditTest] @{
     Id = "6.3.3.1"
     Task = "Ensure changes to system administration scope is collected"
