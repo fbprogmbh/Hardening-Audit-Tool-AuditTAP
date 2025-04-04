@@ -1170,7 +1170,7 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
-# MISSING RULE: 2.1.19 - Ensure xinetd services are not in use
+# MISSING RULE: 2.1.19 - Ensure xinetd services are not in use ; BCID 32848
 [AuditTest] @{ # added diff!: 2.1.2 Ensure X Window System is not installed
     Id = "2.1.20"
     Task = "Ensure X window server services are not in use"
@@ -1193,10 +1193,13 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
-
-# MISSING RULE: 2.1.22 - Ensure only approved services are listening on a network interface
-# ^ this one's manual; 2.4 Ensure nonessential services are removed or masked
-# has no implementation?
+[AuditTest] @{
+    Id = "2.1.22"
+    Task = "Ensure only approved services are listening on a network interface"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "2.2.1"
     Task = "Ensure NIS Client is not installed"
@@ -1283,10 +1286,13 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
-
-# MISSING RULE: 2.3.2.1 - Ensure systemd-timesyncd configured with authorized timeserver
-# ^ this one's manual; 2.1.3.1 Ensure systemd-timesyncd configured with authorized timeserver
-
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "2.3.2.1"
+    Task = "Ensure systemd-timesyncd configured with authorized timeserver"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "2.3.2.2"
     Task = "Ensure systemd-timesyncd is enabled and running"
@@ -1299,9 +1305,13 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
-# MISSING RULE: 2.3.3.1 - Ensure chrony is configured with authorized timeserver
-# ^ this one's manual; 2.1.2.1 Ensure chrony is configured with authorized timeserver
-
+[AuditTest] @{
+    Id = "2.3.3.1"
+    Task = "Ensure chrony is configured with authorized timeserver"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "2.3.3.2"
     Task = "Ensure chrony is running as user _chrony"
@@ -1316,7 +1326,7 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 2.3.3.3 - Ensure chrony is enabled and running
+# MISSING RULE: 2.3.3.3 - Ensure chrony is enabled and running ; BCID 33844
 
 [AuditTest] @{ # added diff: 5.1.1 Ensure cron daemon is enabled and running
     Id = "2.4.1.1"
@@ -1464,7 +1474,7 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 3.1.3 - Ensure bluetooth services are not in use
+# MISSING RULE: 3.1.3 - Ensure bluetooth services are not in use ; BCID 32839, but ERROR in Testing
 [AuditTest] @{
     Id = "3.2.1"
     Task = "Ensure dccp kernel module is not available"
@@ -2154,8 +2164,13 @@ $FirewallStatus = GetFirewallStatus
 }
 # 3.5.3.2.4 ...
 
-# MISSING RULE: 4.3.2.4 - Ensure iptables firewall rules exist for all open ports
-# ^this one is manual in Excel, but not in CIS Ubuntu 2.0.0
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "4.3.2.4"
+    Task = "Ensure iptables firewall rules exist for all open ports"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "4.3.3.1"
     Task = "Ensure ip6tables default deny firewall policy"
@@ -2186,12 +2201,27 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
-# MISSING RULE: 4.3.3.2 - Ensure ip6tables loopback traffic is configured
-# ^this one is manual in Excel, but not in CIS Ubuntu 2.0.0; 3.5.3.3.2 ...
-# MISSING RULE: 4.3.3.3 - Ensure ip6tables outbound and established connections are configured
-# ^this one's manual; 3.5.3.3.3 "
-# MISSING RULE: 4.3.3.4 - Ensure ip6tables firewall rules exist for all open ports
-# ^this one is manual in Excel, but not in CIS Ubuntu 2.0.0; 3.5.3.3.4 ...
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "4.3.3.2"
+    Task = "Ensure ip6tables loopback traffic is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+[AuditTest] @{
+    Id = "4.3.3.3"
+    Task = "Ensure ip6tables outbound and established connections are configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "4.3.3.4"
+    Task = "Ensure ip6tables firewall rules exist for all open ports"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "5.1.1"
     Task = "Ensure cron daemon is enabled and running"
@@ -2779,8 +2809,13 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 5.3.3.2.3 - Ensure password complexity is configured
-# This ones's manual
+[AuditTest] @{
+    Id = "5.3.3.2.3"
+    Task = "Ensure password complexity is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "5.3.3.2.4"
     Task = "Ensure password same consecutive characters is configured"
@@ -3194,12 +3229,37 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 6.2.1.1.1 - Ensure journald service is enabled and active ; BCID 33782
-# 4.2.1.2 Ensure journald service is enabled
-# MISSING RULE: 6.2.1.1.2 - Ensure journald log file access is configured
-# ^this one's manual
-# MISSING RULE: 6.2.1.1.3 - Ensure journald log file rotation is configured
-# ^this one's manual
+[AuditTest] @{ # added diff!: 4.2.1.2 - Ensure rsyslog Service is enabled; BCID 33782
+    Id = "6.2.1.1.1"
+    Task = "Ensure journald service is enabled and active"
+    Test = {
+        $test1 = systemctl is-enabled rsyslog
+        if($test1 -match "enabled"){
+            return @{
+                Message = "Compliant"
+                Status = "True"
+            }
+        }
+        return @{
+            Message = "Not-Compliant"
+            Status = "False"
+        }
+    }
+}
+[AuditTest] @{
+    Id = "6.2.1.1.2"
+    Task = "Ensure journald log file access is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+[AuditTest] @{
+    Id = "6.2.1.1.3"
+    Task = "Ensure journald log file rotation is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "6.2.1.1.4"
     Task = "Ensure journald ForwardToSyslog is disabled"
@@ -3254,8 +3314,13 @@ $FirewallStatus = GetFirewallStatus
     }
 }
 
-# MISSING RULE: 6.2.1.2.2 - Ensure systemd-journal-remote authentication is configured
-# # ^this one's manual; 4.2.1.1.2 Ensure systemd-journal-remote is configured 
+[AuditTest] @{
+    Id = "6.2.1.2.2"
+    Task = "Ensure systemd-journal-remote authentication is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "6.2.1.2.3"
     Task = "Ensure systemd-journal-upload is enabled and active"
@@ -3820,7 +3885,7 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 6.3.4.10 - Ensure audit tools group owner is configured
+# MISSING RULE: 6.3.4.10 - Ensure audit tools group owner is configured; BCID 32899
 # this one is 4.1.4.8 Ensure audit tools are 755 or more restrictive
 # got all 4.1.4.X ensured by 4.1.4 Ensure events that modify user/group information are collected?
 [AuditTest] @{
@@ -3919,8 +3984,8 @@ $FirewallStatus = GetFirewallStatus
     }
 }
 
-# MISSING RULE: 7.1.9 - Ensure permissions on /etc/shells are configured
-# MISSING RULE: 7.1.10 - Ensure permissions on /etc/security/opasswd are configured
+# MISSING RULE: 7.1.9 - Ensure permissions on /etc/shells are configured ; BCID 32861
+# MISSING RULE: 7.1.10 - Ensure permissions on /etc/security/opasswd are configured ; BCID 32860
 [AuditTest] @{ # added diff: 6.1.10 Ensure no world writable files exist
     Id = "7.1.11"
     Task = "Ensure world writable files and directories are secured"
@@ -4074,8 +4139,17 @@ $FirewallStatus = GetFirewallStatus
     }
 }
 
-# MISSING RULE: 7.2.9 - Ensure local interactive user home directories are configured
-# 6.2.11-13?
-# MISSING RULE: 7.2.10 - Ensure local interactive user dot files access is configured
-# could be 6.2.17 Ensure local interactive user dot files are not group or world writable
-# but is not in 1.1.0?
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "7.2.9"
+    Task = "Ensure local interactive user home directories are configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "7.2.10"
+    Task = "Ensure local interactive user dot files access is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
