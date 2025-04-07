@@ -714,33 +714,13 @@ $FirewallStatus = GetFirewallStatus
 }
 [AuditTest] @{
     Id = "1.5.4"
-    Task = "Ensure core dumps are restricted"
+    Task = "Ensure prelink is not installed"
     Test = {
-        try{
-            $result1 = grep -Es '^(\*|\s).*hard.*core.*(\s+#.*)?$' /etc/security/limits.conf /etc/security/limits.d/*
-            $result2 = sysctl fs.suid_dumpable
-            $result3 = grep "fs.suid_dumpable" /etc/sysctl.conf /etc/sysctl.d/*
-            try{
-                $result4 = systemctl is-enabled coredump.service
-                $message = "Compliant"
-                if($result4 -match "enabled" -or $result4 -match "masked" -or $result4 -match "disabled"){
-                    $message = "systemd-coredump is installed"
-                }
-            }
-            catch{
-                $message = "systemd-coredump not installed"
-            }
-            if($result1 -match ".*\s*hard\s*core\s*0{1}?\s*" -and $result2 -match "fs.suid_dumpable = 0" -and $result3 -match "fs.suid_dumpable = 0"){
-                return @{
-                    Message = $message
-                    Status = "True"
-                }
-            }
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W prelink
+        if("$test1" -match "rc|un"){
             return $retCompliant
         }
-        catch{
-            return $retNonCompliant
-        }
+        return $retNonCompliant
     }
 }
 
