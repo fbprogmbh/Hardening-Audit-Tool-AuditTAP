@@ -5,6 +5,9 @@ $rcNone = "None"
 $rcNonCompliant = "Non-Compliant"
 $rcNonCompliantManualReviewRequired = "Manual review required"
 $rcCompliantIPv6isDisabled = "IPv6 is disabled"
+$rcFirewallStatus1 = "Using nftables with disabled ufw"
+$rcFirewallStatus2 = "Using nftables"
+$rcFirewallStatus3 = "Using ufw"
 
 $retCompliant = @{
     Message = $rcCompliant
@@ -22,6 +25,58 @@ $retNonCompliantManualReviewRequired = @{
     Message = $rcNonCompliantManualReviewRequired
     Status = $rcNone
 }
+$retUsingFW1 = @{
+    Message = $rcFirewallStatus1
+    Status = $rcNone
+}
+$retUsingFW2 = @{
+    Message = $rcFirewallStatus2
+    Status = $rcNone
+}
+$retUsingFW3 = @{
+    Message = $rcFirewallStatus3
+    Status = $rcNone
+}
+
+# Firewall evaluation
+function GetFirewallStatus {
+    # 0 - undefined
+	# 1 - using nftables
+	# 2 - using ufw
+	# 3 - using iptables
+
+	$t_UFW = dpkg-query -f='${db:Status-Abbrev}' -W ufw
+	$t_NFT = dpkg-query -f='${db:Status-Abbrev}' -W nftables
+	$t_IPT = dpkg-query -f='${db:Status-Abbrev}' -W iptables
+	$t_UFW_en = systemctl is-enabled ufw 2>/dev/null
+	$t_UFW_inac = ufw status 2>/dev/null | grep -iE "Status: Ina[ck]tive?"
+    $t_UFW_ac = ufw status 2>/dev/null | grep -iE "Status: A[ck]tive?"
+	$t_NFT_en = systemctl is-enabled nftables.service 2>/dev/null
+	
+	# Testing 1 - nftable installed, ufw not or inactive
+	if ($t_NFT -match "ii" -and $t_IPT -match "rc|un" -and ($t_UFW -match "rc|un" -or $t_UFW_inac -ne $null) -and $t_NFT_en -match "enabled"){
+        return 1
+    }
+	
+	# Testing 2 - ufw, iptables installed, nftables not 
+	if ( $t_UFW -match "ii" -and $t_UFW_ac -ne $null -and $t_UFW_en -match "enabled" -and $t_IPT -match "ii" -and $t_NFT -match "rc|un"){
+        return 2
+    }
+	
+	# Testing 3 - only iptables
+	if ($t_NFT -match "rc|un" -and $t_UFW -match "rc|un" -and $t_IPT -match "ii"){
+        return 3
+    }
+
+    return 0
+}
+
+$FirewallStatus = GetFirewallStatus
+
+# Ubuntu Linux 22.04-CIS-2.0.0.ps1
+# Generated from benchmarks_ubuntu.txt and Ubuntu Linux 22.04-CIS-1.0.0.ps1
+# Rules use either existing PowerShell checks or new Bash scripts if available.
+
 [AuditTest] @{
     Id = "1.1.1.1"
     Task = "Ensure cramfs kernel module is not available"
@@ -140,16 +195,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /tmp
         if($result -match "/tmp"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -186,20 +235,28 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result =  findmnt --kernel /tmp | grep noexec
         if($result -match "noexec"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "1.1.2.2.1"
+    Task = "Ensure /dev/shm is a separate partition"
+    Test = {
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.2.1.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
+            return $retNonCompliant
         }
     }
 }
 
-# MISSING RULE: 1.1.2.2.1 - Ensure /dev/shm is a separate partition
 [AuditTest] @{
     Id = "1.1.2.2.2"
     Task = "Ensure nodev option set on /dev/shm partition"
@@ -248,16 +305,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /home
         if($result -match "/home"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -294,16 +345,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /var
         if($result -match !$null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -340,16 +385,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /var/tmp
         if($result -match "/var/tmp"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -400,16 +439,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /var/log
         if($result -match !$null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -460,16 +493,10 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $result = findmnt --kernel /var/log/audit
         if($result -match "/var/log/audit"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -518,14 +545,24 @@ $retNonCompliantManualReviewRequired = @{
     Id = "1.2.1.1"
     Task = "Ensure GPG keys are configured"
     Test = {
-        return $retNonCompliantManualReviewRequired
+        $result = apt-key list
+        if($result -ne $null){
+            return $retCompliant
+        }
+
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "1.2.1.2"
     Task = "Ensure package manager repositories are configured"
     Test = {
-        return $retNonCompliantManualReviewRequired
+        $result = apt-cache policy
+        if($result -ne $null){
+            return $retCompliant
+        }
+
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -544,18 +581,12 @@ $retNonCompliantManualReviewRequired = @{
     Id = "1.3.1.1"
     Task = "Ensure AppArmor is installed"
     Test = {
-        $result = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' apparmor
+        $result = dpkg-query -W -f='${db:Status-Abbrev}' apparmor
         
-        if($result -match "Status: install ok installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        if($result -match "ii"){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -584,15 +615,9 @@ $retNonCompliantManualReviewRequired = @{
         $unconfinedProcesses = apparmor_status | grep processes | sed '4!d' | cut -d ' ' -f 1
 
         if($result -eq $profileMode1 -and $unconfinedProcesses -eq 0){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -616,15 +641,9 @@ $retNonCompliantManualReviewRequired = @{
         $result1 = grep "^set superusers" /boot/grub/grub.cfg
         $result2 = grep "^password" /boot/grub/grub.cfg
         if($result1 -match "set superusers=" -and $result2 -match "password_pbkdf2"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -685,8 +704,17 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-
-# MISSING RULE: 1.5.4 Ensure prelink is not installed
+[AuditTest] @{
+    Id = "1.5.4"
+    Task = "Ensure prelink is not installed"
+    Test = {
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W prelink
+        if("$test1" -match "rc|un"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
 
 [AuditTest] @{
     Id = "1.5.5"
@@ -695,15 +723,9 @@ $retNonCompliantManualReviewRequired = @{
         $result1 = dpkg-query -s apport > /dev/null 2>&1 && grep -Psi -- '^\h*enabled\h*=\h*[^0]\b' /etc/default/apport
         $result2 = systemctl is-active apport.service | grep '^active'
         if($result1 -eq $null -and $result2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -728,15 +750,9 @@ $retNonCompliantManualReviewRequired = @{
         $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue
         
         if($output1 -ne $null -and $output2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -747,15 +763,9 @@ $retNonCompliantManualReviewRequired = @{
         $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue.net
         
         if($output1 -ne $null -and $output2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -776,26 +786,106 @@ $retNonCompliantManualReviewRequired = @{
     Id = "1.6.5"
     Task = "Ensure access to /etc/issue is configured"
     Test = {
-        $output = stat -L /etc/issue | grep "Access:\s*(0644/-rw-r--r--)\s*Uid:\s*(\s*0/\s*root)\s*Gid:\s*(\s*0/\s*root)"
-        
-        if($output -ne $null){
+        $output = stat -c '%#a' /etc/issue | grep -q "0644"
+        if($?){
             return $retCompliant
         }
         return $retNonCompliant
     }
 }
-[AuditTest] @{ 
+[AuditTest] @{
     Id = "1.6.6"
     Task = "Ensure access to /etc/issue.net is configured"
     Test = {
-        $output = stat -L /etc/issue.net | grep "Access:\s*(0644/-rw-r--r--)\s*Uid:\s*(\s*0/\s*root)\s*Gid:\s*(\s*0/\s*root)"
-        
-        if($output -ne $null){
+        $output = stat -c '%#a' /etc/issue.net | grep -q "0644"
+        if($?){
             return $retCompliant
         }
         return $retNonCompliant
     }
 }
+[AuditTest] @{
+    Id = "1.7.1"
+    Task = "Ensure message of the day is configured properly"
+    Test = {
+        $output = grep -Eis "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/motd
+
+        if($output -eq $null){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "1.7.2"
+    Task = "Ensure local login warning banner is configured properly"
+    Test = {
+        $output1 = cat /etc/issue
+        $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue
+        
+        if($output1 -ne $null -and $output2 -eq $null){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "1.7.3"
+    Task = "Ensure remote login warning banner is configured properly"
+    Test = {
+        $output1 = cat /etc/issue.net
+        $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue.net
+        
+        if($output1 -ne $null -and $output2 -eq $null){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "1.7.4"
+    Task = "Ensure permissions on /etc/motd are configured"
+    Test = {
+        $output = stat -c '%#a' /etc/motd | grep "0644"
+        if($?){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+# 1.7.5 should be "Ensure GDM screen locks cannot be overridden"
+# it was moven from 1.8.5 in 1.0.0
+# the rule below had previously the number 1.7.5
+# [AuditTest] @{
+#     Id = "1.7.5"
+#     Task = "Ensure permissions on /etc/issue are configured"
+#     Test = {
+#         $output = stat -c '%#a' /etc/issue | grep -q "0644"
+#         if($?){
+#             return $retCompliant
+#         }
+#         return $retNonCompliant
+#     }
+# }
+
+# 1.7.6 should be "Ensure GDM automatic mounting of removable media is disabled"
+# it was moved from 1.8.6 in 1.0.0
+# the rule below had previously the number 1.7.6
+# [AuditTest] @{
+#     Id = "1.7.6"
+#     Task = "Ensure permissions on /etc/issue.net are configured"
+#     Test = {
+#         $output = stat -c '%#a' /etc/issue.net | grep -q "0644"
+#         if($?){
+#             return $retCompliant
+#         }
+#         return $retNonCompliant
+#     }
+# }
 
 # MISSING RULE 1.7.1 Ensure GDM is removed
 # MISSING RULE 1.7.2 Ensure GDM login banner is configured
@@ -812,16 +902,10 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.7.sh"
         $result=bash $path | grep " PASS "
         if($result -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -832,16 +916,10 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.8.sh"
         $result=bash $path
         if($result -match " PASS "){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -852,16 +930,10 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.9.sh"
         $result=bash $path
         if($result -match " PASS "){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -929,7 +1001,7 @@ $retNonCompliantManualReviewRequired = @{
     }
 }
 # MISSING RULE: 2.1.5 - Ensure dnsmasq services are not in use
-
+# Benchmark Composer id 32840
 [AuditTest] @{
     Id = "2.1.6"
     Task = "Ensure ftp server services are not in use"
@@ -1014,9 +1086,10 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.1.13"
     Task = "Ensure rsync services are not in use"
     Test = {
-        dpkg -s rsync | grep -E '(Status:|not installed)'
-        $test1 = $?
-        if($test1 -match "False"){
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/2.1.13.sh"
+        $result = bash $script
+        if ($?){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1046,6 +1119,7 @@ $retNonCompliantManualReviewRequired = @{
     }
 }
 # MISSING RULE: 2.1.16 - Ensure tftp server services are not in use
+# Benchmark Composer id 32846
 [AuditTest] @{
     Id = "2.1.17"
     Task = "Ensure web proxy server services are not in use"
@@ -1068,8 +1142,8 @@ $retNonCompliantManualReviewRequired = @{
         return $retNonCompliant
     }
 }
-# MISSING RULE: 2.1.19 - Ensure xinetd services are not in use
-[AuditTest] @{
+# MISSING RULE: 2.1.19 - Ensure xinetd services are not in use ; BCID 32848
+[AuditTest] @{ # added diff!: 2.1.2 Ensure X Window System is not installed
     Id = "2.1.20"
     Task = "Ensure X window server services are not in use"
     Test = {
@@ -1086,40 +1160,27 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = ss -lntu | grep -E ':25\s' | grep -E -v '\s(127.0.0.1|::1):25\s'
         if($test1 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "2.1.22"
     Task = "Ensure only approved services are listening on a network interface"
     Test = {
-        return $retNonCompliantManualReviewRequired
+        	return $retNonCompliantManualReviewRequired
     }
 }
 [AuditTest] @{
     Id = "2.2.1"
     Task = "Ensure NIS Client is not installed"
     Test = {
-        $test1 = dpkg -s nis
-        $test1 = $?
-        if($test1 -match "False"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nis
+        if($test1 -match "rc|un"){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
@@ -1128,6 +1189,65 @@ $retNonCompliantManualReviewRequired = @{
 # MISSING RULE 2.2.4 Ensure telnet client is not installed
 # MISSING RULE 2.2.5 Ensure ldap client is not installed
 # MISSING RULE 2.2.6 Ensure ftp client is not installed
+[AuditTest] @{
+    Id = "2.2.2"
+    Task = "Ensure Avahi Server is not installed"
+    Test = {
+        $status = dpkg-query -f='${db:Status-Abbrev}' -W avahi-daemon
+        if($status -match "rc|un"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.2.3"
+    Task = "Ensure CUPS is not installed"
+    Test = {
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W cups
+        if($test1 -match "rc|un"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.2.4"
+    Task = "Ensure DHCP Server is not installed"
+    Test = {
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W isc-dhcp-server
+        if($test1 -match "rc|un"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.2.5"
+    Task = "Ensure LDAP server is not installed"
+    Test = {
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W slapd
+        if($test1 -match "rc|un"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.2.6"
+    Task = "Ensure NFS is not installed"
+    Test = {
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nfs-kernel-server
+        if($test1 -match "rc|un"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
 
 [AuditTest] @{
     Id = "2.3.1.1"
@@ -1137,16 +1257,36 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/2.1.1.1.sh"
         $result=bash $path
         if($result -match "PASS:"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
 
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
+        return $retNonCompliant
+    }
+}
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "2.3.2.1"
+    Task = "Ensure systemd-timesyncd configured with authorized timeserver"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+[AuditTest] @{
+    Id = "2.3.2.2"
+    Task = "Ensure systemd-timesyncd is enabled and running"
+    Test = {
+        $test1 = systemctl is-enabled systemd-timesyncd.service
+        $time = timedatectl status
+        if($test1 -match "enabled" -and $time -ne $null){    
+            return $retCompliant
         }
+        return $retNonCompliant
+    }
+}
+[AuditTest] @{
+    Id = "2.3.3.1"
+    Task = "Ensure chrony is configured with authorized timeserver"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
     }
 }
 
@@ -1186,9 +1326,9 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-# MISSING RULE: 2.3.3.3 - Ensure chrony is enabled and running
+# MISSING RULE: 2.3.3.3 - Ensure chrony is enabled and running ; BCID 33844
 
-[AuditTest] @{
+[AuditTest] @{ # added diff: 5.1.1 Ensure cron daemon is enabled and running
     Id = "2.4.1.1"
     Task = "Ensure cron daemon is enabled and active"
     Test = {
@@ -1204,97 +1344,66 @@ $retNonCompliantManualReviewRequired = @{
     Id = "2.4.1.2"
     Task = "Ensure permissions on /etc/crontab are configured"
     Test = {
-        $test1 = stat /etc/crontab
-        if($test1 -eq "Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/crontab | grep -q "0600"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "2.4.1.3"
     Task = "Ensure permissions on /etc/cron.hourly are configured"
     Test = {
-        $test1 = stat /etc/cron.hourly/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/cron.hourly/ | grep -q 0700
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "2.4.1.4"
     Task = "Ensure permissions on /etc/cron.daily are configured"
     Test = {
-        $test1 = stat -c '%#a' /etc/cron.daily/ | grep -q 700
-        if ($?) {
+        $test1 = stat -c '%#a' /etc/cron.daily/ grep -q "0700"
+        if($?){
             return $retCompliant
-        } else {
-            return $retNonCompliant
         }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "2.4.1.5"
     Task = "Ensure permissions on /etc/cron.weekly are configured"
     Test = {
-        $test1 = stat /etc/cron.weekly/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/cron.weekly/ | grep -q "0700"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "2.4.1.6"
     Task = "Ensure permissions on /etc/cron.monthly are configured"
     Test = {
-        $test1 = stat /etc/cron.monthly/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat c '%#a' /etc/cron.monthly/ | grep -q "0700"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "2.4.1.7"
     Task = "Ensure permissions on /etc/cron.d are configured"
     Test = {
-        $test1 = stat /etc/cron.d/
-        if($test1 -eq "Access: (0700/drwx------)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/cron.d/ | grep -q "0700"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -1358,7 +1467,7 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-# MISSING RULE: 3.1.3 - Ensure bluetooth services are not in use
+# MISSING RULE: 3.1.3 - Ensure bluetooth services are not in use ; BCID 32839, but ERROR in Testing
 [AuditTest] @{
     Id = "3.2.1"
     Task = "Ensure dccp kernel module is not available"
@@ -1573,183 +1682,190 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.1.1"
     Task = "Ensure ufw is installed"
     Test = {
-        $test1 = dpkg -s ufw | grep 'Status: install'
-        if($test1 -match "Status: install ok installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
         }
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw
+        if($test1 -match "ii"){
+            return $retCompliant
+        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.1.2"
     Task = "Ensure iptables-persistent is not installed with ufw"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $test1 = dpkg -l | grep -o iptables-persistent
         if($test1 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.1.3"
     Task = "Ensure ufw service is enabled"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $test1 = systemctl is-enabled ufw
         $test2 = systemctl is-active ufw
-        $test3 = ufw status | grep Status
-        if($test1 -match "enabled" -and $test2 -match "active" -and $test3 -match "Status: aktiv"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test3 = ufw status | grep -iE "Status: A[ck]tive?"
+        if($test1 -match "enabled" -and $test2 -match "active" -and $test3 -ne $null){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.1.4"
     Task = "Ensure ufw loopback traffic is configured"
     Test = {
-        $test1 = ufw status verbose
-        if($test1 -notmatch "Status: inactive"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
         }
+        $test1 = ufw status verbose | grep -iE "Status: A[ck]tive?"
+        if($test1 -eq $null){
+            return $retCompliant
+        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.1.5"
     Task = "Ensure ufw outbound connections are configured"
     Test = {
-        $test1 = ufw status numbered
-        if($test1 -notmatch "Status: inactive"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
         }
+        $test1 = ufw status numbered | grep -iE "Status: Ina[ck]tive?"
+        if($test1 -eq $null){
+            return $retCompliant
+        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.1.6"
     Task = "Ensure ufw firewall rules exist for all open ports"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.5.1.6.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.1.7"
     Task = "Ensure ufw default deny firewall policy"
     Test = {
-        $test1 = ufw status verbose
-        if($test1 -match "deny" -or $test1 -match "reject" -or $test1 -match "disabled"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = ufw status verbose | grep -iE "allow"
+        if($test1 -eq $null){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.2.1"
     Task = "Ensure nftables is installed"
     Test = {
-        $test1 = dpkg-query -s nftables | grep 'Status: install ok installed'
-        if($test1 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW1
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
         }
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nftables
+        if($test1 -match "ii"){
+            return $retCompliant
+        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.2.2"
     Task = "Ensure ufw is uninstalled or disabled with nftables"
     Test = {
-        $test1 = dpkg-query -s ufw | grep 'Status: install ok installed'
-        $test2 = ufw status | grep 'Status: Inaktiv'
-        if($test1 -eq $null -and $test2 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW1
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
         }
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw
+        $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
+        if($test1 -match "rc|un" -or $test2 -ne $null){
+            return $retCompliant
+        }
+        return $retNonCompliant
     }
 }
-[AuditTest] @{
-    Id = "4.2.3"
-    Task = "Ensure iptables are flushed with nftables"
-    Test = {
-        return $retNonCompliantManualReviewRequired
-    }
+
+[AuditTest] @{ # diff : should be 4.2.3 - Ensure iptables are flushed with nftables (Manual); old one got droped!!!
+        Id = "4.2.3"
+        Task = "Ensure all logfiles have appropriate permissions and ownership"
+        Test = {
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
+            $parentPath = Split-Path -Parent -Path $PSScriptRoot
+            $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-4.2.3.sh"
+            $result = $path | grep "PASS"
+            if($result -match "PASS"){
+                return $retCompliant
+            }
+            return $retNonCompliant
+        }
 }
 [AuditTest] @{
     Id = "4.2.4"
     Task = "Ensure a nftables table exists"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             $test1 = nft list tables
             if($test1 -match "table"){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -1764,19 +1880,19 @@ $retNonCompliantManualReviewRequired = @{
     Task = "Ensure nftables base chains exist"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             $test1 = nft list ruleset | grep 'hook input'
             $test2 = nft list ruleset | grep 'hook forward'
             $test3 = nft list ruleset | grep 'hook output'
             if($test1 -match "type filter hook input" -and $test2 -match "type filter hook forward" -and $test3 -match "type filter hook output"){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -1791,29 +1907,26 @@ $retNonCompliantManualReviewRequired = @{
     Task = "Ensure nftables loopback traffic is configured"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             if($isIPv6Disabled -ne $true){
                 $test1 = nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
                 $test2 = nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
                 if($test1 -match 'iif "lo" accept' -and $test2 -match "ip saddr 127.0.0.0/8 counter packets 0 bytes 0 drop"){
-                    return @{
-                        Message = "Compliant"
-                        Status = "True"
-                    }
+                    return $retCompliant
                 }
             }
             else{
                 $test = nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
                 if($test -match 'ip6 saddr ::1 counter packets 0 bytes 0 drop'){
-                    return @{
-                        Message = "Compliant"
-                        Status = "True"
-                    }
+                    return $retCompliant
                 }
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -1828,18 +1941,18 @@ $retNonCompliantManualReviewRequired = @{
     Task = "Ensure nftables outbound and established connections are configured"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             $test1 = nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
             $test2 = nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol (tcp|udp|icmp) ct state'
             if($test1 -match "ip protocol tcp ct state established accept" -and $test1 -match "p protocol udp ct state established accept" -and $test1 -match "ip protocol icmp ct state established accept" -and $test2 -match "ip protocol tcp ct state established,related,new accep" -and $test2 -match "ip protocol udp ct state established,related,new accept" -and $test2 -match "ip protocol icmp ct state established,related,new accept"){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -1854,19 +1967,19 @@ $retNonCompliantManualReviewRequired = @{
     Task = "Ensure nftables default deny firewall policy"
     Test = {
         try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
             $test1 = nft list ruleset | grep 'hook input'
             $test2 = nft list ruleset | grep 'hook forward'
             $test3 = nft list ruleset | grep 'hook output'
             if($test1 -match "policy drop" -and $test2 -match "policy drop" -and $test3 -match "policy drop"){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -1880,152 +1993,166 @@ $retNonCompliantManualReviewRequired = @{
     Id = "4.2.9"
     Task = "Ensure nftables service is enabled"
     Test = {
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $test1 = systemctl is-enabled nftables
         if($test1 -match "enabled"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.2.10"
     Task = "Ensure nftables rules are permanent"
     Test = {
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 3) {
+            return $retUsingFW3
+        }
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
         $path1 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.5.2.10_1.sh"
         $path2 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.5.2.10_2.sh"
         $path3 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.5.2.10_3.sh"
         if($path1 -ne $null -and $path2 -ne $null -and $path3 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.3.1.1"
     Task = "Ensure iptables packages are installed"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $test1 = apt list iptables iptables-persistent | grep installed
         if($test1 -match "iptables-persistent"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.3.1.2"
     Task = "Ensure nftables is not installed with iptables"
     Test = {
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' nftables
-        if($test1 -match "install ok installed"){
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
         }
-        return @{
-            Message = "Compliant"
-            Status = "True"
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
         }
+        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W nftables
+        if($test1 -match "rc|un"){
+            return $retNonCompliant
+        }
+        return $retCompliant
     }
 }
 [AuditTest] @{
     Id = "4.3.1.3"
     Task = "Ensure ufw is uninstalled or disabled with iptables"
     Test = {
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' ufw
-        $test2 = ufw status
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
+        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W ufw
+        $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
         $test3 = systemctl is-enabled ufw
-        if($test1 -match "not-installed" -and $test2 -match "Status: Inaktiv" -and $test3 -match "masked"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        if($test1 -match "rc|un" -and $test2 -ne $null -and $test3 -match "masked"){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.3.2.1"
     Task = "Ensure iptables default deny firewall policy"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $output = iptables -L
         $test1 = $output -match "DROP" | grep "Chain INPUT (policy DROP)"
         $test2 = $output -match "DROP" | grep "Chain FORWARD (policy DROP)"
         $test3 = $output -match "DROP" | grep "Chain OUTPUT (policy DROP)"
         if($test1 -ne $null -and $test2 -ne $null -and $test3 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.3.2.2"
     Task = "Ensure iptables loopback traffic is configured"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $test1 = iptables -L INPUT -v -n | grep "Chain\s*INPUT\s*(policy\s*DROP"
         $test2 = iptables -L OUTPUT -v -n | grep "Chain\s*OUTPUT\s*(policy\s*DROP"
         if($test1 -ne $null -and $test2 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "4.3.2.3"
     Task = "Ensure iptables outbound and established connections are configured"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $test1 = iptables -L -v -n
         if($test1 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
-# MISSING RULE: 4.3.2.4 - Ensure iptables firewall rules exist for all open ports
+# 3.5.3.2.4 ...
+
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "4.3.2.4"
+    Task = "Ensure iptables firewall rules exist for all open ports"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "4.3.3.1"
     Task = "Ensure ip6tables default deny firewall policy"
     Test = {
+        if ($FirewallStatus -match 1) {
+            return $retUsingFW1
+        }
+        if ($FirewallStatus -match 2) {
+            return $retUsingFW3
+        }
         $output = ip6tables -L
         $test11 = $output -match "DROP" | grep "Chain INPUT (policy DROP)"
         $test12 = $output -match "REJECT" | grep "Chain INPUT (policy REJECT)"
@@ -2041,27 +2168,32 @@ $retNonCompliantManualReviewRequired = @{
             }
         }
         if(($test11 -ne $null -or $test12 -ne $null) -and ($test21 -ne $null -or $test22 -ne $null) -and ($test31 -ne $null -or $test32 -ne $null)){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
-# MISSING RULE: 4.3.3.2 - Ensure ip6tables loopback traffic is configured
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "4.3.3.2"
+    Task = "Ensure ip6tables loopback traffic is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "4.3.3.3"
     Task = "Ensure ip6tables outbound and established connections are configured"
     Test = {
-        return $retNonCompliantManualReviewRequired
+        	return $retNonCompliantManualReviewRequired
     }
 }
-# MISSING RULE: 4.3.3.4 - Ensure ip6tables firewall rules exist for all open ports
-# 3.5.3.3.4 ...
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "4.3.3.4"
+    Task = "Ensure ip6tables firewall rules exist for all open ports"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "5.1.1"
     Task = "Ensure cron daemon is enabled and running"
@@ -2069,32 +2201,20 @@ $retNonCompliantManualReviewRequired = @{
         $test1 = systemctl is-enabled cron
         $test2 = systemctl status cron | grep 'Active: active (running) '
         if($test1 -eq "enabled" -and $test2 -match "running"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "5.1.2"
     Task = "Ensure permissions on /etc/crontab are configured"
     Test = {
-        $test1 = stat /etc/crontab
-        if($test1 -eq "Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/crontab | grep -q "0600"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -2351,7 +2471,7 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-# MISSING RULE 5.2.1 Ensure sudo is installed
+# MISSING RULE 5.2.1 Ensure sudo is installed ; BCID 32824
 
 [AuditTest] @{
     Id = "5.2.2"
@@ -2389,15 +2509,9 @@ $retNonCompliantManualReviewRequired = @{
             $result = bash -c "sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname)/etc/hosts | awk '{print $1}')" | grep -Ei '^\s*(allow|deny)(users|groups)\s+\S+'"
             $result2 = bash -c "grep -rPi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$' /etc/ssh/sshd_config*"
             if(($result -match "allowusers" -or $result -match "allowgroups" -or $result -match "denyusers" -or $result -match "denygroups") -and ($result2 -match "allowusers" -or $result2 -match "allowgroups" -or $result2 -match "denyusers" -or $result2 -match "denygroups")){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2423,15 +2537,9 @@ $retNonCompliantManualReviewRequired = @{
                 }
             }
             if(($test1 -match "loglevel VERBOSE" -or $test1 -match "loglevel INFO") -and $test2 -eq $null){
-                return @{
-                    Message = "Compliant"
-                    Status = "True"
-                }
+                return $retCompliant
             }
-            return @{
-                Message = "Not-Compliant"
-                Status = "False"
-            }
+            return $retNonCompliant
         }
         catch{
             return @{
@@ -2586,7 +2694,13 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-# MISSING RULE: 5.3.3.2.3 - Ensure password complexity is configured
+[AuditTest] @{
+    Id = "5.3.3.2.3"
+    Task = "Ensure password complexity is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "5.3.3.2.4"
     Task = "Ensure password same consecutive characters is configured"
@@ -2833,15 +2947,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.5.1.5.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -2850,15 +2958,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = awk -F: '($3 == 0) { print $1 }' /etc/passwd
         if($test1 -match "root"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -2908,15 +3010,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.9.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3005,34 +3101,22 @@ $retNonCompliantManualReviewRequired = @{
     Id = "6.1.1"
     Task = "Ensure permissions on /etc/passwd are configured"
     Test = {
-        $test1 = stat /etc/passwd
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/passwd | grep -q "06440"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "6.1.2"
     Task = "Ensure permissions on /etc/passwd- are configured"
     Test = {
-        $test1 = stat /etc/passwd-
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/passwd- | grep -q "0644"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3049,12 +3133,37 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-# MISSING RULE: 6.2.1.1.1 - Ensure journald service is enabled and active
-# 4.2.1.2 Ensure journald service is enabled
-# MISSING RULE: 6.2.1.1.2 - Ensure journald log file access is configured
-# ^this one's manual
-# MISSING RULE: 6.2.1.1.3 - Ensure journald log file rotation is configured
-# ^this one's manual
+[AuditTest] @{ # added diff!: 4.2.1.2 - Ensure rsyslog Service is enabled; BCID 33782
+    Id = "6.2.1.1.1"
+    Task = "Ensure journald service is enabled and active"
+    Test = {
+        $test1 = systemctl is-enabled rsyslog
+        if($test1 -match "enabled"){
+            return @{
+                Message = "Compliant"
+                Status = "True"
+            }
+        }
+        return @{
+            Message = "Not-Compliant"
+            Status = "False"
+        }
+    }
+}
+[AuditTest] @{
+    Id = "6.2.1.1.2"
+    Task = "Ensure journald log file access is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+[AuditTest] @{
+    Id = "6.2.1.1.3"
+    Task = "Ensure journald log file rotation is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
 [AuditTest] @{
     Id = "6.2.1.1.4"
     Task = "Ensure journald ForwardToSyslog is disabled"
@@ -3101,24 +3210,33 @@ $retNonCompliantManualReviewRequired = @{
     Id = "6.2.1.2.1"
     Task = "Ensure systemd-journal-remote is installed"
     Test = {
-        $test1 = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' systemd-journal-remote
-        if($test1 -match "systemd-journal-remote install ok installed installed"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W systemd-journal-remote
+        if($test1 -match "ii"){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
-# MISSING RULE: 6.2.1.2.2 - Ensure systemd-journal-remote authentication is configured
-# # ^this one's manual; 4.2.1.1.2 Ensure systemd-journal-remote is configured 
-# MISSING RULE: 6.2.1.2.3 - Ensure systemd-journal-upload is enabled and active
-# the rule was manual: 4.2.1.1.3 Ensure systemd-journal-remote is enabled
+[AuditTest] @{
+    Id = "6.2.1.2.2"
+    Task = "Ensure systemd-journal-remote authentication is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+[AuditTest] @{
+    Id = "6.2.1.2.3"
+    Task = "Ensure systemd-journal-upload is enabled and active"
+    Test = {
+        $test1 = systemctl is-enabled systemd-journal-upload.service
+        $test2 = systemctl is-active systemd-journal-upload.service
+        if($test1 -eq "enabled" -and $test2 -match "active"){
+            return $retCompliant
+        }
+        return $retCompliant
+    }
+}
 [AuditTest] @{
     Id = "6.2.1.2.4"
     Task = "Ensure systemd-journal-remote service is not in use"
@@ -3392,15 +3510,9 @@ $retNonCompliantManualReviewRequired = @{
         $result22 = bash $path2 | grep "\-w /var/log/wtmp -p wa -k session"
         $result23 = bash $path2 | grep "\-w /var/log/btmp -p wa -k session"
         if($result11 -ne $null -and $result12 -ne $null -and $result13 -ne $null -and $result21 -ne $null -and $result22 -ne $null -and $result23 -ne $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3521,15 +3633,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = grep "^\s*[^#]" /etc/audit/rules.d/*.rules | tail -l
         if($test1 -match "-e 2"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3538,15 +3644,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = augenrules --check
         if($test1 -match "/usr/sbin/augenrules: No change"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3675,142 +3775,95 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-# MISSING RULE: 6.3.4.10 - Ensure audit tools group owner is configured
-
+# MISSING RULE: 6.3.4.10 - Ensure audit tools group owner is configured; BCID 32899
+# this one is 4.1.4.8 Ensure audit tools are 755 or more restrictive
+# got all 4.1.4.X ensured by 4.1.4 Ensure events that modify user/group information are collected?
 [AuditTest] @{
     Id = "7.1.1"
     Task = "Ensure permissions on /etc/passwd are configured"
     Test = {
-        $test1 = stat /etc/passwd
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/passwd | grep -q "0644"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "7.1.2"
     Task = "Ensure permissions on /etc/passwd- are configured"
     Test = {
-        $test1 = stat /etc/passwd-
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/passwd- | grep -q "0644"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "7.1.3"
     Task = "Ensure permissions on /etc/group are configured"
     Test = {
-        $test1 = stat /etc/group
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/group | grep -q "0644"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "7.1.4"
     Task = "Ensure permissions on /etc/group- are configured"
     Test = {
-        $test1 = stat /etc/group- | grep 0644
-        if($test1 -eq "Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/group- | grep -q "0644"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "7.1.5"
     Task = "Ensure permissions on /etc/shadow are configured"
     Test = {
-        $test1 = stat /etc/shadow | grep 0640
-        if($test1 -eq "Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (    0/    root)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/shadow | grep -q "0640"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "7.1.6"
     Task = "Ensure permissions on /etc/shadow- are configured"
     Test = {
-        $test1 = stat /etc/shadow- | grep 0640
-        if($test1 -eq "Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (   42/  shadow)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/shadow- | grep -q "0640"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "7.1.7"
     Task = "Ensure permissions on /etc/gshadow are configured"
     Test = {
-        $test1 = stat /etc/gshadow | grep 0640
-        if($test1 -eq "Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (   42/  shadow)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/gshadow | grep -q "0640"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
     Id = "7.1.8"
     Task = "Ensure permissions on /etc/gshadow- are configured"
     Test = {
-        $test1 = stat /etc/gshadow- | grep 0640
-        if($test1 -eq "Access: (0640/-rw-r-----)  Uid: (    0/    root)   Gid: (   42/  shadow)"){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+        $test1 = stat -c '%#a' /etc/gshadow- | grep -q "0640"
+        if($?){
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3827,8 +3880,8 @@ $retNonCompliantManualReviewRequired = @{
         }
     }
 }
-# MISSING RULE: 7.1.10 - Ensure permissions on /etc/security/opasswd are configured
-[AuditTest] @{
+# MISSING RULE: 7.1.10 - Ensure permissions on /etc/security/opasswd are configured ; BCID 32860
+[AuditTest] @{ # added diff: 6.1.10 Ensure no world writable files exist
     Id = "7.1.11"
     Task = "Ensure world writable files and directories are secured"
     Test = {
@@ -3880,15 +3933,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = awk -F: '($2 != "x" ) { print $1 " is not set to shadowed passwords "}'/etc/passwd
         if($test1 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3897,15 +3944,9 @@ $retNonCompliantManualReviewRequired = @{
     Test = {
         $test1 = awk -F: '($2 == "" ) { print $1 " does not have a password "}' /etc/shadow
         if($test1 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3916,15 +3957,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.3.sh"
         $result=bash $path
         if($result -match $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3934,15 +3969,9 @@ $retNonCompliantManualReviewRequired = @{
         $test1 = awk -F: '($1=="shadow") {print $NF}' /etc/group
         $test2 = awk -F: -v GID="$(awk -F: '($1=="shadow") {print $3}' /etc/group)" '($4==GID) {print $1}' /etc/passwd
         if($test1.Length -eq 0 -and $test2 -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3953,15 +3982,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.5.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3972,15 +3995,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.6.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -3991,15 +4008,9 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.7.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 [AuditTest] @{
@@ -4010,17 +4021,23 @@ $retNonCompliantManualReviewRequired = @{
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.8.sh"
         $result=bash $path
         if($result -eq $null){
-            return @{
-                Message = "Compliant"
-                Status = "True"
-            }
+            return $retCompliant
         }
-        return @{
-            Message = "Not-Compliant"
-            Status = "False"
-        }
+        return $retNonCompliant
     }
 }
 
-# MISSING RULE: 7.2.9 - Ensure local interactive user home directories are configured
-# MISSING RULE: 7.2.10 - Ensure local interactive user dot files access is configured
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "7.2.9"
+    Task = "Ensure local interactive user home directories are configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "7.2.10"
+    Task = "Ensure local interactive user dot files access is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
