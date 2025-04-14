@@ -1333,17 +1333,11 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
-
-# MISSING RULE 2.2.2 Ensure rsh client is not installed
-# MISSING RULE 2.2.3 Ensure talk client is not installed
-# MISSING RULE 2.2.4 Ensure telnet client is not installed
-# MISSING RULE 2.2.5 Ensure ldap client is not installed
-# MISSING RULE 2.2.6 Ensure ftp client is not installed
 [AuditTest] @{
     Id = "2.2.2"
-    Task = "Ensure Avahi Server is not installed"
+    Task = "Ensure rsh client is not installed"
     Test = {
-        $status = dpkg-query -f='${db:Status-Abbrev}' -W avahi-daemon 2>/dev/null
+        $status = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null rsh-client
         if($status -match "^(rc|un|)$"){
             return $retCompliant
         }
@@ -1353,9 +1347,9 @@ $FirewallStatus = GetFirewallStatus
 
 [AuditTest] @{
     Id = "2.2.3"
-    Task = "Ensure CUPS is not installed"
+    Task = "Ensure talk client is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W cups 2>/dev/null
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null talk
         if($test1 -match "^(rc|un|)$"){
             return $retCompliant
         }
@@ -1365,9 +1359,9 @@ $FirewallStatus = GetFirewallStatus
 
 [AuditTest] @{
     Id = "2.2.4"
-    Task = "Ensure DHCP Server is not installed"
+    Task = "Ensure telnet client Server is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W isc-dhcp-server 2>/dev/null
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W telnet 2>/dev/null
         if($test1 -match "^(rc|un|)$"){
             return $retCompliant
         }
@@ -1377,9 +1371,9 @@ $FirewallStatus = GetFirewallStatus
 
 [AuditTest] @{
     Id = "2.2.5"
-    Task = "Ensure LDAP server is not installed"
+    Task = "Ensure ldap client is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W slapd 2>/dev/null
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W lapd-utils 2>/dev/null
         if($test1 -match "^(rc|un|)$"){
             return $retCompliant
         }
@@ -1389,9 +1383,9 @@ $FirewallStatus = GetFirewallStatus
 
 [AuditTest] @{
     Id = "2.2.6"
-    Task = "Ensure NFS is not installed"
+    Task = "Ensure ftp client is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nfs-kernel-server 2>/dev/null
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ftp 2>/dev/null
         if($test1 -match "^(rc|un|)$"){
             return $retCompliant
         }
