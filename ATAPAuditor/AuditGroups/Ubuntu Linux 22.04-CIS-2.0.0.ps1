@@ -1276,7 +1276,7 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # BCID 32848
+[AuditTest] @{
     Id = "2.1.19"
     Task = "Ensure xinetd services are not in use"
     Test = {
@@ -1470,7 +1470,7 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 2.3.3.3 - Ensure chrony is enabled and running ; BCID 33844
+# MISSING RULE: 2.3.3.3 - Ensure chrony is enabled and running
 
 [AuditTest] @{ # added diff: 5.1.1 Ensure cron daemon is enabled and running
     Id = "2.4.1.1"
@@ -1611,7 +1611,7 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-[AuditTest] @{ # BCID 32839
+[AuditTest] @{
     Id = "3.1.3"
     Task = "Ensure bluetooth services are not in use"
     Test = {
@@ -3333,7 +3333,7 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-[AuditTest] @{ # added diff!: 4.2.1.2 - Ensure rsyslog Service is enabled; BCID 33782
+[AuditTest] @{
     Id = "6.2.1.1.1"
     Task = "Ensure journald service is enabled and active"
     Test = {
@@ -3541,7 +3541,7 @@ $FirewallStatus = GetFirewallStatus
             return $retNonCompliant
         }
     }
-} 
+}
 [AuditTest] @{
     Id = "6.3.2.3"
     Task = "Ensure system is disabled when audit logs are full"
@@ -3555,7 +3555,17 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
-# MISSING RULE: 6.3.2.4 - Ensure system warns when audit logs are low on space
+[AuditTest] @{
+    Id = "6.3.2.4"
+    Task = "Ensure system warns when audit logs are low on space"
+    Test = {
+        $test1 = grep -Pi -- '^\h*space_left_action\h*=\h*\w+\b' /etc/audit/auditd.conf | awk '{print $3}'
+        if($test1 -match "^(email|exec|single|halt)$"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
 [AuditTest] @{
     Id = "6.3.3.1"
     Task = "Ensure changes to system administration scope is collected"
@@ -3975,9 +3985,17 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 6.3.4.10 - Ensure audit tools group owner is configured; BCID 32899
-# this one is 4.1.4.8 Ensure audit tools are 755 or more restrictive
-# got all 4.1.4.X ensured by 4.1.4 Ensure events that modify user/group information are collected?
+[AuditTest] @{
+    Id = "6.3.4.10"
+    Task = "Ensure permissions on /etc/passwd are configured"
+    Test = {
+        $test1 = stat -Lc '%G' /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules | awk '$1 != "root" {print}'
+        if($test1 -eq $null){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
 [AuditTest] @{
     Id = "7.1.1"
     Task = "Ensure permissions on /etc/passwd are configured"
@@ -4080,8 +4098,8 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 7.1.10 - Ensure permissions on /etc/security/opasswd are configured ; BCID 32860
-[AuditTest] @{ # added diff: 6.1.10 Ensure no world writable files exist
+# MISSING RULE: 7.1.10 - Ensure permissions on /etc/security/opasswd are configured
+[AuditTest] @{
     Id = "7.1.11"
     Task = "Ensure world writable files and directories are secured"
     Test = {
