@@ -2731,9 +2731,21 @@ $FirewallStatus = GetFirewallStatus
             return $retNonCompliant
         }
     }
+} 
+[AuditTest] @{
+    Id = "5.2.7"
+    Task = "Ensure access to the su command is restricted"
+    Test = {
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.2.7.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
+            return $retNonCompliant
+        }
+    }
 }
-
-# MISSING RULE 5.2.7 Ensure access to the su command is restricted
 [AuditTest] @{
     Id = "5.3.1.1"
     Task = "Ensure latest version of pam is installed"
