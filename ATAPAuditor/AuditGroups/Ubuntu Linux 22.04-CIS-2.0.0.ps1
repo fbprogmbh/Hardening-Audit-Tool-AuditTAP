@@ -4110,7 +4110,19 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 7.1.10 - Ensure permissions on /etc/security/opasswd are configured
+[AuditTest] @{
+    Id = "7.1.10"
+    Task = "Ensure permissions on /etc/security/opasswd are configured"
+    Test = {
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/7.1.10.sh"
+        $result = bash $script
+        if($?){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
 [AuditTest] @{
     Id = "7.1.11"
     Task = "Ensure world writable files and directories are secured"
