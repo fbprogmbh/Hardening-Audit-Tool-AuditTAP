@@ -1407,36 +1407,13 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
-[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+[AuditTest] @{
     Id = "2.3.2.1"
     Task = "Ensure systemd-timesyncd configured with authorized timeserver"
     Test = {
         	return $retNonCompliantManualReviewRequired
     }
 }
-[AuditTest] @{
-    Id = "2.3.2.2"
-    Task = "Ensure systemd-timesyncd is enabled and running"
-    Test = {
-        $test1 = systemctl is-enabled systemd-timesyncd.service
-        $time = timedatectl status
-        if($test1 -match "enabled" -and $time -ne $null){    
-            return $retCompliant
-        }
-        return $retNonCompliant
-    }
-}
-[AuditTest] @{
-    Id = "2.3.3.1"
-    Task = "Ensure chrony is configured with authorized timeserver"
-    Test = {
-        	return $retNonCompliantManualReviewRequired
-    }
-}
-
-# MISSING RULE: 2.3.2.1 - Ensure systemd-timesyncd configured with authorized timeserver
-# ^ this one's manual; 2.1.3.1 Ensure systemd-timesyncd configured with authorized timeserver
-
 [AuditTest] @{
     Id = "2.3.2.2"
     Task = "Ensure systemd-timesyncd is enabled and running"
