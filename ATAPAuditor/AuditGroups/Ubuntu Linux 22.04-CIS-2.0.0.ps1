@@ -1447,9 +1447,19 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE: 2.3.3.3 - Ensure chrony is enabled and running
-
-[AuditTest] @{ # added diff: 5.1.1 Ensure cron daemon is enabled and running
+[AuditTest] @{
+    Id = "2.3.3.3"
+    Task = "Ensure chrony is enabled and running"
+    Test = {
+        $test1 = $(systemctl is-enabled cron.service 1>/dev/null 2>/dev/null; echo $?)
+        $test2 = $(systemctl is-active cron.service 1>/dev/null 2>/dev/null; echo $?)
+        if($test1 -and $test2 ){
+            return $retCompliant
+        }
+        return $retCompliant
+    }
+}
+[AuditTest] @{
     Id = "2.4.1.1"
     Task = "Ensure cron daemon is enabled and active"
     Test = {
@@ -2368,8 +2378,26 @@ $FirewallStatus = GetFirewallStatus
         }
     }
 }
-# MISSING RULE 5.1.4 Ensure sshd access is configured
-# MISSING RULE 5.1.5 Ensure sshd Banner is configured
+[AuditTest] @{
+    Id = "5.1.4"
+    Task = "Ensure sshd access is configured"
+    Test = {
+        if (sshd -T | grep -Piq -- "^\h*(allow|deny)(users|groups)\h+\H+") {
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+[AuditTest] @{
+    Id = "5.1.5"
+    Task = "Ensure sshd Banner is configured"
+    Test = {
+        if (sshd -T | grep -Piq -- "^\h*banner\h+\H+") {
+            return $retCompliant
+        }
+        return $retCompliant
+    }
+}
 [AuditTest] @{
     Id = "5.1.6"
     Task = "Ensure sshd Ciphers are configured"
