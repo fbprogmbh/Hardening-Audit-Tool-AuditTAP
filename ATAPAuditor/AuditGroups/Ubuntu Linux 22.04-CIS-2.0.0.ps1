@@ -49,22 +49,27 @@ function GetFirewallStatus {
 	$t_NFT = dpkg-query -f='${db:Status-Abbrev}' -W nftables 2>/dev/null
 	$t_IPT = dpkg-query -f='${db:Status-Abbrev}' -W iptables 2>/dev/null
 	$t_UFW_en = systemctl is-enabled ufw 2>/dev/null
-	$t_UFW_inac = ufw status 2>/dev/null | grep -iE "Status: Ina[ck]tive?"
-    $t_UFW_ac = ufw status 2>/dev/null | grep -iE "Status: A[ck]tive?"
+	if ($t_UFW -match "ii"){
+        $t_UFW_inac = ufw status 2>/dev/null | grep -iE "Status: Ina[ck]tive?"
+        $t_UFW_ac = ufw status 2>/dev/null | grep -iE "Status: A[ck]tive?"
+    } else {
+        $t_UFW_ac = $null
+        $t_UFW_inac = $null
+    }
 	$t_NFT_en = systemctl is-enabled nftables.service 2>/dev/null
 	
 	# Testing 1 - nftable installed, ufw not or inactive
-	if ($t_NFT -match "ii" -and $t_IPT -match "^(rc|un|)$" -and ($t_UFW -match "^(rc|un|)$" -or $t_UFW_inac -ne $null) -and $t_NFT_en -match "enabled"){
+	if ($t_NFT -match "ii" -and $t_IPT -match "^(rc |un |)$" -and ($t_UFW -match "^(rc |un |)$" -or $t_UFW_inac -ne $null) -and $t_NFT_en -match "enabled"){
         return 1
     }
 	
 	# Testing 2 - ufw, iptables installed, nftables not 
-	if ( $t_UFW -match "ii" -and $t_UFW_ac -ne $null -and $t_UFW_en -match "enabled" -and $t_IPT -match "ii" -and $t_NFT -match "^(rc|un|)$"){
+	if ( $t_UFW -match "ii" -and $t_UFW_ac -ne $null -and $t_UFW_en -match "enabled" -and $t_IPT -match "ii" -and $t_NFT -match "^(rc |un |)$"){
         return 2
     }
 	
 	# Testing 3 - only iptables
-	if ($t_NFT -match "^(rc|un|)$" -and $t_UFW -match "^(rc|un|)$" -and $t_IPT -match "ii"){
+	if ($t_NFT -match "^(rc |un |)$" -and $t_UFW -match "^(rc |un |)$" -and $t_IPT -match "ii"){
         return 3
     }
 
@@ -1789,9 +1794,11 @@ $FirewallStatus = GetFirewallStatus
         }
         $test1 = systemctl is-enabled ufw
         $test2 = systemctl is-active ufw
-        $test3 = ufw status | grep -iE "Status: A[ck]tive?"
-        if($test1 -match "enabled" -and $test2 -match "active" -and $test3 -ne $null){
-            return $retCompliant
+        if($test1 -match "enabled" -and $test2 -match "active"){
+            $test3 = ufw status | grep -iE "Status: A[ck]tive?"
+            if($test3 -ne $null){
+                return $retCompliant
+            }
         }
         return $retNonCompliant
     }
@@ -1806,9 +1813,12 @@ $FirewallStatus = GetFirewallStatus
         if ($FirewallStatus -match 3) {
             return $retUsingFW3
         }
-        $test1 = ufw status verbose | grep -iE "Status: A[ck]tive?"
-        if($test1 -eq $null){
-            return $retCompliant
+        $test1 = dpkg-query -W -f='${db:Status-Abbrev}' ufw
+        if($test1 -match "ii"){
+            $test2 = ufw status verbose | grep -iE "Status: A[ck]tive?"
+            if($test2 -eq $null){
+                return $retCompliant
+            }
         }
         return $retNonCompliant
     }
@@ -1823,9 +1833,12 @@ $FirewallStatus = GetFirewallStatus
         if ($FirewallStatus -match 3) {
             return $retUsingFW3
         }
-        $test1 = ufw status numbered | grep -iE "Status: Ina[ck]tive?"
-        if($test1 -eq $null){
-            return $retCompliant
+        $test1 = dpkg-query -W -f='${db:Status-Abbrev}' ufw
+        if($test1 -match "ii"){
+            $test2 = ufw status numbered | grep -iE "Status: Ina[ck]tive?"
+            if($test2 -eq $null){
+                return $retCompliant
+            }
         }
         return $retNonCompliant
     }
@@ -1853,9 +1866,12 @@ $FirewallStatus = GetFirewallStatus
     Id = "4.1.7"
     Task = "Ensure ufw default deny firewall policy"
     Test = {
-        $test1 = ufw status verbose | grep -iE "allow"
-        if($test1 -eq $null){
-            return $retCompliant
+        $test1 = dpkg-query -W -f='${db:Status-Abbrev}' ufw
+        if($test1 -match "ii"){
+            $test2 = ufw status verbose | grep -iE "allow"
+            if($test2 -eq $null){
+                return $retCompliant
+            }
         }
         return $retNonCompliant
     }
@@ -1888,9 +1904,13 @@ $FirewallStatus = GetFirewallStatus
             return $retUsingFW3
         }
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw 2>/dev/null
-        $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
-        if($test1 -match "^(rc|un|)$" -or $test2 -ne $null){
+        if($test1 -match "^(rc |un |)$"){
             return $retCompliant
+        } else {
+            $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
+            if($test2 -ne $null) {
+                return $retCompliant
+            }
         }
         return $retNonCompliant
     }
@@ -2136,10 +2156,14 @@ $FirewallStatus = GetFirewallStatus
             return $retUsingFW3
         }
         $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W 2>/dev/null ufw
-        $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
-        $test3 = systemctl is-enabled ufw
-        if($test1 -match "^(rc|un|)$" -and $test2 -ne $null -and $test3 -match "masked"){
+        if($test1 -match "^(rc |un |)$"){
             return $retCompliant
+        } else {
+            $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
+            $test3 = systemctl is-enabled ufw
+            if($test2 -ne $null -and $test3 -match "masked") {
+                return $retCompliant
+            }
         }
         return $retNonCompliant
     }
@@ -3922,7 +3946,7 @@ $FirewallStatus = GetFirewallStatus
 }
 [AuditTest] @{
     Id = "6.3.4.10"
-    Task = "Ensure permissions on /etc/passwd are configured"
+    Task = "Ensure audit tools group owner is configured"
     Test = {
         $test1 = stat -Lc '%G' /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules | awk '$1 != "root" {print}'
         if($test1 -eq $null){
