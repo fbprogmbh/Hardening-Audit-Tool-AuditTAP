@@ -795,14 +795,87 @@ $FirewallStatus = GetFirewallStatus
         return $retNonCompliant
     }
 }
+[AuditTest] @{
+    Id = "1.7.1"
+    Task = "Ensure GDM is removed"
+    Test = {
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W gdm3 2>/dev/null
+        if($test1 -match "^(rc |un |)$"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+[AuditTest] @{
+    Id = "1.7.2"
+    Task = "Ensure GDM login banner is configured"
+    Test = {
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $path = $parentPath+"/Helpers/ShellScripts/Debian_12/1.8.2.sh"
+        $result=bash $path | grep " PASS "
+        if($result -ne $null){
+            return $retCompliant
+        }
 
-# MISSING RULE 1.7.1 Ensure GDM is removed
-# MISSING RULE 1.7.2 Ensure GDM login banner is configured
-# MISSING RULE 1.7.3 Ensure GDM disable-user-list option is enabled
-# MISSING RULE 1.7.4 Ensure GDM screen locks when the user is idle
-# MISSING RULE 1.7.5 Ensure GDM screen locks cannot be overridden
-# MISSING RULE 1.7.6 Ensure GDM automatic mounting of removable media is disabled
+        return $retNonCompliant
+    }
+}
+[AuditTest] @{
+    Id = "1.7.3"
+    Task = "Ensure GDM disable-user-list option is enabled"
+    Test = {
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $path = $parentPath+"/Helpers/ShellScripts/Debian_12/1.8.3.sh"
+        $result=bash $path | grep " PASS "
+        if($result -ne $null){
+            return $retCompliant
+        }
 
+        return $retNonCompliant
+    }
+}
+[AuditTest] @{
+    Id = "1.7.4"
+    Task = "Ensure GDM screen locks when the user is idle"
+    Test = {
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $path = $parentPath+"/Helpers/ShellScripts/Debian_12/1.8.4.sh"
+        $result=bash $path | grep " PASS "
+        if($result -ne $null){
+            return $retCompliant
+        }
+
+        return $retNonCompliant
+    }
+} 
+[AuditTest] @{
+    Id = "1.7.5"
+    Task = "Ensure GDM screen locks cannot be overridden"
+    Test = {
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $path = $parentPath+"/Helpers/ShellScripts/Debian_12/1.8.5.sh"
+        $result=bash $path | grep " PASS "
+        if($result -ne $null){
+            return $retCompliant
+        }
+
+        return $retNonCompliant
+    }
+}
+[AuditTest] @{
+    Id = "1.7.6"
+    Task = "Ensure GDM automatic mounting of removable media is disabled"
+    Test = {
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $path = $parentPath+"/Helpers/ShellScripts/Debian_12/1.8.6.sh"
+        $result=bash $path | grep " PASS "
+        if($result -ne $null){
+            return $retCompliant
+        }
+
+        return $retNonCompliant
+    }
+}
 [AuditTest] @{
     Id = "1.7.7"
     Task = "Ensure GDM disabling automatic mounting of removable media is not overridden"
@@ -2118,7 +2191,7 @@ $FirewallStatus = GetFirewallStatus
         if ($FirewallStatus -match 2) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W 2>/dev/null nftables
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null nftables
         if($test1 -match "^(rc|un|)$"){
             return $retNonCompliant
         }
@@ -2562,7 +2635,7 @@ $FirewallStatus = GetFirewallStatus
     Id = "5.2.1"
     Task = "Ensure sudo is installed"
     Test = {
-        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W 2>/dev/null sudo
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null sudo
         if($test1 -match "ii"){
             return $retNonCompliant
         }
@@ -2677,7 +2750,7 @@ $FirewallStatus = GetFirewallStatus
     Id = "5.3.1.1"
     Task = "Ensure latest version of pam is installed"
     Test = {
-        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W 2>/dev/null libpam-runtime
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null libpam-runtime
         if($test1 -match "ii"){
             return $retNonCompliant
         }
@@ -2688,7 +2761,7 @@ $FirewallStatus = GetFirewallStatus
     Id = "5.3.1.2"
     Task = "Ensure libpam-modules is installed"
     Test = {
-        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W 2>/dev/null libpam-modules
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null libpam-modules
         if($test1 -match "ii"){
             return $retNonCompliant
         }
@@ -2699,7 +2772,7 @@ $FirewallStatus = GetFirewallStatus
     Id = "5.3.1.3"
     Task = "Ensure libpam-pwquality is installed"
     Test = {
-        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W 2>/dev/null libpam-pwquality
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null libpam-pwquality
         if($test1 -match "ii"){
             return $retNonCompliant
         }
@@ -3335,7 +3408,7 @@ $FirewallStatus = GetFirewallStatus
     Id = "6.2.1.2.1"
     Task = "Ensure systemd-journal-remote is installed"
     Test = {
-        $test1 = dpkg-query -f='${bd:Status-Abbrev}' -W 2>/dev/null systemd-journal-remote
+        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null systemd-journal-remote
         if($test1 -match "ii"){
             return $retCompliant
         }
