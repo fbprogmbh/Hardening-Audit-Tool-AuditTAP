@@ -5,9 +5,9 @@ $rcNone = "None"
 $rcNonCompliant = "Non-Compliant"
 $rcNonCompliantManualReviewRequired = "Manual review required"
 $rcCompliantIPv6isDisabled = "IPv6 is disabled"
-$rcFirewallStatus1 = "Using nftables with disabled ufw"
-$rcFirewallStatus2 = "Using nftables"
-$rcFirewallStatus3 = "Using ufw"
+$rcFirewallStatus1 = "Using nftables"
+$rcFirewallStatus2 = "Using ufw"
+$rcFirewallStatus3 = "Using iptables"
 
 $retCompliant = @{
     Message = $rcCompliant
@@ -712,7 +712,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure prelink is not installed"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W prelink 2>/dev/null
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -800,7 +800,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM is removed"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W gdm3 2>/dev/null
-        if($test1 -match "^(rc |un |)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -937,7 +937,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure autofs services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null autofs
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -954,7 +954,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure avahi daemon services are not in use"
     Test = {
         $status = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null avahi-daemon
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -974,7 +974,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure dhcp server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null isc-dhcp-server
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -994,7 +994,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure dns server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null bind9
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1011,7 +1011,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure dnsmasq server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null dnsmasq
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1028,7 +1028,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure ftp server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null vsftpd
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1045,7 +1045,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure ldap server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null slapd
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1063,7 +1063,7 @@ $FirewallStatus = GetFirewallStatus
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null dovecot-imapd
         $test2 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null dovecot-pop3d
-        if("$test1" -match "^(rc|un|)$" -and $test2 -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$" -and "$test2" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1083,7 +1083,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure network file system services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null nfs-kernel-server
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1100,7 +1100,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nis server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null ypserv
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1117,7 +1117,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure print server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null cups
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1137,7 +1137,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure rpcbind services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null rpcbind
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1170,7 +1170,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure samba file server services are not in use"
     Test = {
         $test1 = dpkg-query -W -f='${db:Status-Abbrev}' samba 2>/dev/null
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1187,7 +1187,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure snmp services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null snmpd
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1204,7 +1204,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure tftp server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null tftpd-hpa
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1221,7 +1221,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure web proxy server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null squid
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1239,7 +1239,7 @@ $FirewallStatus = GetFirewallStatus
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null apache2
         $test2 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null ginx
-        if("$test1" -match "^(rc|un|)$" -and $test2 -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$" -and "$test2" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1263,7 +1263,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure xinetd services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null xinetd
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1280,7 +1280,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure X window server services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null xserver-commen
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1309,7 +1309,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure NIS Client is not installed"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nis 2>/dev/null
-        if($test1 -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1320,7 +1320,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure rsh client is not installed"
     Test = {
         $status = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null rsh-client
-        if($status -match "^(rc|un|)$"){
+        if($status -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1332,7 +1332,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure talk client is not installed"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null talk
-        if($test1 -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1344,7 +1344,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure telnet client Server is not installed"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W telnet 2>/dev/null
-        if($test1 -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1356,7 +1356,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure ldap client is not installed"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W lapd-utils 2>/dev/null
-        if($test1 -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1368,7 +1368,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure ftp client is not installed"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ftp 2>/dev/null
-        if($test1 -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1579,7 +1579,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure bluetooth services are not in use"
     Test = {
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null bluez
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         else{
@@ -1829,7 +1829,7 @@ $FirewallStatus = GetFirewallStatus
             return $retUsingFW3
         }
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null iptables-persistent
-        if("$test1" -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1957,7 +1957,7 @@ $FirewallStatus = GetFirewallStatus
             return $retUsingFW3
         }
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw 2>/dev/null
-        if($test1 -match "^(rc |un |)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         } else {
             $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
@@ -2192,12 +2192,12 @@ $FirewallStatus = GetFirewallStatus
             return $retUsingFW3
         }
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null nftables
-        if($test1 -match "^(rc|un|)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retNonCompliant
         }
         return $retCompliant
     }
-}#>
+}
 [AuditTest] @{
     Id = "4.3.1.3"
     Task = "Ensure ufw is uninstalled or disabled with iptables"
@@ -2209,7 +2209,7 @@ $FirewallStatus = GetFirewallStatus
             return $retUsingFW3
         }
         $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw 2>/dev/null
-        if($test1 -match "^(rc |un |)$"){
+        if("$test1" -match "^(rc |un |)$"){
             return $retCompliant
         } else {
             $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
