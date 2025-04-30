@@ -4094,8 +4094,11 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure world writable files and directories are secured"
     Test = {
         #$partitions = mapfile -t partitions < (sudo fdisk -l | grep -o '/dev/[^ ]*')
-        $test1 = df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -0002
-        if($test1 -eq $null){
+        #$test1 = df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -0002
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/7.1.11.sh"
+        $result = bash $script
+        if($?){
             return $retCompliant
         }
         return $retNonCompliant
@@ -4105,19 +4108,23 @@ $FirewallStatus = GetFirewallStatus
     Id = "7.1.12"
     Task = "Ensure no files or directories without an owner and a group exist"
     Test = {
-        try{
-            $test1 = df --local -P | awk "{if (NR -ne 1) { print `$6 }}" | xargs -I '{}' find '{}' -xdev -nouser
-            if($test1 -eq $null){
+        # try{
+        #     $test1 = df --local -P | awk "{if (NR -ne 1) { print `$6 }}" | xargs -I '{}' find '{}' -xdev -nouser
+        #     if($test1 -eq $null){
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/7.1.12.sh"
+        $result = bash $script
+        if($?){
                 return $retCompliant
             }
             return $retNonCompliant
-        }
-        catch{
-            return @{
-                Message = "Command not found!"
-                Status = "False"
-            }  
-        }
+        # }
+        # catch{
+        #     return @{
+        #         Message = "Command not found!"
+        #         Status = "False"
+        #     }  
+        # }
     }
 } 
 [AuditTest] @{
@@ -4164,7 +4171,7 @@ $FirewallStatus = GetFirewallStatus
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.3.sh"
         $result=bash $path
-        if($result -match $null){
+        if($?){
             return $retCompliant
         }
         return $retNonCompliant
