@@ -1971,7 +1971,7 @@ $FirewallStatus = GetFirewallStatus
 
 [AuditTest] @{
         Id = "4.2.3"
-        Task = "Ensure all logfiles have appropriate permissions and ownership"
+        Task = "Ensure iptables are flushed with nftables"
         Test = {
             if ($FirewallStatus -match 2) {
                 return $retUsingFW1
@@ -1980,9 +1980,9 @@ $FirewallStatus = GetFirewallStatus
                 return $retUsingFW3
             }
             $parentPath = Split-Path -Parent -Path $PSScriptRoot
-            $path = $parentPath+"/Helpers/ShellScripts/CIS-Ubuntu22.04_LTS-4.2.3.sh"
-            $result = $path | grep "PASS"
-            if($result -match "PASS"){
+            $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/4.2.3.sh"
+            $result = bash $script
+            if ($?) {
                 return $retCompliant
             }
             return $retNonCompliant
@@ -2672,49 +2672,29 @@ $FirewallStatus = GetFirewallStatus
 }
 [AuditTest] @{
     Id = "5.2.4"
-    Task = "Ensure SSH access is limited"
+    Task = "Ensure users must provide password for privilege escalation"
     Test = {
-        try{
-            $result = bash -c "sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname)/etc/hosts | awk '{print $1}')" | grep -Ei '^\s*(allow|deny)(users|groups)\s+\S+'"
-            $result2 = bash -c "grep -rPi '^\h*(allow|deny)(users|groups)\h+\H+(\h+.*)?$' /etc/ssh/sshd_config*"
-            if(($result -match "allowusers" -or $result -match "allowgroups" -or $result -match "denyusers" -or $result -match "denygroups") -and ($result2 -match "allowusers" -or $result2 -match "allowgroups" -or $result2 -match "denyusers" -or $result2 -match "denygroups")){
-                return $retCompliant
-            }
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.2.4.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
             return $retNonCompliant
-        }
-        catch{
-            return @{
-                Message = "Command doesn't exist"
-                Status = "False"
-            }
         }
     }
 }
 [AuditTest] @{
     Id = "5.2.5"
-    Task = "Ensure SSH LogLevel is appropriate"
+    Task = "Ensure re-authentication for privilege escalation is not disabled globally"
     Test = {
-        try{
-            $test1 = sshd -T -C user=root -C host="$(hostname)" -C addr="$(grep $(hostname)/etc/hosts | awk '{print $1}')" | grep loglevel
-            try{
-                $test2 = grep -is 'loglevel' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf | grep -Evi '(VERBOSE|INFO)'
-            }
-            catch{
-                return @{
-                    Message = "Path not found!"
-                    Status = "False"
-                }
-            }
-            if(($test1 -match "loglevel VERBOSE" -or $test1 -match "loglevel INFO") -and $test2 -eq $null){
-                return $retCompliant
-            }
+        $parentPath = Split-Path -Parent -Path $PSScriptRoot
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.2.5.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
             return $retNonCompliant
-        }
-        catch{
-            return @{
-                Message = "Command doesn't exist"
-                Status = "False"
-            }
         }
     }
 }
