@@ -1865,8 +1865,8 @@ $FirewallStatus = GetFirewallStatus
         if ($FirewallStatus -match 3) {
             return $retUsingFW3
         }
-        $test1 = systemctl is-enabled ufw
-        $test2 = systemctl is-active ufw
+        $test1 = systemctl is-enabled ufw 2>/dev/null
+        $test2 = systemctl is-active ufw 2>/dev/null
         if($test1 -match "enabled" -and $test2 -match "active"){
             $test3 = ufw status | grep -iE "Status: A[ck]tive?"
             if($test3 -ne $null){
