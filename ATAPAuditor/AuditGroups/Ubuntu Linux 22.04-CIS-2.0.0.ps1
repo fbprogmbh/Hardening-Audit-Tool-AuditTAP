@@ -87,7 +87,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure cramfs kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.1.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.1.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -101,7 +101,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure freevxfs kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.1.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -115,7 +115,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure hfs kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.1.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -129,7 +129,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure hfsplus kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.1.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.1.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -143,7 +143,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure jffs2 kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.1.5.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.1.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -157,7 +157,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure squashfs kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.1.6.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.1.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -171,7 +171,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure udf kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.1.7.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.1.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -185,7 +185,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure usb-storage kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.1.8.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.1.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -211,7 +211,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nodev option set on /tmp partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.1.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -225,7 +225,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nosuid option set on /tmp partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.1.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -252,7 +252,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure /dev/shm is a separate partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.2.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -267,7 +267,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nodev option set on /dev/shm partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.2.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -281,7 +281,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nosuid option set on /dev/shm partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.2.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.2.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -295,7 +295,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure noexec option set on /dev/shm partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.2.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -321,7 +321,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nodev option set on /home partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.3.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -335,7 +335,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nosuid option set on /home partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.3.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.3.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -361,7 +361,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nodev option set on /var partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.4.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.4.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -375,7 +375,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nosuid option set on /var partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.4.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.4.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -401,7 +401,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nodev option set on /var/tmp partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.5.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.5.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -415,7 +415,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nosuid option set on /var/tmp partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.5.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.5.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -429,7 +429,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure noexec option set on /var/tmp partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.5.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.5.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -455,7 +455,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nodev option set on /var/log partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.6.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.6.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -469,7 +469,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nosuid option set on /var/log partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.6.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.6.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -483,7 +483,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure noexec option set on /var/log partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.6.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.6.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -509,7 +509,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nodev option set on /var/log/audit partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.7.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.7.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -523,7 +523,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nosuid option set on /var/log/audit partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.7.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.7.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -537,7 +537,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure noexec option set on /var/log/audit partition"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.1.2.7.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.1.2.7.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -599,7 +599,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure AppArmor is enabled in the bootloader configuration"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.3.1.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.3.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -630,7 +630,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure all AppArmor Profiles are enforcing"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.3.1.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.3.1.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -656,7 +656,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure access to bootloader config is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.4.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.4.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -670,7 +670,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure address space layout randomization is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.5.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.5.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -684,7 +684,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure ptrace_scope is restricted"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.5.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.5.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -700,7 +700,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure core dumps are restricted"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.5.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.5.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -738,7 +738,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure message of the day is configured properly"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.6.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.6.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -778,7 +778,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure access to /etc/motd is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.6.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.6.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -825,7 +825,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM login banner is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.2.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.2.sh"
         $result=bash $path | grep " PASS "
         if($result -ne $null){
             return $retCompliant
@@ -839,7 +839,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM disable-user-list option is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.3.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.3.sh"
         $result=bash $path | grep " PASS "
         if($result -ne $null){
             return $retCompliant
@@ -853,7 +853,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM screen locks when the user is idle"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.4.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.4.sh"
         $result=bash $path | grep " PASS "
         if($result -ne $null){
             return $retCompliant
@@ -867,7 +867,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM screen locks cannot be overridden"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.5.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.5.sh"
         $result=bash $path | grep " PASS "
         if($result -ne $null){
             return $retCompliant
@@ -881,7 +881,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM automatic mounting of removable media is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.7.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.7.sh"
         $result=bash $path | grep " PASS "
         if($result -ne $null){
             return $retCompliant
@@ -895,7 +895,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM disabling automatic mounting of removable media is not overridden"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.7.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.7.sh"
         $result=bash $path | grep " PASS "
         if($result -ne $null){
             return $retCompliant
@@ -909,7 +909,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM autorun-never is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.8.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.8.sh"
         $result=bash $path
         if($result -match " PASS "){
             return $retCompliant
@@ -923,7 +923,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM autorun-never is not overridden"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.8.9.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.9.sh"
         $result=bash $path
         if($result -match " PASS "){
             return $retCompliant
@@ -937,7 +937,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure XDCMP is not enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/1.7.10.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/1.7.10.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1171,7 +1171,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure rsync services are not in use"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/2.1.13.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/2.1.13.sh"
         $result = bash $script
         if ($?){
             return $retCompliant
@@ -1394,7 +1394,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure a single time synchronization daemon is in use"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/2.1.1.1.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/2.1.1.1.sh"
         $result=bash $path
         if($result -match "PASS:"){
             return $retCompliant
@@ -1434,7 +1434,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure chrony is running as user _chrony"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/2.3.3.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/2.3.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1538,7 +1538,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure crontab is restricted to authorized users"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/2.4.1.8.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/2.4.1.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1552,7 +1552,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure at is restricted to authorized users"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/2.4.2.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/2.4.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1566,7 +1566,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure IPv6 status is identified"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.1.1.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/3.1.1.sh"
         $result=bash $path
         if($result -match "IPv6 is enabled on the system"){
             return @{
@@ -1585,7 +1585,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure wireless interfaces are disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.1.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1616,7 +1616,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure dccp kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.2.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1630,7 +1630,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure tipc kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.2.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1644,7 +1644,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure rds kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.2.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.2.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1658,7 +1658,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sctp kernel module is not available"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.2.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1672,7 +1672,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure ip forwarding is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1686,7 +1686,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure packet redirect sending is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1700,7 +1700,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure bogus icmp responses are ignored"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1714,7 +1714,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure broadcast icmp requests are ignored"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1728,7 +1728,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure icmp redirects are not accepted"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.5.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1742,7 +1742,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure secure icmp redirects are not accepted"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.6.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1756,7 +1756,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure reverse path filtering is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.7.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1770,7 +1770,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure source routed packets are not accepted"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.8.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1784,7 +1784,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure suspicious packets are logged"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.9.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.9.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1798,7 +1798,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure tcp syn cookies is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.10.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.10.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1812,7 +1812,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure ipv6 router advertisements are not accepted"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.3.11.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/3.3.11.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1927,7 +1927,7 @@ $FirewallStatus = GetFirewallStatus
             return $retUsingFW3
         }
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.5.1.6.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/3.5.1.6.sh"
         $result=bash $path
         if($result -eq $null){
             return $retCompliant
@@ -2175,9 +2175,9 @@ $FirewallStatus = GetFirewallStatus
             return $retUsingFW3
         }
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path1 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.5.2.10_1.sh"
-        $path2 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.5.2.10_2.sh"
-        $path3 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/3.5.2.10_3.sh"
+        $path1 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/3.5.2.10_1.sh"
+        $path2 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/3.5.2.10_2.sh"
+        $path3 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/3.5.2.10_3.sh"
         if($path1 -ne $null -and $path2 -ne $null -and $path3 -ne $null){
             return $retCompliant
         }
@@ -2384,7 +2384,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure permissions on SSH public host key files are configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2418,7 +2418,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd Ciphers are configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.6.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2432,7 +2432,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.7.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2446,7 +2446,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd DisableForwarding is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.8.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2460,7 +2460,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd GSSAPIAuthentication is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.9.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.9.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2474,7 +2474,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd HostbasedAuthentication is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.10.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.10.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2488,7 +2488,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd IgnoreRhosts is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.11.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.11.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2502,7 +2502,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd KexAlgorithms is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.12.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.12.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2516,7 +2516,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd LoginGraceTime is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.13.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.13.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2530,7 +2530,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd LogLevel is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.14.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.14.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2544,7 +2544,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd MACs are configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.15.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.15.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2558,7 +2558,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd MaxAuthTries is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.16.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.16.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2572,7 +2572,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd MaxSessions is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.17.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.17.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2586,7 +2586,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd MaxStartups is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.18.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.18.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2600,7 +2600,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd PermitEmptyPasswords is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.19.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.19.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2614,7 +2614,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd PermitRootLogin is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.20.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.20.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2628,7 +2628,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd PermitUserEnvironment is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.21.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.21.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2642,7 +2642,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sshd UsePAM is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.1.22.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.1.22.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2667,7 +2667,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sudo commands use pty"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.2.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2681,7 +2681,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sudo log file exists"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.2.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.2.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2695,7 +2695,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure users must provide password for privilege escalation"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.2.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2709,7 +2709,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure re-authentication for privilege escalation is not disabled globally"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.2.5.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.2.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2723,7 +2723,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure sudo authentication timeout is configured correctly"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.2.6.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.2.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2737,7 +2737,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure access to the su command is restricted"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.2.7.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.2.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2784,7 +2784,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure pam_unix module is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.2.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2798,7 +2798,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure pam_faillock module is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.2.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2812,7 +2812,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure pam_pwquality module is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.2.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.2.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2826,7 +2826,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure pam_pwhistory module is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.2.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2840,7 +2840,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password failed attempts lockout is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.1.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.1.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2854,7 +2854,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password unlock time is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.1.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2868,7 +2868,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password failed attempts lockout includes root account"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.1.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2882,7 +2882,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password number of changed characters is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.2.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2896,7 +2896,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure minimum password length is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.2.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2917,7 +2917,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password same consecutive characters is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.2.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2931,7 +2931,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password maximum sequential characters is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.2.5.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.2.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2945,7 +2945,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password dictionary check is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.2.6.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.2.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2959,7 +2959,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password quality checking is enforced"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.2.7.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.2.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2973,7 +2973,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password quality is enforced for the root user"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.2.8.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.2.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2987,7 +2987,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password history remember is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.3.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.3.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3001,7 +3001,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password history is enforced for the root user"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.3.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3015,7 +3015,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure pam_pwhistory includes use_authtok"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.3.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.3.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3029,7 +3029,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure pam_unix does not include nullok"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.4.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.4.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3043,7 +3043,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure pam_unix does not include remember"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.4.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.4.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3057,7 +3057,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure pam_unix includes a strong password hashing algorithm"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.4.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.4.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3071,7 +3071,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure pam_unix includes use_authtok"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.3.3.4.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.3.3.4.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3085,7 +3085,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password expiration is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.1.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.1.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3099,7 +3099,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure minimum password age is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.1.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3113,7 +3113,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure password expiration warning days is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.1.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3127,7 +3127,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure strong password hashing algorithm is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.1.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.1.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3141,7 +3141,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure inactive password lock is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.1.5.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.1.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3155,7 +3155,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure all users last password change date is in the past"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.5.1.5.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/5.5.1.5.sh"
         $result=bash $path
         if($result -eq $null){
             return $retCompliant
@@ -3190,7 +3190,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure group root is the only GID 0 group"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.2.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.2.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3204,7 +3204,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure root password is set"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.2.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3218,7 +3218,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure root PATH Integrity"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.9.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.9.sh"
         $result=bash $path
         if($result -eq $null){
             return $retCompliant
@@ -3231,7 +3231,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure root user umask is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.2.6.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.2.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3245,7 +3245,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure system accounts do not have a valid login shell"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.2.7.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.2.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3259,7 +3259,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure accounts without a valid login shell are locked"
     Test = {            
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.2.8.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.2.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3272,7 +3272,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure nologin is not listed in /etc/shells"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.3.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.3.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3286,7 +3286,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure default user shell timeout is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.3.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3300,7 +3300,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure default user umask is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/5.4.3.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/5.4.3.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3313,7 +3313,7 @@ $FirewallStatus = GetFirewallStatus
     Id = "6.1.1"
     Task = "Ensure permissions on /etc/passwd are configured"
     Test = {
-        $test1 = stat -c '%#a' /etc/passwd | grep -q "06440"
+        $test1 = stat -c '%#a' /etc/passwd | grep -q "0644"
         if($?){
             return $retCompliant
         }
@@ -3336,7 +3336,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure cryptographic mechanisms are used to protect the integrity of audit tools"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.1.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3381,7 +3381,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure journald ForwardToSyslog is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.1.1.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.1.1.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3395,7 +3395,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure journald Storage is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.1.1.5.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.1.1.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3409,7 +3409,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure journald Compress is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.1.1.6.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.1.1.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3454,7 +3454,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure systemd-journal-remote service is not in use"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.1.2.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.1.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3503,7 +3503,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure auditing for processes that start prior to auditd is enabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.1.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3517,7 +3517,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit_backlog_limit is sufficient"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.1.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.1.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3531,7 +3531,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit log storage size is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.2.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3545,7 +3545,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit logs are not automatically deleted"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.2.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3583,7 +3583,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure changes to system administration scope is collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3597,7 +3597,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure actions as another user are always logged"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3611,7 +3611,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure events that modify the sudo log file are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3625,7 +3625,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure events that modify date and time information are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3639,7 +3639,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure events that modify the system's network environment are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.5.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3653,7 +3653,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure use of privileged commands are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.6.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3667,7 +3667,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure unsuccessful file access attempts are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.7.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3681,7 +3681,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure events that modify user/group information are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.8.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3695,7 +3695,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure discretionary access control permission modification events are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.9.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.9.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3709,7 +3709,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure successful file system mounts are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.10.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.10.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3723,11 +3723,11 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure session initiation information is collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path1 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/4.1.3.11_1.sh"
+        $path1 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/4.1.3.11_1.sh"
         $result11 = bash $path1 | grep "\-w /var/run/utmp -p wa -k session"
         $result12 = bash $path1 | grep "\-w /var/log/wtmp -p wa -k session"
         $result13 = bash $path1 | grep "\-w /var/log/btmp -p wa -k session"
-        $path2 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/4.1.3.11_2.sh"
+        $path2 = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/4.1.3.11_2.sh"
         $result21 = bash $path2 | grep "\-w /var/run/utmp -p wa -k session"
         $result22 = bash $path2 | grep "\-w /var/log/wtmp -p wa -k session"
         $result23 = bash $path2 | grep "\-w /var/log/btmp -p wa -k session"
@@ -3742,7 +3742,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure login and logout events are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.12.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.12.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3756,7 +3756,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure file deletion events by users are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.13.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.13.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3770,7 +3770,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure events that modify the system's Mandatory Access Controls are collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.14.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.14.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3784,7 +3784,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure successful and unsuccessful attempts to use the chcon command are recorded"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.15.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.15.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3798,7 +3798,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure successful and unsuccessful attempts to use the setfacl command are recorded"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.16.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.16.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3812,7 +3812,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure successful and unsuccessful attempts to use the chacl command are recorded"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.17.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.17.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3826,7 +3826,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure successful and unsuccessful attempts to use the usermod command are recorded"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.18.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.18.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3840,7 +3840,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure kernel module loading unloading and modification is collected"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.3.19.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.3.19.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3876,7 +3876,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit log files mode is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.4.1.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.4.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3890,7 +3890,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit log files owner is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.4.2.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.4.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3904,7 +3904,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit log files group owner is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.4.3.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.4.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3918,7 +3918,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure the audit log file directory mode is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.4.4.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.4.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3932,7 +3932,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit configuration files mode is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.4.5.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.4.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3946,7 +3946,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit configuration files owner is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.4.6.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.4.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3960,7 +3960,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit configuration files group owner is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.4.7.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.4.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3974,7 +3974,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit tools mode is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.4.8.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.4.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3988,7 +3988,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure audit tools owner is configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.3.4.9.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/6.3.4.9.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -4101,7 +4101,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure permissions on /etc/shells are configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/7.1.9.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/7.1.9.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -4115,7 +4115,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure permissions on /etc/security/opasswd are configured"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04-2.0.0/7.1.10.sh"
+        $script = Join-Path -Path $parentPath -ChildPath "Helpers/ShellScripts/Ubuntu22.04_Debian12/7.1.10.sh"
         $result = bash $script
         if($?){
             return $retCompliant
@@ -4196,7 +4196,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure all groups in /etc/passwd exist in /etc/group"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.3.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.3.sh"
         $result=bash $path
         if($result -match $null){
             return $retCompliant
@@ -4221,7 +4221,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure no duplicate UIDs exist"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.5.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.5.sh"
         $result=bash $path
         if($result -eq $null){
             return $retCompliant
@@ -4234,7 +4234,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure no duplicate GIDs exist"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.6.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.6.sh"
         $result=bash $path
         if($result -eq $null){
             return $retCompliant
@@ -4247,7 +4247,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure no duplicate user names exist"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.7.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.7.sh"
         $result=bash $path
         if($result -eq $null){
             return $retCompliant
@@ -4260,7 +4260,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure no duplicate group names exist"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04-2.0.0/6.2.8.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/6.2.8.sh"
         $result=bash $path
         if($result -eq $null){
             return $retCompliant
