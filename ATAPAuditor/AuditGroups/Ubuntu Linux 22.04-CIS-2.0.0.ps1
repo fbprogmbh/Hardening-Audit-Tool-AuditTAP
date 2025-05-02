@@ -826,8 +826,8 @@ $FirewallStatus = GetFirewallStatus
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.2.sh"
-        $result=bash $path | grep " PASS "
-        if($result -ne $null){
+        $result=bash $path
+        if($?){
             return $retCompliant
         }
 
@@ -840,8 +840,8 @@ $FirewallStatus = GetFirewallStatus
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.3.sh"
-        $result=bash $path | grep " PASS "
-        if($result -ne $null){
+        $result=bash $path
+        if($?){
             return $retCompliant
         }
 
@@ -881,7 +881,7 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure GDM automatic mounting of removable media is disabled"
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
-        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.7.sh"
+        $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.6.sh"
         $result=bash $path | grep " PASS "
         if($result -ne $null){
             return $retCompliant
