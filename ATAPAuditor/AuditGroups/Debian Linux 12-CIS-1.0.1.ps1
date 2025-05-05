@@ -882,8 +882,8 @@ $FirewallStatus = GetFirewallStatus
     Test = {
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
         $path = $parentPath+"/Helpers/ShellScripts/Ubuntu22.04_Debian12/1.8.7.sh"
-        $result=bash $path | grep " PASS "
-        if($result -ne $null){
+        $result=bash $path
+        if($?){
             return $retCompliant
         }
 
