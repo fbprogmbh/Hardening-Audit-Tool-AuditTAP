@@ -752,6 +752,11 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure local login warning banner is configured properly"
     Test = {
         $output1 = cat /etc/issue
+
+	if($output1 -eq $null){
+	    return $retCompliant
+	}
+
         $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue
         
         if($output1 -ne $null -and $output2 -eq $null){
@@ -765,6 +770,11 @@ $FirewallStatus = GetFirewallStatus
     Task = "Ensure remote login warning banner is configured properly"
     Test = {
         $output1 = cat /etc/issue.net
+
+	if($output1 -eq $null){
+	    return $retCompliant
+	}
+
         $output2 = grep -E -i "(\\\v|\\\r|\\\m|\\\s|$(grep '^ID=' /etc/os-release | cut -d= -f2 | sed -e 's/"//g'))" /etc/issue.net
         
         if($output1 -ne $null -and $output2 -eq $null){
