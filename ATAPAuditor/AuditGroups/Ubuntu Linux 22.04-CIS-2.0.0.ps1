@@ -3429,10 +3429,8 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.2.3"
     Task = "Ensure system is disabled when audit logs are full"
     Test = {
-        $test1 = grep space_left_action /etc/audit/auditd.conf
-        $test2 = grep action_mail_acct /etc/audit/auditd.conf
-        $test3 = grep admin_space_left_action /etc/audit/auditd.conf
-        if($test1 -match "space_left_action = email" -and $test2 -match "action_mail_acct = root" -and $test3 -match "admin_space_left_action = halt"){
+        $test1 = grep -Pi -- '^\h*disk_full_action\h*=\h*(halt|single)\b' /etc/audit/auditd.conf
+        if($?){
             return $retCompliant
         }
         return $retNonCompliant
