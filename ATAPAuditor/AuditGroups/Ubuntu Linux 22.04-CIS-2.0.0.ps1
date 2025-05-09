@@ -80,12 +80,13 @@ $FirewallStatus = GetFirewallStatus
 
 $parentPath = Split-Path -Parent -Path $PSScriptRoot
 $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
+$commonPath = $parentPath + "/Helpers/ShellScripts/common/"
 
 [AuditTest] @{
     Id = "1.1.1.1"
     Task = "Ensure cramfs kernel module is not available"
     Test = {
-        $script = $scriptPath + "1.1.1.1.sh"
+        $script = $commonPath + "1.1.1.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -98,7 +99,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.1.2"
     Task = "Ensure freevxfs kernel module is not available"
     Test = {
-        $script = $scriptPath + "1.1.1.2.sh"
+        $script = $commonPath + "1.1.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -111,7 +112,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.1.3"
     Task = "Ensure hfs kernel module is not available"
     Test = {
-        $script = $scriptPath + "1.1.1.3.sh"
+        $script = $commonPath + "1.1.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -124,7 +125,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.1.4"
     Task = "Ensure hfsplus kernel module is not available"
     Test = {
-        $script = $scriptPath + "1.1.1.4.sh"
+        $script = $commonPath + "1.1.1.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -137,7 +138,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.1.5"
     Task = "Ensure jffs2 kernel module is not available"
     Test = {
-        $script = $scriptPath + "1.1.1.5.sh"
+        $script = $commonPath + "1.1.1.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -150,7 +151,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.1.6"
     Task = "Ensure squashfs kernel module is not available"
     Test = {
-        $script = $scriptPath + "1.1.1.6.sh"
+        $script = $commonPath + "1.1.1.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -163,7 +164,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.1.7"
     Task = "Ensure udf kernel module is not available"
     Test = {
-        $script = $scriptPath + "1.1.1.7.sh"
+        $script = $commonPath + "1.1.1.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -176,7 +177,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.1.8"
     Task = "Ensure usb-storage kernel module is not available"
     Test = {
-        $script = $scriptPath + "1.1.1.8.sh"
+        $script = $commonPath + "1.1.1.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -201,7 +202,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.1.2"
     Task = "Ensure nodev option set on /tmp partition"
     Test = {
-        $script = $scriptPath + "1.1.2.1.2.sh"
+        $script = $commonPath + "1.1.2.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -214,7 +215,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.1.3"
     Task = "Ensure nosuid option set on /tmp partition"
     Test = {
-        $script = $scriptPath + "1.1.2.1.3.sh"
+        $script = $commonPath + "1.1.2.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -254,7 +255,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.2.2"
     Task = "Ensure nodev option set on /dev/shm partition"
     Test = {
-        $script = $scriptPath + "1.1.2.2.2.sh"
+        $script = $commonPath + "1.1.2.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -267,7 +268,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.2.3"
     Task = "Ensure nosuid option set on /dev/shm partition"
     Test = {
-        $script = $scriptPath + "1.1.2.2.3.sh"
+        $script = $commonPath + "1.1.2.2.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -280,7 +281,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.2.4"
     Task = "Ensure noexec option set on /dev/shm partition"
     Test = {
-        $script = $scriptPath + "1.1.2.2.4.sh"
+        $script = $commonPath + "1.1.2.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -305,7 +306,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.3.2"
     Task = "Ensure nodev option set on /home partition"
     Test = {
-        $script = $scriptPath + "1.1.2.3.2.sh"
+        $script = $commonPath + "1.1.2.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -318,7 +319,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.3.3"
     Task = "Ensure nosuid option set on /home partition"
     Test = {
-        $script = $scriptPath + "1.1.2.3.3.sh"
+        $script = $commonPath + "1.1.2.3.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -343,7 +344,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.4.2"
     Task = "Ensure nodev option set on /var partition"
     Test = {
-        $script = $scriptPath + "1.1.2.4.2.sh"
+        $script = $commonPath + "1.1.2.4.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -356,7 +357,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.4.3"
     Task = "Ensure nosuid option set on /var partition"
     Test = {
-        $script = $scriptPath + "1.1.2.4.3.sh"
+        $script = $commonPath + "1.1.2.4.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -381,7 +382,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.5.2"
     Task = "Ensure nodev option set on /var/tmp partition"
     Test = {
-        $script = $scriptPath + "1.1.2.5.2.sh"
+        $script = $commonPath + "1.1.2.5.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -394,7 +395,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.5.3"
     Task = "Ensure nosuid option set on /var/tmp partition"
     Test = {
-        $script = $scriptPath + "1.1.2.5.3.sh"
+        $script = $commonPath + "1.1.2.5.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -407,7 +408,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.5.4"
     Task = "Ensure noexec option set on /var/tmp partition"
     Test = {
-        $script = $scriptPath + "1.1.2.5.4.sh"
+        $script = $commonPath + "1.1.2.5.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -432,7 +433,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.6.2"
     Task = "Ensure nodev option set on /var/log partition"
     Test = {
-        $script = $scriptPath + "1.1.2.6.2.sh"
+        $script = $commonPath + "1.1.2.6.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -445,7 +446,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.6.3"
     Task = "Ensure nosuid option set on /var/log partition"
     Test = {
-        $script = $scriptPath + "1.1.2.6.3.sh"
+        $script = $commonPath + "1.1.2.6.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -458,7 +459,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.6.4"
     Task = "Ensure noexec option set on /var/log partition"
     Test = {
-        $script = $scriptPath + "1.1.2.6.4.sh"
+        $script = $commonPath + "1.1.2.6.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -483,7 +484,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.7.2"
     Task = "Ensure nodev option set on /var/log/audit partition"
     Test = {
-        $script = $scriptPath + "1.1.2.7.2.sh"
+        $script = $commonPath + "1.1.2.7.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -496,7 +497,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.7.3"
     Task = "Ensure nosuid option set on /var/log/audit partition"
     Test = {
-        $script = $scriptPath + "1.1.2.7.3.sh"
+        $script = $commonPath + "1.1.2.7.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -509,7 +510,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.1.2.7.4"
     Task = "Ensure noexec option set on /var/log/audit partition"
     Test = {
-        $script = $scriptPath + "1.1.2.7.4.sh"
+        $script = $commonPath + "1.1.2.7.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -625,7 +626,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.4.2"
     Task = "Ensure access to bootloader config is configured"
     Test = {
-        $script = $scriptPath + "1.4.2.sh"
+        $script = $commonPath + "1.4.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -638,7 +639,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.5.1"
     Task = "Ensure address space layout randomization is enabled"
     Test = {
-        $script = $scriptPath + "1.5.1.sh"
+        $script = $commonPath + "1.5.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -651,7 +652,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "1.5.2"
     Task = "Ensure ptrace_scope is restricted"
     Test = {
-        $script = $scriptPath + "1.5.2.sh"
+        $script = $commonPath + "1.5.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1512,7 +1513,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "2.4.2.1"
     Task = "Ensure at is restricted to authorized users"
     Test = {
-        $script = $scriptPath + "2.4.2.1.sh"
+        $script = $commonPath + "2.4.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1543,7 +1544,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.1.2"
     Task = "Ensure wireless interfaces are disabled"
     Test = {
-        $script = $scriptPath + "3.1.2.sh"
+        $script = $commonPath + "3.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1573,7 +1574,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.2.1"
     Task = "Ensure dccp kernel module is not available"
     Test = {
-        $script = $scriptPath + "3.2.1.sh"
+        $script = $commonPath + "3.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1586,7 +1587,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.2.2"
     Task = "Ensure tipc kernel module is not available"
     Test = {
-        $script = $scriptPath + "3.2.2.sh"
+        $script = $commonPath + "3.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1599,7 +1600,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.2.3"
     Task = "Ensure rds kernel module is not available"
     Test = {
-        $script = $scriptPath + "3.2.3.sh"
+        $script = $commonPath + "3.2.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1612,7 +1613,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.2.4"
     Task = "Ensure sctp kernel module is not available"
     Test = {
-        $script = $scriptPath + "3.2.4.sh"
+        $script = $commonPath + "3.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1625,7 +1626,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.1"
     Task = "Ensure ip forwarding is disabled"
     Test = {
-        $script = $scriptPath + "3.3.1.sh"
+        $script = $commonPath + "3.3.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1638,7 +1639,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.2"
     Task = "Ensure packet redirect sending is disabled"
     Test = {
-        $script = $scriptPath + "3.3.2.sh"
+        $script = $commonPath + "3.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1651,7 +1652,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.3"
     Task = "Ensure bogus icmp responses are ignored"
     Test = {
-        $script = $scriptPath + "3.3.3.sh"
+        $script = $commonPath + "3.3.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1664,7 +1665,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.4"
     Task = "Ensure broadcast icmp requests are ignored"
     Test = {
-        $script = $scriptPath + "3.3.4.sh"
+        $script = $commonPath + "3.3.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1677,7 +1678,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.5"
     Task = "Ensure icmp redirects are not accepted"
     Test = {
-        $script = $scriptPath + "3.3.5.sh"
+        $script = $commonPath + "3.3.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1690,7 +1691,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.6"
     Task = "Ensure secure icmp redirects are not accepted"
     Test = {
-        $script = $scriptPath + "3.3.6.sh"
+        $script = $commonPath + "3.3.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1703,7 +1704,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.7"
     Task = "Ensure reverse path filtering is enabled"
     Test = {
-        $script = $scriptPath + "3.3.7.sh"
+        $script = $commonPath + "3.3.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1716,7 +1717,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.8"
     Task = "Ensure source routed packets are not accepted"
     Test = {
-        $script = $scriptPath + "3.3.8.sh"
+        $script = $commonPath + "3.3.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1729,7 +1730,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.9"
     Task = "Ensure suspicious packets are logged"
     Test = {
-        $script = $scriptPath + "3.3.9.sh"
+        $script = $commonPath + "3.3.9.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1742,7 +1743,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.10"
     Task = "Ensure tcp syn cookies is enabled"
     Test = {
-        $script = $scriptPath + "3.3.10.sh"
+        $script = $commonPath + "3.3.10.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -1755,7 +1756,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "3.3.11"
     Task = "Ensure ipv6 router advertisements are not accepted"
     Test = {
-        $script = $scriptPath + "3.3.11.sh"
+        $script = $commonPath + "3.3.11.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2323,7 +2324,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.1.3"
     Task = "Ensure permissions on SSH public host key files are configured"
     Test = {
-        $script = $scriptPath + "5.1.3.sh"
+        $script = $commonPath + "5.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2486,7 +2487,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.1.16"
     Task = "Ensure sshd MaxAuthTries is configured"
     Test = {
-        $script = $scriptPath + "5.1.16.sh"
+        $script = $commonPath + "5.1.16.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2525,7 +2526,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.1.19"
     Task = "Ensure sshd PermitEmptyPasswords is disabled"
     Test = {
-        $script = $scriptPath + "5.1.19.sh"
+        $script = $commonPath + "5.1.19.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2538,7 +2539,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.1.20"
     Task = "Ensure sshd PermitRootLogin is disabled"
     Test = {
-        $script = $scriptPath + "5.1.20.sh"
+        $script = $commonPath + "5.1.20.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2551,7 +2552,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.1.21"
     Task = "Ensure sshd PermitUserEnvironment is disabled"
     Test = {
-        $script = $scriptPath + "5.1.21.sh"
+        $script = $commonPath + "5.1.21.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2564,7 +2565,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.1.22"
     Task = "Ensure sshd UsePAM is enabled"
     Test = {
-        $script = $scriptPath + "5.1.22.sh"
+        $script = $commonPath + "5.1.22.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2588,7 +2589,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.2.2"
     Task = "Ensure sudo commands use pty"
     Test = {
-        $script = $scriptPath + "5.2.2.sh"
+        $script = $commonPath + "5.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2601,7 +2602,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.2.3"
     Task = "Ensure sudo log file exists"
     Test = {
-        $script = $scriptPath + "5.2.3.sh"
+        $script = $commonPath + "5.2.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2640,7 +2641,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.2.6"
     Task = "Ensure sudo authentication timeout is configured correctly"
     Test = {
-        $script = $scriptPath + "5.2.6.sh"
+        $script = $commonPath + "5.2.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2751,7 +2752,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.3.3.1.1"
     Task = "Ensure password failed attempts lockout is configured"
     Test = {
-        $script = $scriptPath + "5.3.3.1.1.sh"
+        $script = $commonPath + "5.3.3.1.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2764,7 +2765,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.3.3.1.2"
     Task = "Ensure password unlock time is configured"
     Test = {
-        $script = $scriptPath + "5.3.3.1.2.sh"
+        $script = $commonPath + "5.3.3.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2777,7 +2778,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.3.3.1.3"
     Task = "Ensure password failed attempts lockout includes root account"
     Test = {
-        $script = $scriptPath + "5.3.3.1.3.sh"
+        $script = $commonPath + "5.3.3.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2790,7 +2791,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.3.3.2.1"
     Task = "Ensure password number of changed characters is configured"
     Test = {
-        $script = $scriptPath + "5.3.3.2.1.sh"
+        $script = $commonPath + "5.3.3.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2803,7 +2804,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.3.3.2.2"
     Task = "Ensure minimum password length is configured"
     Test = {
-        $script = $scriptPath + "5.3.3.2.2.sh"
+        $script = $commonPath + "5.3.3.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2823,7 +2824,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.3.3.2.4"
     Task = "Ensure password same consecutive characters is configured"
     Test = {
-        $script = $scriptPath + "5.3.3.2.4.sh"
+        $script = $commonPath + "5.3.3.2.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2836,7 +2837,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.3.3.2.5"
     Task = "Ensure password maximum sequential characters is configured"
     Test = {
-        $script = $scriptPath + "5.3.3.2.5.sh"
+        $script = $commonPath + "5.3.3.2.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2849,7 +2850,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.3.3.2.6"
     Task = "Ensure password dictionary check is enabled"
     Test = {
-        $script = $scriptPath + "5.3.3.2.6.sh"
+        $script = $commonPath + "5.3.3.2.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2979,7 +2980,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.1.1"
     Task = "Ensure password expiration is configured"
     Test = {
-        $script = $scriptPath + "5.4.1.1.sh"
+        $script = $commonPath + "5.4.1.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -2992,7 +2993,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.1.2"
     Task = "Ensure minimum password age is configured"
     Test = {
-        $script = $scriptPath + "5.4.1.2.sh"
+        $script = $commonPath + "5.4.1.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3005,7 +3006,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.1.3"
     Task = "Ensure password expiration warning days is configured"
     Test = {
-        $script = $scriptPath + "5.4.1.3.sh"
+        $script = $commonPath + "5.4.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3018,7 +3019,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.1.4"
     Task = "Ensure strong password hashing algorithm is configured"
     Test = {
-        $script = $scriptPath + "5.4.1.4.sh"
+        $script = $commonPath + "5.4.1.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3031,7 +3032,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.1.5"
     Task = "Ensure inactive password lock is configured"
     Test = {
-        $script = $scriptPath + "5.4.1.5.sh"
+        $script = $commonPath + "5.4.1.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3116,7 +3117,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.2.6"
     Task = "Ensure root user umask is configured"
     Test = {
-        $script = $scriptPath + "5.4.2.6.sh"
+        $script = $commonPath + "5.4.2.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3129,7 +3130,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.2.7"
     Task = "Ensure system accounts do not have a valid login shell"
     Test = {
-        $script = $scriptPath + "5.4.2.7.sh"
+        $script = $commonPath + "5.4.2.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3154,7 +3155,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.3.1"
     Task = "Ensure nologin is not listed in /etc/shells"
     Test = {
-        $script = $scriptPath + "5.4.3.1.sh"
+        $script = $commonPath + "5.4.3.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3167,7 +3168,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.3.2"
     Task = "Ensure default user shell timeout is configured"
     Test = {
-        $script = $scriptPath + "5.4.3.2.sh"
+        $script = $commonPath + "5.4.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3180,7 +3181,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "5.4.3.3"
     Task = "Ensure default user umask is configured"
     Test = {
-        $script = $scriptPath + "5.4.3.3.sh"
+        $script = $commonPath + "5.4.3.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3215,7 +3216,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.1.3"
     Task = "Ensure cryptographic mechanisms are used to protect the integrity of audit tools"
     Test = {
-        $script = $scriptPath + "6.1.3.sh"
+        $script = $commonPath + "6.1.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3403,7 +3404,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.2.1"
     Task = "Ensure audit log storage size is configured"
     Test = {
-        $script = $scriptPath + "6.3.2.1.sh"
+        $script = $commonPath + "6.3.2.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3416,7 +3417,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.2.2"
     Task = "Ensure audit logs are not automatically deleted"
     Test = {
-        $script = $scriptPath + "6.3.2.2.sh"
+        $script = $commonPath + "6.3.2.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3451,7 +3452,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.1"
     Task = "Ensure changes to system administration scope is collected"
     Test = {
-        $script = $scriptPath + "6.3.3.1.sh"
+        $script = $commonPath + "6.3.3.1.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3464,7 +3465,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.2"
     Task = "Ensure actions as another user are always logged"
     Test = {
-        $script = $scriptPath + "6.3.3.2.sh"
+        $script = $commonPath + "6.3.3.2.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3477,7 +3478,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.3"
     Task = "Ensure events that modify the sudo log file are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.3.sh"
+        $script = $commonPath + "6.3.3.3.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3490,7 +3491,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.4"
     Task = "Ensure events that modify date and time information are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.4.sh"
+        $script = $commonPath + "6.3.3.4.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3503,7 +3504,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.5"
     Task = "Ensure events that modify the system's network environment are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.5.sh"
+        $script = $commonPath + "6.3.3.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3516,7 +3517,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.6"
     Task = "Ensure use of privileged commands are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.6.sh"
+        $script = $commonPath + "6.3.3.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3529,7 +3530,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.7"
     Task = "Ensure unsuccessful file access attempts are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.7.sh"
+        $script = $commonPath + "6.3.3.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3542,7 +3543,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.8"
     Task = "Ensure events that modify user/group information are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.8.sh"
+        $script = $commonPath + "6.3.3.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3555,7 +3556,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.9"
     Task = "Ensure discretionary access control permission modification events are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.9.sh"
+        $script = $commonPath + "6.3.3.9.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3568,7 +3569,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.10"
     Task = "Ensure successful file system mounts are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.10.sh"
+        $script = $commonPath + "6.3.3.10.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3599,7 +3600,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.12"
     Task = "Ensure login and logout events are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.12.sh"
+        $script = $commonPath + "6.3.3.12.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3612,7 +3613,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.13"
     Task = "Ensure file deletion events by users are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.13.sh"
+        $script = $commonPath + "6.3.3.13.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3625,7 +3626,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.14"
     Task = "Ensure events that modify the system's Mandatory Access Controls are collected"
     Test = {
-        $script = $scriptPath + "6.3.3.14.sh"
+        $script = $commonPath + "6.3.3.14.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3638,7 +3639,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.15"
     Task = "Ensure successful and unsuccessful attempts to use the chcon command are recorded"
     Test = {
-        $script = $scriptPath + "6.3.3.15.sh"
+        $script = $commonPath + "6.3.3.15.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3651,7 +3652,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.16"
     Task = "Ensure successful and unsuccessful attempts to use the setfacl command are recorded"
     Test = {
-        $script = $scriptPath + "6.3.3.16.sh"
+        $script = $commonPath + "6.3.3.16.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3664,7 +3665,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.17"
     Task = "Ensure successful and unsuccessful attempts to use the chacl command are recorded"
     Test = {
-        $script = $scriptPath + "6.3.3.17.sh"
+        $script = $commonPath + "6.3.3.17.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3677,7 +3678,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.18"
     Task = "Ensure successful and unsuccessful attempts to use the usermod command are recorded"
     Test = {
-        $script = $scriptPath + "6.3.3.18.sh"
+        $script = $commonPath + "6.3.3.18.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3690,7 +3691,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.3.19"
     Task = "Ensure kernel module loading unloading and modification is collected"
     Test = {
-        $script = $scriptPath + "6.3.3.19.sh"
+        $script = $commonPath + "6.3.3.19.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3777,7 +3778,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.4.5"
     Task = "Ensure audit configuration files mode is configured"
     Test = {
-        $script = $scriptPath + "6.3.4.5.sh"
+        $script = $commonPath + "6.3.4.5.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3790,7 +3791,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.4.6"
     Task = "Ensure audit configuration files owner is configured"
     Test = {
-        $script = $scriptPath + "6.3.4.6.sh"
+        $script = $commonPath + "6.3.4.6.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3803,7 +3804,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.4.7"
     Task = "Ensure audit configuration files group owner is configured"
     Test = {
-        $script = $scriptPath + "6.3.4.7.sh"
+        $script = $commonPath + "6.3.4.7.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3816,7 +3817,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.4.8"
     Task = "Ensure audit tools mode is configured"
     Test = {
-        $script = $scriptPath + "6.3.4.8.sh"
+        $script = $commonPath + "6.3.4.8.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
@@ -3829,7 +3830,7 @@ $scriptPath = $parentPath + "/Helpers/ShellScripts/Ubuntu22.04_Debian12/"
     Id = "6.3.4.9"
     Task = "Ensure audit tools owner is configured"
     Test = {
-        $script = $scriptPath + "6.3.4.9.sh"
+        $script = $commonPath + "6.3.4.9.sh"
         $result = bash $script
         if ($?) {
             return $retCompliant
