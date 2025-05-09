@@ -2,7 +2,7 @@
 	Title = "Red Hat Enterprise Linux 9"
 	ModuleName = "ATAPAuditor"
 	BasedOn = @(
-		"CIS Red Hat Enterprise Linux 9 version 1.0.0"
+		"CIS Red Hat Enterprise Linux 9 version 2.0.0"
     )
 	Sections = @(
 		[ReportSection] @{
@@ -11,7 +11,7 @@
 			SubSections = @(
 				[ReportSection] @{
 					Title = 'CIS Red Hat Enterprise Linux 9'
-					AuditInfos = Test-AuditGroup "Red Hat Enterprise Linux 9-CIS-1.0.0"
+					AuditInfos = Test-AuditGroup "Red Hat Enterprise Linux 9-CIS-2.0.0"
 				}
 			)
 		}
