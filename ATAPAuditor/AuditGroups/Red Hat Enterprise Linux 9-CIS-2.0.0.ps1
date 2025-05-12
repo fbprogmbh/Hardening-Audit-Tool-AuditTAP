@@ -540,8 +540,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "1.3.1.1"
     Task = "Ensure SELinux is installed"
     Test = {
-        $result = rpm -q libselinux
-        if ($result -match "libselinux-") {
+        rpm -q libselinux 2>&1 >/dev/null
+        if ($?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -623,8 +623,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "1.3.1.8"
     Task = "Ensure SETroubleshoot is not installed"
     Test = {
-        $result = rpm -q setroubleshoot
-        if ($result -match "is not installed") {
+        rpm -q setroubleshoot 2>&1 >/dev/null
+        if (! $?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -829,8 +829,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "1.8.1"
     Task = "Ensure GNOME Display Manager is removed"
     Test = {
-        $result = rpm -q gdm
-        if ($result -match "not installed") {
+        rpm -q gdm 2>&1 >/dev/null
+        if (! $?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -976,8 +976,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.1"
     Task = "Ensure time synchronization is in use"
     Test = {
-        $test = rpm -q chrony
-        if ($test -match "chrony-") {
+        rpm -q chrony 2>&1 >/dev/null
+        if ($?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -1000,32 +1000,325 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
 }
 
 
-# MISSING RULE: 2.1.3 - Ensure dhcp server services are not in use
-# MISSING RULE: 2.1.4 - Ensure dns server services are not in use
+[AuditTest] @{
+    Id = "2.1.3"
+    Task = "Ensure dhcp server services are not in use"
+    Test = {
+        rpm -q isc-dhcp-server 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null isc-dhcp-server.service
+            if(! $?){
+                $test2 = systemctl is-enabled 2>/dev/null isc-dhcp-server6.service
+                if(! $?){
+                    return $retCompliant
+                }
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.4"
+    Task = "Ensure dns server services are not in use"
+    Test = {
+        rpm -q bind9 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null bind9.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
 # MISSING RULE: 2.1.5 - Ensure dnsmasq services are not in use
-# MISSING RULE: 2.1.6 - Ensure samba file server services are not in use
-# MISSING RULE: 2.1.7 - Ensure ftp server services are not in use
-# MISSING RULE: 2.1.8 - Ensure message access server services are not in use
-# MISSING RULE: 2.1.9 - Ensure network file system services are not in use
-# MISSING RULE: 2.1.10 - Ensure nis server services are not in use
-# MISSING RULE: 2.1.11 - Ensure print server services are not in use
-# MISSING RULE: 2.1.12 - Ensure rpcbind services are not in use
-# MISSING RULE: 2.1.13 - Ensure rsync services are not in use
-# MISSING RULE: 2.1.14 - Ensure snmp services are not in use
+[AuditTest] @{
+    Id = "2.1.6"
+    Task = "Ensure samba file server services are not in use"
+    Test = {
+        rpm -q samba 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null samba.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.7"
+    Task = "Ensure ftp server services are not in use"
+    Test = {
+        rpm -q vsftpd 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null vsftpd.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.8"
+    Task = "Ensure message access server services are not in use"
+    Test = {
+        rpm -q dovecot-imapd 2>&1 >/dev/null
+        if($?){
+            return $retNonCompliant
+        }
+        rpm -q dovecot-pop3d 2>&1 >/dev/null
+        if($?){
+            return $retNonCompliant
+        }
+        $test3 = systemctl is-enabled 2>/dev/null dovecot.socket
+        if(! $?){
+            $test4 = systemctl is-enabled 2>/dev/null dovecot.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.9"
+    Task = "Ensure network file system services are not in use"
+    Test = {
+        rpm -q nfs-kernel-server 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null nfs-kernel.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.10"
+    Task = "Ensure nis server services are not in use"
+    Test = {
+        rpm -q ypserv 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null ypserv.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.11"
+    Task = "Ensure print server services are not in use"
+    Test = {
+        rpm -q cups 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null cups.service
+            if(! $?){
+                $test3 = systemctl is-enabled 2>/dev/null cups.socket
+                if(! $?){
+                    return $retCompliant
+                }
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.12"
+    Task = "Ensure rpcbind services are not in use"
+    Test = {
+        rpm -q rpcbind 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null rpcbind.service
+            if(! $?){
+                $test3 = systemctl is-enabled 2>/dev/null rpcbind.socket
+                if(! $?){
+                    return $retCompliant
+                }
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.13"
+    Task = "Ensure rsync services are not in use"
+    Test = {
+        $script = $scriptPath + "2.1.13.sh"
+        $result = bash $script
+        if ($?){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.15"
+    Task = "Ensure snmp services are not in use"
+    Test = {
+        rpm -q snmpd 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null snmpd.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
 # MISSING RULE: 2.1.15 - Ensure telnet server services are not in use
-# MISSING RULE: 2.1.16 - Ensure tftp server services are not in use
-# MISSING RULE: 2.1.17 - Ensure web proxy server services are not in use
-# MISSING RULE: 2.1.18 - Ensure web server services are not in use
-# MISSING RULE: 2.1.19 - Ensure xinetd services are not in use
-# MISSING RULE: 2.1.20 - Ensure X window server services are not in use
+[AuditTest] @{
+    Id = "2.1.16"
+    Task = "Ensure tftp server services are not in use"
+    Test = {
+        rpm -q tftpd-hpa 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null tftpd-hpa.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.17"
+    Task = "Ensure web proxy server services are not in use"
+    Test = {
+        rpm -q squid 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null squid.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.18"
+    Task = "Ensure web server services are not in use"
+    Test = {
+        rpm -q apache2 2>&1 >/dev/null
+        if($?){
+            return $retNonCompliant
+        }
+        rpm -q ginx 2>&1 >/dev/null
+        if($?){
+            return $retNonCompliant
+        }
+        else{
+            $services = 'apache2.service', 'apache2.socket', 'nginx.service', 'nginx.socket'
+            $test3 = "disabled"
+            foreach ($service in $services){
+                $test4 = systemctl is-enabled $service 2>/dev/null
+                if($?){
+                    $test3 = "enabled"
+                }
+            }
+            if($test3 -match "disabled"){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.19"
+    Task = "Ensure xinetd services are not in use"
+    Test = {
+        rpm -q xinetd 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        else{
+            $test2 = systemctl is-enabled 2>/dev/null xinetd.service
+            if(! $?){
+                return $retCompliant
+            }
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "2.1.20"
+    Task = "Ensure X window server services are not in use"
+    Test = {
+        rpm -q xserver-commen 2>&1 >/dev/null
+        if(! $?){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
 # MISSING RULE: 2.1.21 - Ensure mail transfer agents are configured for local-only mode
-# MISSING RULE: 2.1.22 - Ensure only approved services are listening on a network interface
+[AuditTest] @{
+    Id = "2.1.22"
+    Task = "Ensure only approved services are listening on a network interface"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+
 [AuditTest] @{
     Id = "2.2.1"
     Task = "Ensure xorg-x11-server-common is not installed"
     Test = {
-        $test = rpm -q xorg-x11-server-common
-        if ($test -match "not installed") {
+        rpm -q xorg-x11-server-common 2>&1 >/dev/null
+        if (! $?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -1038,8 +1331,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.2"
     Task = "Ensure Avahi Server is not installed"
     Test = {
-        $test = rpm -q avahi
-        if ($test -match "not installed") {
+        rpm -q avahi 2>&1 >/dev/null
+        if (! $?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -1052,8 +1345,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.3"
     Task = "Ensure CUPS is not installed"
     Test = {
-        $test = rpm -q cups
-        if ($test -match "not installed") {
+        rpm -q cups 2>&1 >/dev/null
+        if (! $?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -1066,8 +1359,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.4"
     Task = "Ensure DHCP Server is not installed"
     Test = {
-        $test = rpm -q dhcp-server
-        if ($test -match "not installed") {
+        rpm -q dhcp-server 2>&1 >/dev/null
+        if (! $?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -1080,8 +1373,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.5"
     Task = "Ensure DNS Server is not installed"
     Test = {
-        $test = rpm -q bind
-        if ($test -match "not installed") {
+        rpm -q bind 2>&1 >/dev/null
+        if (! $?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -1094,8 +1387,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.3.2"
     Task = "Ensure LDAP client is not installed"
     Test = {
-        $test = rpm -q openldap-clients
-        if ($test -match "not installed") {
+        rpm -q openldap-clients 2>&1 >/dev/null
+        if (! $?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -1117,7 +1410,19 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         }
     }
 }
-# MISSING RULE: 2.4.1.1 - Ensure cron daemon is enabled and active
+[AuditTest] @{
+    Id = "2.4.1.1"
+    Task = "Ensure cron daemon is enabled and active"
+    Test = {
+        $test1 = systemctl is-enabled cron
+        $test2 = systemctl status cron | grep 'Active: active (running) '
+        if($test1 -eq "enabled" -and $test2 -match "running"){
+            return $retCompliant
+        }
+        return $retCompliant
+    }
+}
+
 [AuditTest] @{
     Id = "2.4.1.2"
     Task = "Ensure permissions on /etc/crontab are configured"
@@ -1202,7 +1507,20 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
 }
 
 
-# MISSING RULE: 2.4.1.8 - Ensure crontab is restricted to authorized users
+[AuditTest] @{
+    Id = "2.4.1.8"
+    Task = "Ensure crontab is restricted to authorized users"
+    Test = {
+        $script = $scriptPath + "2.4.1.8.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
+            return $retNonCompliant
+        }
+    }
+}
+
 [AuditTest] @{
     Id = "2.4.2.1"
     Task = "Ensure at is restricted to authorized users"
@@ -1452,7 +1770,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "4.1.1"
     Task = "Ensure nftables is installed"
     Test = {
-        $result = rpm -q nftables
+        rpm -q nftables 2>&1 >/dev/null
         if ($result -match "nftables-") {
             return $retCompliant
         } else {
@@ -1542,9 +1860,41 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
 
 ### Chapter 4 - Logging and Auditing
 
+[AuditTest] @{
+    Id = "4.3.4"
+    Task = "Ensure nftables loopback traffic is configured"
+    Test = {
+        try{
+            if ($FirewallStatus -match 2) {
+                return $retUsingFW1
+            }
+            if ($FirewallStatus -match 3) {
+                return $retUsingFW3
+            }
+            if($isIPv6Disabled -ne $true){
+                $test1 = nft list ruleset | awk '/hook input/,/}/' | grep 'iif "lo" accept'
+                $test2 = nft list ruleset | awk '/hook input/,/}/' | grep 'ip saddr'
+                if($test1 -match 'iif "lo" accept' -and $test2 -match "ip saddr 127.0.0.0/8 counter packets 0 bytes 0 drop"){
+                    return $retCompliant
+                }
+            }
+            else{
+                $test = nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'
+                if($test -match 'ip6 saddr ::1 counter packets 0 bytes 0 drop'){
+                    return $retCompliant
+                }
+            }
+            return $retNonCompliant
+        }
+        catch{
+            return @{
+                Message = "Command not found!"
+                Status = "False"
+            }
+        }
+    }
+}
 
-
-# MISSING RULE: 4.3.4 - Ensure nftables loopback traffic is configured
 [AuditTest] @{
     Id = "5.1.1"
     Task = "Ensure cron daemon is enabled"
@@ -1649,7 +1999,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         $script_string = @'
 #!/usr/bin/env bash
 {
-    if rpm -q cronie >/dev/null; then
+    if rpm -q cronie 2>&1 >/dev/null >/dev/null; then
         [ -e /etc/cron.deny ] && echo "Fail: cron.deny exists"
         if [ ! -e /etc/cron.allow ]; then
             echo "Fail: cron.allow doesn't exist"
@@ -1957,7 +2307,18 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
 }
 
 
-# MISSING RULE: 5.3.1.1 - Ensure latest version of pam is installed
+[AuditTest] @{
+    Id = "5.3.1.1"
+    Task = "Ensure latest version of pam is installed"
+    Test = {
+        rpm -q libpam-runtime 2>&1 >/dev/null
+        if($?){
+            return $retNonCompliant
+        }
+        return $retCompliant
+    }
+} 
+
 # MISSING RULE: 5.3.1.2 - Ensure latest version of authselect is installed
 # MISSING RULE: 5.3.1.3 - Ensure latest version of libpwquality is installed
 # MISSING RULE: 5.3.2.1 - Ensure active authselect profile includes pam modules
@@ -2078,7 +2439,14 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         }
     }
 }
-# MISSING RULE: 5.3.3.2.3 - Ensure password complexity is configured
+[AuditTest] @{
+    Id = "5.3.3.2.3"
+    Task = "Ensure password complexity is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+
 [AuditTest] @{
     Id = "5.3.3.2.4"
     Task = "Ensure password same consecutive characters is configured"
@@ -2157,8 +2525,34 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         }
     }
 }
-# MISSING RULE: 5.3.3.3.3 - Ensure pam_pwhistory includes use_authtok
-# MISSING RULE: 5.3.3.4.1 - Ensure pam_unix does not include nullok
+[AuditTest] @{
+    Id = "5.3.3.3.3"
+    Task = "Ensure pam_pwhistory includes use_authtok"
+    Test = {
+        $script = $scriptPath + "5.3.3.3.3.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
+            return $retNonCompliant
+        }
+    }
+}
+
+[AuditTest] @{
+    Id = "5.3.3.4.1"
+    Task = "Ensure pam_unix does not include nullok"
+    Test = {
+        $script = $scriptPath + "5.3.3.4.1.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
+            return $retNonCompliant
+        }
+    }
+}
+
 [AuditTest] @{
     Id = "5.3.3.4.2"
     Task = "Ensure pam_unix does not include remember"
@@ -2185,7 +2579,20 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         }
     }
 }
-# MISSING RULE: 5.3.3.4.4 - Ensure pam_unix includes use_authtok
+[AuditTest] @{
+    Id = "5.3.3.4.4"
+    Task = "Ensure pam_unix includes use_authtok"
+    Test = {
+        $script = $scriptPath + "5.3.3.4.4.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
+            return $retNonCompliant
+        }
+    }
+}
+
 [AuditTest] @{
     Id = "5.4.1.1"
     Task = "Ensure password expiration is configured"
@@ -2280,9 +2687,31 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     }
 }
 
+[AuditTest] @{
+     Id = "5.4.2.2"
+     Task = "Ensure root is the only GID 0 account"
+     Test = {
+         $test1 = grep "^root:" /etc/passwd | cut -f4 -d ':'
+         if($test1 -eq 0){
+             return $retCompliant
+         }
+         return $retNonCompliant
+     }
+ }
+ [AuditTest] @{
+    Id = "5.4.2.3"
+    Task = "Ensure group root is the only GID 0 group"
+    Test = {
+        $script = $scriptPath + "5.4.2.3.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
+            return $retNonCompliant
+        }
+    }
+}
 
-# MISSING RULE: 5.4.2.2 - Ensure root is the only GID 0 account
-# MISSING RULE: 5.4.2.3 - Ensure group root is the only GID 0 group
 # MISSING RULE: 5.4.2.4 - Ensure root account access is controlled
 [AuditTest] @{
     Id = "5.4.2.5"
@@ -2325,7 +2754,19 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         }
     }
 }
-# MISSING RULE: 5.4.2.8 - Ensure accounts without a valid login shell are locked
+[AuditTest] @{
+    Id = "5.4.2.8"
+    Task = "Ensure accounts without a valid login shell are locked"
+    Test = {            
+        $script = $scriptPath + "5.4.2.8.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
 [AuditTest] @{
     Id = "5.4.3.1"
     Task = "Ensure nologin is not listed in /etc/shells"
@@ -2406,13 +2847,71 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         }
     }
 }
-# MISSING RULE: 6.2.1.1 - Ensure journald service is enabled and active
-# MISSING RULE: 6.2.1.2 - Ensure journald log file access is configured
-# MISSING RULE: 6.2.1.3 - Ensure journald log file rotation is configured
+
+[AuditTest] @{
+    Id = "6.2.1.1"
+    Task = "Ensure journald service is enabled and active"
+    Test = {
+        $test1 = systemctl is-enabled rsyslog
+        if($test1 -match "enabled"){
+            return @{
+                Message = "Compliant"
+                Status = "True"
+            }
+        }
+        return @{
+            Message = "Not-Compliant"
+            Status = "False"
+        }
+    }
+}
+
+[AuditTest] @{
+    Id = "6.2.1.2"
+    Task = "Ensure journald log file access is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+
+[AuditTest] @{
+    Id = "6.2.1.3"
+    Task = "Ensure journald log file rotation is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+
 # MISSING RULE: 6.2.1.4 - Ensure only one logging system is in use
-# MISSING RULE: 6.2.2.1.1 - Ensure systemd-journal-remote is installed
+
+[AuditTest] @{
+    Id = "6.2.2.1.1"
+    Task = "Ensure systemd-journal-remote is installed"
+    Test = {
+        rpm -q systemd-journal-remote 2>&1 >/dev/null
+        if($?){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+
 # MISSING RULE: 6.2.2.1.2 - Ensure systemd-journal-upload authentication is configured
-# MISSING RULE: 6.2.2.1.3 - Ensure systemd-journal-upload is enabled and active
+
+[AuditTest] @{
+    Id = "6.2.2.1.3"
+    Task = "Ensure systemd-journal-upload is enabled and active"
+    Test = {
+        $test1 = systemctl is-enabled systemd-journal-upload.service
+        $test2 = systemctl is-active systemd-journal-upload.service
+        if($test1 -eq "enabled" -and $test2 -match "active"){
+            return $retCompliant
+        }
+        return $retCompliant
+    }
+}
+
 [AuditTest] @{
     Id = "6.2.2.1.4"
     Task = "Ensure systemd-journal-remote service is not in use"
@@ -2469,8 +2968,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "6.2.3.1"
     Task = "Ensure rsyslog is installed"
     Test = {
-        $result1 = rpm -q rsyslog
-        if ($result1 -match "rsyslog-") {
+        rpm -q rsyslog 2>&1 >/dev/null
+        if ($?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -2484,8 +2983,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "6.2.3.3"
     Task = "Ensure journald is configured to send logs to rsyslog"
     Test = {
-        $result1 = rpm -q systemd-journal-remote
-        if ($result1 -eq "systemd-journal-remote-") {
+        rpm -q systemd-journal-remote 2>&1 >/dev/null
+        if ($?) {
             return $retCompliant
         } else {
             return $retNonCompliant
@@ -2531,8 +3030,36 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     }
 }
 # MISSING RULE: 6.2.3.8 - Ensure rsyslog logrotate is configured
-# MISSING RULE: 6.2.4.1 - Ensure access to all logfiles has been configured
-# MISSING RULE: 6.3.1.1 - Ensure auditd packages are installed
+
+[AuditTest] @{
+    Id = "6.2.4.1"
+    Task = "Ensure access to all logfiles has been configured"
+    Test = {
+        $fileListAll = find /var/log -type f -ls
+        $fileListFiltered = find /var/log -type f -ls | grep "\-....\-\-\-\-\-"
+        if($fileListAll.Count -eq $fileListFiltered.Count){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "6.3.1.1"
+    Task = "Ensure auditd packages are installed"
+    Test = {
+        rpm -q auditd 2>&1 >/dev/null
+        if(! $?){
+            return $retNonCompliant
+        }
+        rpm -q audispd-plugins 2>&1 >/dev/null
+        if(! $?){
+            return $retNonCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
 [AuditTest] @{
     Id = "6.3.1.2"
     Task = "Ensure auditing for processes that start prior to auditd is enabled"
@@ -2559,7 +3086,19 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         }
     }
 }
-# MISSING RULE: 6.3.1.4 - Ensure auditd service is enabled and active
+
+[AuditTest] @{
+    Id = "6.3.1.4"
+    Task = "Ensure auditd service is enabled and active"
+    Test = {
+        $test1 = systemctl is-enabled auditd
+        if($test1 -match "enabled"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
 [AuditTest] @{
     Id = "6.3.2.1"
     Task = "Ensure audit log storage size is configured"
@@ -2602,7 +3141,18 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
 }
 
 
-# MISSING RULE: 6.3.2.4 - Ensure system warns when audit logs are low on space
+[AuditTest] @{
+    Id = "6.3.2.4"
+    Task = "Ensure system warns when audit logs are low on space"
+    Test = {
+        $test1 = grep -Pi -- '^\h*space_left_action\h*=\h*\w+\b' /etc/audit/auditd.conf | awk '{print $3}'
+        if($test1 -match "^(email|exec|single|halt)$"){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
 [AuditTest] @{
     Id = "6.3.3.1"
     Task = "Ensure changes to system administration scope (sudoers) is collected"
@@ -3011,7 +3561,19 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         }
     }
 }
-# MISSING RULE: 6.3.4.10 - Ensure audit tools group owner is configured
+
+[AuditTest] @{
+    Id = "6.3.4.10"
+    Task = "Ensure audit tools group owner is configured"
+    Test = {
+        $test1 = stat -Lc '%G' /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules | awk '$1 != "root" {print}'
+        if($test1 -eq $null){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
 [AuditTest] @{
     Id = "7.1.1"
     Task = "Ensure permissions on /etc/passwd are configured"
@@ -3025,8 +3587,18 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     }
 }
 
+[AuditTest] @{
+    Id = "7.1.2"
+    Task = "Ensure permissions on /etc/passwd- are configured"
+    Test = {
+        $test1 = stat -c '%#a' /etc/passwd- | grep -q "0644"
+        if($?){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
 
-# MISSING RULE: 7.1.2 - Ensure permissions on /etc/passwd- are configured
 [AuditTest] @{
     Id = "7.1.3"
     Task = "Ensure permissions on /etc/group are configured"
@@ -3111,11 +3683,87 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
 }
 
 
-# MISSING RULE: 7.1.9 - Ensure permissions on /etc/shells are configured
-# MISSING RULE: 7.1.10 - Ensure permissions on /etc/security/opasswd are configured
-# MISSING RULE: 7.1.11 - Ensure world writable files and directories are secured
-# MISSING RULE: 7.1.12 - Ensure no files or directories without an owner and a group exist
-# MISSING RULE: 7.1.13 - Ensure SUID and SGID files are reviewed
+[AuditTest] @{
+    Id = "7.1.9"
+    Task = "Ensure permissions on /etc/shells are configured"
+    Test = {
+        $script = $scriptPath + "7.1.9.sh"
+        $result = bash $script
+        if ($?) {
+            return $retCompliant
+        } else {
+            return $retNonCompliant
+        }
+    }
+}
+
+[AuditTest] @{
+    Id = "7.1.10"
+    Task = "Ensure permissions on /etc/security/opasswd are configured"
+    Test = {
+        $script = $scriptPath + "7.1.10.sh"
+        $result = bash $script
+        if($?){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "7.1.11"
+    Task = "Ensure world writable files and directories are secured"
+    Test = {
+        #$partitions = mapfile -t partitions < (sudo fdisk -l | grep -o '/dev/[^ ]*')
+        #$test1 = df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -0002
+        $script = $scriptPath + "7.1.11.sh"
+        $result = bash $script
+        if($?){
+            return $retCompliant
+        }
+        return $retNonCompliant
+    }
+}
+
+[AuditTest] @{
+    Id = "7.1.12"
+    Task = "Ensure no files or directories without an owner and a group exist"
+    Test = {
+        # try{
+        #     $test1 = df --local -P | awk "{if (NR -ne 1) { print $6 }}" | xargs -I '{}' find '{}' -xdev -nouser
+        #     if($test1 -eq $null){
+        $script = $scriptPath + "7.1.12.sh"
+        $result = bash $script
+        if($?){
+                return $retCompliant
+            }
+            return $retNonCompliant
+        # }
+        # catch{
+        #     return @{
+        #         Message = "Command not found!"
+        #         Status = "False"
+        #     }  
+        # }
+    }
+} 
+
+[AuditTest] @{
+    Id = "7.1.13"
+    Task = "Ensure SUID and SGID files are reviewed"
+    Test = {
+        $test1 = df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -4000
+        $message = ""
+        foreach($line in $test1){
+            $message += "<br>$line"
+        }
+        return @{
+            Message = "Please review following list of files: $($message)"
+            Status = "None"
+        }
+    }
+}
+
 [AuditTest] @{
     Id = "7.2.1"
     Task = "Ensure accounts in /etc/passwd use shadowed passwords"
@@ -3264,5 +3912,19 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
 }
 
 
-# MISSING RULE: 7.2.8 - Ensure local interactive user home directories are configured
-# MISSING RULE: 7.2.9 - Ensure local interactive user dot files access is configured
+[AuditTest] @{ # in CIS it's automated, but in Excelsheet it's manual
+    Id = "7.2.8"
+    Task = "Ensure local interactive user home directories are configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+
+[AuditTest] @{
+    Id = "7.2.9"
+    Task = "Ensure local interactive user dot files access is configured"
+    Test = {
+        	return $retNonCompliantManualReviewRequired
+    }
+}
+
