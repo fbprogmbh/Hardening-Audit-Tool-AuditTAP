@@ -1136,7 +1136,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.13"
     Task = "Ensure rsync services are not in use"
     Test = {
-        $script = $scriptPath + "2.1.13.sh"
+        $script = $commonPath + "2.1.13.sh"
         bash $script
         if ($?){
             return $retCompliant
@@ -1500,7 +1500,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.4.1.8"
     Task = "Ensure crontab is restricted to authorized users"
     Test = {
-        $script = $scriptPath + "2.4.1.8.sh"
+        $script = $commonPath + "2.4.1.8.sh"
         bash $script
         if ($?) {
             return $retCompliant
@@ -3143,7 +3143,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "5.4.2.8"
     Task = "Ensure accounts without a valid login shell are locked"
     Test = {            
-        $script = $scriptPath + "5.4.2.8.sh"
+        $script = $commonPath + "5.4.2.8.sh"
         bash $script
         if ($?) {
             return $retCompliant
