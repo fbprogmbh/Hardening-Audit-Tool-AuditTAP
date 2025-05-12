@@ -87,7 +87,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure cramfs kernel module is not available"
     Test = {
         $script = $commonPath + "1.1.1.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -100,7 +100,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure freevxfs kernel module is not available"
     Test = {
         $script = $commonPath + "1.1.1.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -113,7 +113,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure hfs kernel module is not available"
     Test = {
         $script = $commonPath + "1.1.1.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -126,7 +126,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure hfsplus kernel module is not available"
     Test = {
         $script = $commonPath + "1.1.1.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -139,7 +139,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure jffs2 kernel module is not available"
     Test = {
         $script = $commonPath + "1.1.1.5.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -152,7 +152,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure squashfs kernel module is not available"
     Test = {
         $script = $commonPath + "1.1.1.6.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -165,7 +165,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure udf kernel module is not available"
     Test = {
         $script = $commonPath + "1.1.1.7.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -178,7 +178,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure usb-storage kernel module is not available"
     Test = {
         $script = $commonPath + "1.1.1.8.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -203,7 +203,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nodev option set on /tmp partition"
     Test = {
         $script = $commonPath + "1.1.2.1.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -216,7 +216,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nosuid option set on /tmp partition"
     Test = {
         $script = $commonPath + "1.1.2.1.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -242,7 +242,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure /dev/shm is a separate partition"
     Test = {
         $script = $scriptPath + "1.1.2.2.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -256,7 +256,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nodev option set on /dev/shm partition"
     Test = {
         $script = $commonPath + "1.1.2.2.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -269,7 +269,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nosuid option set on /dev/shm partition"
     Test = {
         $script = $commonPath + "1.1.2.2.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -282,7 +282,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure noexec option set on /dev/shm partition"
     Test = {
         $script = $commonPath + "1.1.2.2.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -307,7 +307,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nodev option set on /home partition"
     Test = {
         $script = $commonPath + "1.1.2.3.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -320,7 +320,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nosuid option set on /home partition"
     Test = {
         $script = $commonPath + "1.1.2.3.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -345,7 +345,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nodev option set on /var partition"
     Test = {
         $script = $commonPath + "1.1.2.4.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -358,7 +358,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nosuid option set on /var partition"
     Test = {
         $script = $commonPath + "1.1.2.4.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -383,7 +383,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nodev option set on /var/tmp partition"
     Test = {
         $script = $commonPath + "1.1.2.5.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -396,7 +396,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nosuid option set on /var/tmp partition"
     Test = {
         $script = $commonPath + "1.1.2.5.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -409,7 +409,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure noexec option set on /var/tmp partition"
     Test = {
         $script = $commonPath + "1.1.2.5.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -434,7 +434,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nodev option set on /var/log partition"
     Test = {
         $script = $commonPath + "1.1.2.6.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -447,7 +447,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nosuid option set on /var/log partition"
     Test = {
         $script = $commonPath + "1.1.2.6.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -460,7 +460,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure noexec option set on /var/log partition"
     Test = {
         $script = $commonPath + "1.1.2.6.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -485,7 +485,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nodev option set on /var/log/audit partition"
     Test = {
         $script = $commonPath + "1.1.2.7.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -498,7 +498,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nosuid option set on /var/log/audit partition"
     Test = {
         $script = $commonPath + "1.1.2.7.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -511,7 +511,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure noexec option set on /var/log/audit partition"
     Test = {
         $script = $commonPath + "1.1.2.7.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -572,7 +572,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure AppArmor is enabled in the bootloader configuration"
     Test = {
         $script = $scriptPath + "1.3.1.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -602,7 +602,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure all AppArmor Profiles are enforcing"
     Test = {
         $script = $scriptPath + "1.3.1.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -627,7 +627,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure access to bootloader config is configured"
     Test = {
         $script = $commonPath + "1.4.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -640,7 +640,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure address space layout randomization is enabled"
     Test = {
         $script = $commonPath + "1.5.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -653,7 +653,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure ptrace_scope is restricted"
     Test = {
         $script = $commonPath + "1.5.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -668,7 +668,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure core dumps are restricted"
     Test = {
         $script = $scriptPath + "1.5.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -705,7 +705,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure message of the day is configured properly"
     Test = {
         $script = $scriptPath + "1.6.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -754,7 +754,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure access to /etc/motd is configured"
     Test = {
         $script = $scriptPath + "1.6.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -904,7 +904,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure XDCMP is not enabled"
     Test = {
         $script = $scriptPath + "1.7.10.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1137,7 +1137,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure rsync services are not in use"
     Test = {
         $script = $scriptPath + "2.1.13.sh"
-        $result = bash $script
+        bash $script
         if ($?){
             return $retCompliant
         }
@@ -1398,7 +1398,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure chrony is running as user _chrony"
     Test = {
         $script = $scriptPath + "2.3.3.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1501,7 +1501,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure crontab is restricted to authorized users"
     Test = {
         $script = $scriptPath + "2.4.1.8.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1514,7 +1514,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure at is restricted to authorized users"
     Test = {
         $script = $commonPath + "2.4.2.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1545,7 +1545,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure wireless interfaces are disabled"
     Test = {
         $script = $commonPath + "3.1.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1575,7 +1575,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure dccp kernel module is not available"
     Test = {
         $script = $commonPath + "3.2.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1588,7 +1588,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure tipc kernel module is not available"
     Test = {
         $script = $commonPath + "3.2.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1601,7 +1601,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure rds kernel module is not available"
     Test = {
         $script = $commonPath + "3.2.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1614,7 +1614,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sctp kernel module is not available"
     Test = {
         $script = $commonPath + "3.2.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1627,7 +1627,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure ip forwarding is disabled"
     Test = {
         $script = $commonPath + "3.3.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1640,7 +1640,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure packet redirect sending is disabled"
     Test = {
         $script = $commonPath + "3.3.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1653,7 +1653,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure bogus icmp responses are ignored"
     Test = {
         $script = $commonPath + "3.3.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1666,7 +1666,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure broadcast icmp requests are ignored"
     Test = {
         $script = $commonPath + "3.3.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1679,7 +1679,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure icmp redirects are not accepted"
     Test = {
         $script = $commonPath + "3.3.5.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1692,7 +1692,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure secure icmp redirects are not accepted"
     Test = {
         $script = $commonPath + "3.3.6.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1705,7 +1705,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure reverse path filtering is enabled"
     Test = {
         $script = $commonPath + "3.3.7.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1718,7 +1718,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure source routed packets are not accepted"
     Test = {
         $script = $commonPath + "3.3.8.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1731,7 +1731,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure suspicious packets are logged"
     Test = {
         $script = $commonPath + "3.3.9.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1744,7 +1744,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure tcp syn cookies is enabled"
     Test = {
         $script = $commonPath + "3.3.10.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -1757,7 +1757,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure ipv6 router advertisements are not accepted"
     Test = {
         $script = $commonPath + "3.3.11.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2325,7 +2325,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure permissions on SSH public host key files are configured"
     Test = {
         $script = $commonPath + "5.1.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2358,7 +2358,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd Ciphers are configured"
     Test = {
         $script = $scriptPath + "5.1.6.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2371,7 +2371,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured"
     Test = {
         $script = $scriptPath + "5.1.7.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2384,7 +2384,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd DisableForwarding is enabled"
     Test = {
         $script = $scriptPath + "5.1.8.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2397,7 +2397,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd GSSAPIAuthentication is disabled"
     Test = {
         $script = $scriptPath + "5.1.9.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2410,7 +2410,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd HostbasedAuthentication is disabled"
     Test = {
         $script = $scriptPath + "5.1.10.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2423,7 +2423,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd IgnoreRhosts is enabled"
     Test = {
         $script = $scriptPath + "5.1.11.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2436,7 +2436,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd KexAlgorithms is configured"
     Test = {
         $script = $scriptPath + "5.1.12.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2449,7 +2449,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd LoginGraceTime is configured"
     Test = {
         $script = $scriptPath + "5.1.13.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2462,7 +2462,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd LogLevel is configured"
     Test = {
         $script = $scriptPath + "5.1.14.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2475,7 +2475,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd MACs are configured"
     Test = {
         $script = $scriptPath + "5.1.15.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2488,7 +2488,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd MaxAuthTries is configured"
     Test = {
         $script = $commonPath + "5.1.16.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2501,7 +2501,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd MaxSessions is configured"
     Test = {
         $script = $scriptPath + "5.1.17.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2514,7 +2514,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd MaxStartups is configured"
     Test = {
         $script = $scriptPath + "5.1.18.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2527,7 +2527,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd PermitEmptyPasswords is disabled"
     Test = {
         $script = $commonPath + "5.1.19.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2540,7 +2540,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd PermitRootLogin is disabled"
     Test = {
         $script = $commonPath + "5.1.20.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2553,7 +2553,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd PermitUserEnvironment is disabled"
     Test = {
         $script = $commonPath + "5.1.21.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2566,7 +2566,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sshd UsePAM is enabled"
     Test = {
         $script = $commonPath + "5.1.22.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2590,7 +2590,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sudo commands use pty"
     Test = {
         $script = $commonPath + "5.2.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2603,7 +2603,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sudo log file exists"
     Test = {
         $script = $commonPath + "5.2.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2616,7 +2616,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure users must provide password for privilege escalation"
     Test = {
         $script = $scriptPath + "5.2.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2629,7 +2629,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure re-authentication for privilege escalation is not disabled globally"
     Test = {
         $script = $scriptPath + "5.2.5.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2642,7 +2642,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure sudo authentication timeout is configured correctly"
     Test = {
         $script = $commonPath + "5.2.6.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2655,7 +2655,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure access to the su command is restricted"
     Test = {
         $script = $scriptPath + "5.2.7.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2701,7 +2701,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure pam_unix module is enabled"
     Test = {
         $script = $scriptPath + "5.3.2.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2714,7 +2714,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure pam_faillock module is enabled"
     Test = {
         $script = $scriptPath + "5.3.2.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2727,7 +2727,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure pam_pwquality module is enabled"
     Test = {
         $script = $scriptPath + "5.3.2.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2740,7 +2740,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure pam_pwhistory module is enabled"
     Test = {
         $script = $scriptPath + "5.3.2.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2753,7 +2753,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password failed attempts lockout is configured"
     Test = {
         $script = $commonPath + "5.3.3.1.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2766,7 +2766,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password unlock time is configured"
     Test = {
         $script = $commonPath + "5.3.3.1.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2779,7 +2779,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password failed attempts lockout includes root account"
     Test = {
         $script = $commonPath + "5.3.3.1.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2792,7 +2792,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password number of changed characters is configured"
     Test = {
         $script = $commonPath + "5.3.3.2.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2805,7 +2805,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure minimum password length is configured"
     Test = {
         $script = $commonPath + "5.3.3.2.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2825,7 +2825,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password same consecutive characters is configured"
     Test = {
         $script = $commonPath + "5.3.3.2.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2838,7 +2838,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password maximum sequential characters is configured"
     Test = {
         $script = $commonPath + "5.3.3.2.5.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2851,7 +2851,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password dictionary check is enabled"
     Test = {
         $script = $commonPath + "5.3.3.2.6.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2864,7 +2864,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password quality checking is enforced"
     Test = {
         $script = $scriptPath + "5.3.3.2.7.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2877,7 +2877,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password quality is enforced for the root user"
     Test = {
         $script = $scriptPath + "5.3.3.2.8.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2890,7 +2890,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password history remember is configured"
     Test = {
         $script = $scriptPath + "5.3.3.3.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2903,7 +2903,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password history is enforced for the root user"
     Test = {
         $script = $scriptPath + "5.3.3.3.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2915,8 +2915,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "5.3.3.3.3"
     Task = "Ensure pam_pwhistory includes use_authtok"
     Test = {
-        $script = $scriptPath + "5.3.3.3.3.sh"
-        $result = bash $script
+        $script = $commonPath + "5.3.3.3.3.sh"
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2928,8 +2928,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "5.3.3.4.1"
     Task = "Ensure pam_unix does not include nullok"
     Test = {
-        $script = $scriptPath + "5.3.3.4.1.sh"
-        $result = bash $script
+        $script = $commonPath + "5.3.3.4.1.sh"
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2942,7 +2942,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure pam_unix does not include remember"
     Test = {
         $script = $scriptPath + "5.3.3.4.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2955,7 +2955,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure pam_unix includes a strong password hashing algorithm"
     Test = {
         $script = $scriptPath + "5.3.3.4.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2967,8 +2967,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "5.3.3.4.4"
     Task = "Ensure pam_unix includes use_authtok"
     Test = {
-        $script = $scriptPath + "5.3.3.4.4.sh"
-        $result = bash $script
+        $script = $commonPath + "5.3.3.4.4.sh"
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2981,7 +2981,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password expiration is configured"
     Test = {
         $script = $commonPath + "5.4.1.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -2994,7 +2994,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure minimum password age is configured"
     Test = {
         $script = $commonPath + "5.4.1.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3007,7 +3007,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure password expiration warning days is configured"
     Test = {
         $script = $commonPath + "5.4.1.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3020,7 +3020,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure strong password hashing algorithm is configured"
     Test = {
         $script = $commonPath + "5.4.1.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3033,7 +3033,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure inactive password lock is configured"
     Test = {
         $script = $commonPath + "5.4.1.5.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3079,8 +3079,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "5.4.2.3"
     Task = "Ensure group root is the only GID 0 group"
     Test = {
-        $script = $scriptPath + "5.4.2.3.sh"
-        $result = bash $script
+        $script = $commonPath + "5.4.2.3.sh"
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3093,7 +3093,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure root password is set"
     Test = {
         $script = $scriptPath + "5.4.2.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3118,7 +3118,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure root user umask is configured"
     Test = {
         $script = $commonPath + "5.4.2.6.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3131,7 +3131,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure system accounts do not have a valid login shell"
     Test = {
         $script = $commonPath + "5.4.2.7.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3144,7 +3144,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure accounts without a valid login shell are locked"
     Test = {            
         $script = $scriptPath + "5.4.2.8.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         }
@@ -3156,7 +3156,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure nologin is not listed in /etc/shells"
     Test = {
         $script = $commonPath + "5.4.3.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3169,7 +3169,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure default user shell timeout is configured"
     Test = {
         $script = $commonPath + "5.4.3.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3182,7 +3182,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure default user umask is configured"
     Test = {
         $script = $commonPath + "5.4.3.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3217,7 +3217,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure cryptographic mechanisms are used to protect the integrity of audit tools"
     Test = {
         $script = $commonPath + "6.1.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3261,7 +3261,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure journald ForwardToSyslog is disabled"
     Test = {
         $script = $scriptPath + "6.2.1.1.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3274,7 +3274,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure journald Storage is configured"
     Test = {
         $script = $scriptPath + "6.2.1.1.5.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3287,7 +3287,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure journald Compress is configured"
     Test = {
         $script = $scriptPath + "6.2.1.1.6.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3331,7 +3331,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure systemd-journal-remote service is not in use"
     Test = {
         $script = $scriptPath + "6.2.1.2.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3379,7 +3379,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure auditing for processes that start prior to auditd is enabled"
     Test = {
         $script = $scriptPath + "6.3.1.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3392,7 +3392,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit_backlog_limit is sufficient"
     Test = {
         $script = $scriptPath + "6.3.1.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3405,7 +3405,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit log storage size is configured"
     Test = {
         $script = $commonPath + "6.3.2.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3418,7 +3418,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit logs are not automatically deleted"
     Test = {
         $script = $commonPath + "6.3.2.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3453,7 +3453,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure changes to system administration scope is collected"
     Test = {
         $script = $commonPath + "6.3.3.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3466,7 +3466,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure actions as another user are always logged"
     Test = {
         $script = $commonPath + "6.3.3.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3479,7 +3479,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure events that modify the sudo log file are collected"
     Test = {
         $script = $commonPath + "6.3.3.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3492,7 +3492,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure events that modify date and time information are collected"
     Test = {
         $script = $commonPath + "6.3.3.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3505,7 +3505,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure events that modify the system's network environment are collected"
     Test = {
         $script = $commonPath + "6.3.3.5.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3518,7 +3518,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure use of privileged commands are collected"
     Test = {
         $script = $commonPath + "6.3.3.6.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3531,7 +3531,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure unsuccessful file access attempts are collected"
     Test = {
         $script = $commonPath + "6.3.3.7.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3544,7 +3544,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure events that modify user/group information are collected"
     Test = {
         $script = $commonPath + "6.3.3.8.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3557,7 +3557,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure discretionary access control permission modification events are collected"
     Test = {
         $script = $commonPath + "6.3.3.9.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3570,7 +3570,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure successful file system mounts are collected"
     Test = {
         $script = $commonPath + "6.3.3.10.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3601,7 +3601,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure login and logout events are collected"
     Test = {
         $script = $commonPath + "6.3.3.12.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3614,7 +3614,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure file deletion events by users are collected"
     Test = {
         $script = $commonPath + "6.3.3.13.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3627,7 +3627,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure events that modify the system's Mandatory Access Controls are collected"
     Test = {
         $script = $commonPath + "6.3.3.14.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3640,7 +3640,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure successful and unsuccessful attempts to use the chcon command are recorded"
     Test = {
         $script = $commonPath + "6.3.3.15.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3653,7 +3653,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure successful and unsuccessful attempts to use the setfacl command are recorded"
     Test = {
         $script = $commonPath + "6.3.3.16.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3666,7 +3666,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure successful and unsuccessful attempts to use the chacl command are recorded"
     Test = {
         $script = $commonPath + "6.3.3.17.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3679,7 +3679,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure successful and unsuccessful attempts to use the usermod command are recorded"
     Test = {
         $script = $commonPath + "6.3.3.18.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3692,7 +3692,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure kernel module loading unloading and modification is collected"
     Test = {
         $script = $commonPath + "6.3.3.19.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3727,7 +3727,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit log files mode is configured"
     Test = {
         $script = $scriptPath + "6.3.4.1.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3740,7 +3740,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit log files owner is configured"
     Test = {
         $script = $scriptPath + "6.3.4.2.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3753,7 +3753,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit log files group owner is configured"
     Test = {
         $script = $scriptPath + "6.3.4.3.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3766,7 +3766,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure the audit log file directory mode is configured"
     Test = {
         $script = $scriptPath + "6.3.4.4.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3779,7 +3779,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit configuration files mode is configured"
     Test = {
         $script = $commonPath + "6.3.4.5.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3792,7 +3792,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit configuration files owner is configured"
     Test = {
         $script = $commonPath + "6.3.4.6.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3805,7 +3805,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit configuration files group owner is configured"
     Test = {
         $script = $commonPath + "6.3.4.7.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3818,7 +3818,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit tools mode is configured"
     Test = {
         $script = $commonPath + "6.3.4.8.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3831,7 +3831,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure audit tools owner is configured"
     Test = {
         $script = $commonPath + "6.3.4.9.sh"
-        $result = bash $script
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3942,8 +3942,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "7.1.9"
     Task = "Ensure permissions on /etc/shells are configured"
     Test = {
-        $script = $scriptPath + "7.1.9.sh"
-        $result = bash $script
+        $script = $commonPath + "7.1.9.sh"
+        bash $script
         if ($?) {
             return $retCompliant
         } else {
@@ -3955,7 +3955,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "7.1.10"
     Task = "Ensure permissions on /etc/security/opasswd are configured"
     Test = {
-        $script = $scriptPath + "7.1.10.sh"
+        $script = $commonPath + "7.1.10.sh"
         $result = bash $script
         if($?){
             return $retCompliant
@@ -3969,7 +3969,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Test = {
         #$partitions = mapfile -t partitions < (sudo fdisk -l | grep -o '/dev/[^ ]*')
         #$test1 = df --local -P | awk '{if (NR!=1) print $6}' | xargs -I '{}' find '{}' -xdev -type f -perm -0002
-        $script = $scriptPath + "7.1.11.sh"
+        $script = $commonPath + "7.1.11.sh"
         $result = bash $script
         if($?){
             return $retCompliant
@@ -3981,22 +3981,12 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "7.1.12"
     Task = "Ensure no files or directories without an owner and a group exist"
     Test = {
-        # try{
-        #     $test1 = df --local -P | awk "{if (NR -ne 1) { print $6 }}" | xargs -I '{}' find '{}' -xdev -nouser
-        #     if($test1 -eq $null){
-        $script = $scriptPath + "7.1.12.sh"
+        $script = $commonPath + "7.1.12.sh"
         $result = bash $script
         if($?){
                 return $retCompliant
             }
             return $retNonCompliant
-        # }
-        # catch{
-        #     return @{
-        #         Message = "Command not found!"
-        #         Status = "False"
-        #     }  
-        # }
     }
 } 
 [AuditTest] @{
