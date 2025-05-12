@@ -1,6 +1,14 @@
 $script:LinuxDistroId = $null
 
-# Detect distro at module load time
+
+$rcTrue = "True"
+$rcCompliant = "Compliant"
+$rcFalse = "False"
+$rcNone = "None"
+$rcNonCompliant = "Non-Compliant"
+$rcNonCompliantManualReviewRequired = "Manual review required"
+$rcCompliantIPv6isDisabled = "IPv6 is disabled"
+
 if (Test-Path "/etc/os-release") {
     $osRelease = @{}
     Get-Content "/etc/os-release" | ForEach-Object {

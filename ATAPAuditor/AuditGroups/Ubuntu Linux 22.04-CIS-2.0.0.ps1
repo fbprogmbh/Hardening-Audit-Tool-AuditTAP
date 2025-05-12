@@ -1,10 +1,5 @@
-$rcTrue = "True"
-$rcCompliant = "Compliant"
-$rcFalse = "False"
-$rcNone = "None"
-$rcNonCompliant = "Non-Compliant"
-$rcNonCompliantManualReviewRequired = "Manual review required"
-$rcCompliantIPv6isDisabled = "IPv6 is disabled"
+. "$RootPath\Helpers\LinuxHelper.ps1"
+
 $rcFirewallStatus1 = "Using nftables"
 $rcFirewallStatus2 = "Using ufw"
 $rcFirewallStatus3 = "Using iptables"
@@ -45,11 +40,11 @@ function GetFirewallStatus {
 	# 2 - using ufw
 	# 3 - using iptables
 
-	$t_UFW = dpkg-query -f='${db:Status-Abbrev}' -W ufw 2>/dev/null
-	$t_NFT = dpkg-query -f='${db:Status-Abbrev}' -W nftables 2>/dev/null
-	$t_IPT = dpkg-query -f='${db:Status-Abbrev}' -W iptables 2>/dev/null
+	$t_UFW = Test-PackageInstalled -PackageName ufw
+	$t_NFT = Test-PackageInstalled -PackageName nftables
+	$t_IPT = Test-PackageInstalled -PackageName iptables
 	$t_UFW_en = systemctl is-enabled ufw 2>/dev/null
-	if ($t_UFW -match "ii"){
+	if ($t_UFW){
         $t_UFW_inac = ufw status 2>/dev/null | grep -iE "Status: Ina[ck]tive?"
         $t_UFW_ac = ufw status 2>/dev/null | grep -iE "Status: A[ck]tive?"
     } else {
@@ -59,17 +54,17 @@ function GetFirewallStatus {
 	$t_NFT_en = systemctl is-enabled nftables.service 2>/dev/null
 	
 	# Testing 1 - nftable installed, ufw not or inactive
-	if ($t_NFT -match "ii" -and $t_IPT -match "^(rc |un |)$" -and ($t_UFW -match "^(rc |un |)$" -or $t_UFW_inac -ne $null) -and $t_NFT_en -match "enabled"){
+	if ($t_NFT -and ! $t_IPT -and (! $t_UFW -or $t_UFW_inac -ne $null) -and $t_NFT_en -match "enabled"){
         return 1
     }
 	
 	# Testing 2 - ufw, iptables installed, nftables not 
-	if ( $t_UFW -match "ii" -and $t_UFW_ac -ne $null -and $t_UFW_en -match "enabled" -and $t_IPT -match "ii" -and $t_NFT -match "^(rc |un |)$"){
+	if ( $t_UFW -and $t_UFW_ac -ne $null -and $t_UFW_en -match "enabled" -and $t_IPT -and ! $t_NFT){
         return 2
     }
 	
 	# Testing 3 - only iptables
-	if ($t_NFT -match "^(rc |un |)$" -and $t_UFW -match "^(rc |un |)$" -and $t_IPT -match "ii"){
+	if (! $t_NFT -and ! $t_UFW -and $t_IPT){
         return 3
     }
 
@@ -559,9 +554,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "1.3.1.1"
     Task = "Ensure AppArmor is installed"
     Test = {
-        $result = dpkg-query -W -f='${db:Status-Abbrev}' apparmor 2>/dev/null
-        
-        if($result -match "ii"){
+        $result = Test-PackageInstalled -PackageName apparmor 2>/dev/null
+        if($result){
             return $retCompliant
         }
         return $retNonCompliant
@@ -680,8 +674,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "1.5.4"
     Task = "Ensure prelink is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W prelink 2>/dev/null
-        if("$test1" -match "^(rc |un |)$"){
+        $test = Test-PackageInstalled -PackageName prelink
+        if(! $test){
             return $retCompliant
         }
         return $retNonCompliant
@@ -788,8 +782,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "1.7.1"
     Task = "Ensure GDM is removed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W gdm3 2>/dev/null
-        if($test1 -match "^(rc |un |)$"){
+        $test = Test-PackageInstalled -PackageName gdm3
+        if(! $test){
             return $retCompliant
         }
         return $retNonCompliant
@@ -800,7 +794,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure GDM login banner is configured"
     Test = {
         $path = $scriptPath + "1.8.2.sh"
-        $result=bash $path
+        $result = bash $path
         if($?){
             return $retCompliant
         }
@@ -813,7 +807,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure GDM disable-user-list option is enabled"
     Test = {
         $path = $scriptPath + "1.8.3.sh"
-        $result=bash $path
+        $result = bash $path
         if($?){
             return $retCompliant
         }
@@ -826,7 +820,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure GDM screen locks when the user is idle"
     Test = {
         $path = $scriptPath + "1.8.4.sh"
-        $result=bash $path
+        $result = bash $path
         if($?){
             return $retCompliant
         }
@@ -839,7 +833,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure GDM screen locks cannot be overridden"
     Test = {
         $path = $scriptPath + "1.8.5.sh"
-        $result=bash $path
+        $result = bash $path
         if($?){
             return $retCompliant
         }
@@ -852,7 +846,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure GDM automatic mounting of removable media is disabled"
     Test = {
         $path = $scriptPath + "1.8.6.sh"
-        $result=bash $path
+        $result = bash $path
         if($?){
             return $retCompliant
         }
@@ -865,7 +859,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure GDM disabling automatic mounting of removable media is not overridden"
     Test = {
         $path = $scriptPath + "1.8.7.sh"
-        $result=bash $path
+        $result = bash $path
         if($?){
             return $retCompliant
         }
@@ -878,7 +872,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure GDM autorun-never is enabled"
     Test = {
         $path = $scriptPath + "1.8.8.sh"
-        $result=bash $path
+        $result = bash $path
         if($?){
             return $retCompliant
         }
@@ -891,7 +885,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure GDM autorun-never is not overridden"
     Test = {
         $path = $scriptPath + "1.8.9.sh"
-        $result=bash $path
+        $result = bash $path
         if($?){
             return $retCompliant
         }
@@ -916,8 +910,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.1"
     Task = "Ensure autofs services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null autofs
-        if("$test1" -match "^(rc |un |)$"){
+        $test = Test-PackageInstalled -PackageName autofs
+        if(! $test){
             return $retCompliant
         }
         else{
@@ -933,8 +927,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.2"
     Task = "Ensure avahi daemon services are not in use"
     Test = {
-        $status = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null avahi-daemon
-        if("$test1" -match "^(rc |un |)$"){
+        $status = Test-PackageInstalled -PackageName avahi-daemon
+        if(! $status){
             return $retCompliant
         }
         else{
@@ -953,8 +947,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.3"
     Task = "Ensure dhcp server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null isc-dhcp-server
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName isc-dhcp-server
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -973,8 +967,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.4"
     Task = "Ensure dns server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null bind9
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName bind9
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -990,8 +984,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.5"
     Task = "Ensure dnsmasq server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null dnsmasq
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName dnsmasq
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1007,8 +1001,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.6"
     Task = "Ensure ftp server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null vsftpd
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName vsftpd
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1024,8 +1018,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.7"
     Task = "Ensure ldap server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null slapd
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName slapd
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1041,9 +1035,9 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.8"
     Task = "Ensure message access server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null dovecot-imapd
-        $test2 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null dovecot-pop3d
-        if("$test1" -match "^(rc |un |)$" -and "$test2" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName dovecot-imapd
+        $test2 = Test-PackageInstalled -PackageName dovecot-pop3d
+        if(! $test1 -and ! $test2){
             return $retCompliant
         }
         else{
@@ -1062,8 +1056,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.9"
     Task = "Ensure network file system services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null nfs-kernel-server
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName nfs-kernel-server
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1079,8 +1073,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.10"
     Task = "Ensure nis server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null ypserv
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName ypserv
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1096,8 +1090,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.11"
     Task = "Ensure print server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null cups
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName cups
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1116,8 +1110,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.12"
     Task = "Ensure rpcbind services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null rpcbind
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName rpcbind
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1148,8 +1142,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.14"
     Task = "Ensure samba file server services are not in use"
     Test = {
-        $test1 = dpkg-query -W -f='${db:Status-Abbrev}' samba 2>/dev/null
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName samba 2>/dev/null
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1165,8 +1159,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.15"
     Task = "Ensure snmp services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null snmpd
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName snmpd
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1182,8 +1176,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.16"
     Task = "Ensure tftp server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null tftpd-hpa
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName tftpd-hpa
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1199,8 +1193,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.17"
     Task = "Ensure web proxy server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null squid
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName squid
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1216,9 +1210,9 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.18"
     Task = "Ensure web server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null apache2
-        $test2 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null ginx
-        if("$test1" -match "^(rc |un |)$" -and "$test2" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName apache2
+        $test2 = Test-PackageInstalled -PackageName ginx
+        if(! $test1 -and ! $test2){
             return $retCompliant
         }
         else{
@@ -1241,8 +1235,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.19"
     Task = "Ensure xinetd services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null xinetd
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName xinetd
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1258,8 +1252,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.1.20"
     Task = "Ensure X window server services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null xserver-commen
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName xserver-common
+        if(! $test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1287,8 +1281,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.1"
     Task = "Ensure NIS Client is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nis 2>/dev/null
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName nis
+        if(! $test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1298,8 +1292,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.2"
     Task = "Ensure rsh client is not installed"
     Test = {
-        $status = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null rsh-client
-        if($status -match "^(rc |un |)$"){
+        $status = Test-PackageInstalled -PackageName rsh-client
+        if(! $status){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1310,8 +1304,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.3"
     Task = "Ensure talk client is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null talk
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName talk
+        if(! $test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1322,8 +1316,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.4"
     Task = "Ensure telnet client Server is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W telnet 2>/dev/null
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName telnet
+        if(! $test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1334,8 +1328,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.5"
     Task = "Ensure ldap client is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W lapd-utils 2>/dev/null
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName lapd-utils
+        if(! $test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1346,8 +1340,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "2.2.6"
     Task = "Ensure ftp client is not installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ftp 2>/dev/null
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName ftp
+        if(! $test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1359,7 +1353,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure a single time synchronization daemon is in use"
     Test = {
         $path = $scriptPath + "2.1.1.1.sh"
-        $result=bash $path
+        $result = bash $path
         if($result -match "PASS:"){
             return $retCompliant
         }
@@ -1527,7 +1521,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure IPv6 status is identified"
     Test = {
         $path = $scriptPath + "3.1.1.sh"
-        $result=bash $path
+        $result = bash $path
         if($result -match "IPv6 is enabled on the system"){
             return @{
                 Message = "Compliant"
@@ -1557,8 +1551,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "3.1.3"
     Task = "Ensure bluetooth services are not in use"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null bluez
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName bluez
+        if(! $test1){
             return $retCompliant
         }
         else{
@@ -1775,8 +1769,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         if ($FirewallStatus -match 3) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw 2>/dev/null
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName ufw
+        if($test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1792,8 +1786,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         if ($FirewallStatus -match 3) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null iptables-persistent
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName iptables-persistent
+        if(! $test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1830,8 +1824,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         if ($FirewallStatus -match 3) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -W -f='${db:Status-Abbrev}' ufw
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName ufw
+        if($test1){
             $test2 = ufw status verbose | grep -iE "Status: A[ck]tive?"
             if($test2 -eq $null){
                 return $retCompliant
@@ -1850,8 +1844,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         if ($FirewallStatus -match 3) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -W -f='${db:Status-Abbrev}' ufw
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName ufw
+        if($test1){
             $test2 = ufw status numbered | grep -iE "Status: Ina[ck]tive?"
             if($test2 -eq $null){
                 return $retCompliant
@@ -1871,7 +1865,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
             return $retUsingFW3
         }
         $path = $scriptPath + "3.5.1.6.sh"
-        $result=bash $path
+        $result = bash $path
         if($result -eq $null){
             return $retCompliant
         }
@@ -1882,8 +1876,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "4.1.7"
     Task = "Ensure ufw default deny firewall policy"
     Test = {
-        $test1 = dpkg-query -W -f='${db:Status-Abbrev}' ufw
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName ufw
+        if($test1){
             $test2 = ufw status verbose | grep -iE "allow"
             if($test2 -eq $null){
                 return $retCompliant
@@ -1902,8 +1896,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         if ($FirewallStatus -match 3) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W nftables 2>/dev/null
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName nftables
+        if($test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -1919,8 +1913,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         if ($FirewallStatus -match 3) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw 2>/dev/null
-        if($test1 -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName ufw
+        if(! $test1){
             return $retCompliant
         } else {
             $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
@@ -2135,8 +2129,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         if ($FirewallStatus -match 2) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null iptables-persistent
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName iptables-persistent
+        if($test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -2152,8 +2146,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         if ($FirewallStatus -match 2) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null nftables
-        if("$test1" -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName nftables
+        if(! $test1){
             return $retNonCompliant
         }
         return $retCompliant
@@ -2169,8 +2163,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
         if ($FirewallStatus -match 2) {
             return $retUsingFW3
         }
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W ufw 2>/dev/null
-        if($test1 -match "^(rc |un |)$"){
+        $test1 = Test-PackageInstalled -PackageName ufw
+        if(! $test1){
             return $retCompliant
         } else {
             $test2 = ufw status | grep -iE "Status: Ina[ck]tive?"
@@ -2578,8 +2572,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "5.2.1"
     Task = "Ensure sudo is installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null sudo
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName sudo
+        if($test1){
             return $retNonCompliant
         }
         return $retCompliant
@@ -2667,8 +2661,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "5.3.1.1"
     Task = "Ensure latest version of pam is installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null libpam-runtime
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName libpam-runtime
+        if($test1){
             return $retNonCompliant
         }
         return $retCompliant
@@ -2678,8 +2672,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "5.3.1.2"
     Task = "Ensure libpam-modules is installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null libpam-modules
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName libpam-modules
+        if($test1){
             return $retNonCompliant
         }
         return $retCompliant
@@ -2689,8 +2683,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "5.3.1.3"
     Task = "Ensure libpam-pwquality is installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null libpam-pwquality
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName libpam-pwquality
+        if($test1){
             return $retNonCompliant
         }
         return $retCompliant
@@ -3046,7 +3040,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure all users last password change date is in the past"
     Test = {
         $path = $scriptPath + "5.5.1.5.sh"
-        $result=bash $path
+        $result = bash $path
         if($result -eq $null){
             return $retCompliant
         }
@@ -3106,7 +3100,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure root PATH Integrity"
     Test = {
         $path = $scriptPath + "6.2.9.sh"
-        $result=bash $path
+        $result = bash $path
         if($result -eq $null){
             return $retCompliant
         }
@@ -3299,8 +3293,8 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "6.2.1.2.1"
     Task = "Ensure systemd-journal-remote is installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null systemd-journal-remote
-        if($test1 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName systemd-journal-remote
+        if($test1){
             return $retCompliant
         }
         return $retNonCompliant
@@ -3355,9 +3349,9 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Id = "6.3.1.1"
     Task = "Ensure auditd packages are installed"
     Test = {
-        $test1 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null auditd
-        $test2 = dpkg-query -f='${db:Status-Abbrev}' -W 2>/dev/null audispd-plugins
-        if($test1 -match "ii" -and $test2 -match "ii"){
+        $test1 = Test-PackageInstalled -PackageName auditd
+        $test2 = Test-PackageInstalled -PackageName audispd-plugins
+        if($test1 -and $test2){
             return $retCompliant
         }
         return $retNonCompliant
@@ -4031,7 +4025,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure all groups in /etc/passwd exist in /etc/group"
     Test = {
         $path = $scriptPath + "6.2.3.sh"
-        $result=bash $path
+        $result = bash $path
         if($?){
             return $retCompliant
         }
@@ -4055,7 +4049,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure no duplicate UIDs exist"
     Test = {
         $path = $scriptPath + "6.2.5.sh"
-        $result=bash $path
+        $result = bash $path
         if($result -eq $null){
             return $retCompliant
         }
@@ -4067,7 +4061,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure no duplicate GIDs exist"
     Test = {
         $path = $scriptPath + "6.2.6.sh"
-        $result=bash $path
+        $result = bash $path
         if($result -eq $null){
             return $retCompliant
         }
@@ -4079,7 +4073,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure no duplicate user names exist"
     Test = {
         $path = $scriptPath + "6.2.7.sh"
-        $result=bash $path
+        $result = bash $path
         if($result -eq $null){
             return $retCompliant
         }
@@ -4091,7 +4085,7 @@ $commonPath = $parentPath + "/Helpers/ShellScripts/common/"
     Task = "Ensure no duplicate group names exist"
     Test = {
         $path = $scriptPath + "6.2.8.sh"
-        $result=bash $path
+        $result = bash $path
         if($result -eq $null){
             return $retCompliant
         }
