@@ -1,0 +1,7 @@
+Package: ATAP
+Version: <version>
+Architecture: all
+Maintainer: Malte Lukas <malte.lukas@fb-pro.com>
+Depends: powershell (>= 5)
+Description: AUDIT Test for Hardening
+  FBPro Audit Test Automation Package allows you to create compliance reports for your systems. The resulting HTML-reports provide a transparent overview of your devices' security configuration compared to international security standards and hardening guides.
