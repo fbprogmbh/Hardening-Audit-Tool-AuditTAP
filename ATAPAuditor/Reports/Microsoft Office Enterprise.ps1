@@ -13,14 +13,6 @@
                     Title      = 'Registry Settings/Group Policies'
                     AuditInfos = Test-AuditGroup "Microsoft Office Enterprise-CIS-1.2.0#RegistrySettings"
                 }
-                [ReportSection] @{
-                    Title      = 'User Rights Assignment'
-                    AuditInfos = Test-AuditGroup "Microsoft Office Enterprise-CIS-1.2.0#UserRights"
-                }
-                [ReportSection] @{
-                    Title      = 'Advanced Audit Policy Configuration'
-                    AuditInfos = Test-AuditGroup "Microsoft Office Enterprise-CIS-1.2.0#AuditPolicies"
-                }
             )
         }
     )
