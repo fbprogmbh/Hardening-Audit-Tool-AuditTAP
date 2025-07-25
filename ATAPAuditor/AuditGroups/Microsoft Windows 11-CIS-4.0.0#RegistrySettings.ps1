@@ -1,16 +1,22 @@
-﻿[AuditTest] @{
+﻿$RootPath = Split-Path $MyInvocation.MyCommand.Path -Parent
+$RootPath = Split-Path $RootPath -Parent
+. "$RootPath\Helpers\AuditGroupFunctions.ps1"
+$avstatus = CheckForActiveAV
+$windefrunning = CheckWindefRunning
+. "$RootPath\Helpers\Firewall.ps1"
+[AuditTest] @{
     Id   = "1.1.6"
     Task = "(L1) Ensure 'Relax minimum password length limits' is set to 'Enabled'"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SAM" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SAM" `
                 -Name "RelaxMinimumPasswordLengthLimits" `
             | Select-Object -ExpandProperty "RelaxMinimumPasswordLengthLimits"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -40,13 +46,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "LimitBlankPasswordUse" `
             | Select-Object -ExpandProperty "LimitBlankPasswordUse"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -76,13 +82,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "SCENoApplyLegacyAuditPolicy" `
             | Select-Object -ExpandProperty "SCENoApplyLegacyAuditPolicy"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -112,13 +118,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "CrashOnAuditFail" `
             | Select-Object -ExpandProperty "CrashOnAuditFail"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -148,13 +154,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers" `
                 -Name "AddPrinterDrivers" `
             | Select-Object -ExpandProperty "AddPrinterDrivers"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -184,13 +190,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" `
                 -Name "RequireSignOrSeal" `
             | Select-Object -ExpandProperty "RequireSignOrSeal"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -220,13 +226,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" `
                 -Name "SealSecureChannel" `
             | Select-Object -ExpandProperty "SealSecureChannel"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -256,13 +262,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" `
                 -Name "SignSecureChannel" `
             | Select-Object -ExpandProperty "SignSecureChannel"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -292,13 +298,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" `
                 -Name "DisablePasswordChange" `
             | Select-Object -ExpandProperty "DisablePasswordChange"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -328,7 +334,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" `
                 -Name "MaximumPasswordAge" `
             | Select-Object -ExpandProperty "MaximumPasswordAge"
 
@@ -364,13 +370,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" `
                 -Name "RequireStrongKey" `
             | Select-Object -ExpandProperty "RequireStrongKey"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -400,13 +406,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "DisableCAD" `
             | Select-Object -ExpandProperty "DisableCAD"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -436,13 +442,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "DontDisplayLastUserName" `
             | Select-Object -ExpandProperty "DontDisplayLastUserName"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -472,7 +478,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "MaxDevicePasswordFailedAttempts" `
             | Select-Object -ExpandProperty "MaxDevicePasswordFailedAttempts"
 
@@ -508,7 +514,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "InactivityTimeoutSecs" `
             | Select-Object -ExpandProperty "InactivityTimeoutSecs"
 
@@ -544,11 +550,12 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "LegalNoticeText" `
             | Select-Object -ExpandProperty "LegalNoticeText"
 
-            if ($regValue -notmatch ".+") {
+            $regValue = $regValue.Trim([char]0x0000)    
+            if (($regValue -notmatch ".+") -or ([string]::IsNullOrEmpty($regValue)) -or ([string]::IsNullOrWhiteSpace($regValue))) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: Matching expression '.+'"
                     Status  = "False"
@@ -580,11 +587,12 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "LegalNoticeCaption" `
             | Select-Object -ExpandProperty "LegalNoticeCaption"
 
-            if ($regValue -notmatch ".+") {
+            $regValue = $regValue.Trim([char]0x0000)    
+            if (($regValue -notmatch ".+") -or ([string]::IsNullOrEmpty($regValue)) -or ([string]::IsNullOrWhiteSpace($regValue))) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: Matching expression '.+'"
                     Status  = "False"
@@ -616,7 +624,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
                 -Name "CachedLogonsCount" `
             | Select-Object -ExpandProperty "CachedLogonsCount"
 
@@ -652,7 +660,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
                 -Name "PasswordExpiryWarning" `
             | Select-Object -ExpandProperty "PasswordExpiryWarning"
 
@@ -688,7 +696,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
                 -Name "ScRemoveOption" `
             | Select-Object -ExpandProperty "ScRemoveOption"
 
@@ -723,17 +731,34 @@
     Task = "(L1) Ensure 'Microsoft network client: Digitally sign communications (always)' is set to 'Enabled'"
     Test = {
         try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
-                -Name "RequireSecuritySignature" `
-            | Select-Object -ExpandProperty "RequireSecuritySignature"
-
-            if (($regValue -ne 1)) {
+            if ((Get-SmbClientConfiguration).RequireSecuritySignature -ne $True) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "RequireSecuritySignature is not set to True"
                     Status  = "False"
                 }
             }
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
+        }
+        catch {
+        try {
+            $regValue = Get-ItemProperty -ErrorAction Stop `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
+                -Name "RequireSecuritySignature" `
+            | Select-Object -ExpandProperty "RequireSecuritySignature"
+
+            if ($regValue -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+                return @{
+                    Message = "Compliant"
+                    Status  = "True"
+                }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
@@ -747,10 +772,6 @@
                 Status  = "False"
             }
         }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
         }
     }
 }
@@ -759,17 +780,34 @@
     Task = "(L1) Ensure 'Microsoft network client: Digitally sign communications (if server agrees)' is set to 'Enabled'"
     Test = {
         try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
-                -Name "EnableSecuritySignature" `
-            | Select-Object -ExpandProperty "EnableSecuritySignature"
-
-            if (($regValue -ne 1)) {
+            if ((Get-SmbClientConfiguration).EnableSecuritySignature -ne $True) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "EnableSecuritySignature is not set to True"
                     Status  = "False"
                 }
             }
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
+        }
+        catch {
+        try {
+            $regValue = Get-ItemProperty -ErrorAction Stop `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
+                -Name "EnableSecuritySignature" `
+            | Select-Object -ExpandProperty "EnableSecuritySignature"
+
+            if ($regValue -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+                return @{
+                    Message = "Compliant"
+                    Status  = "True"
+                }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
@@ -783,10 +821,6 @@
                 Status  = "False"
             }
         }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
         }
     }
 }
@@ -796,13 +830,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
                 -Name "EnablePlainTextPassword" `
             | Select-Object -ExpandProperty "EnablePlainTextPassword"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -832,7 +866,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
                 -Name "AutoDisconnect" `
             | Select-Object -ExpandProperty "AutoDisconnect"
 
@@ -867,16 +901,27 @@
     Task = "(L1) Ensure 'Microsoft network server: Digitally sign communications (always)' is set to 'Enabled'"
     Test = {
         try {
+            if ((Get-SmbServerConfiguration -ErrorAction Stop).RequireSecuritySignature -ne $True) {
+                return @{
+                    Message = "RequireSecuritySignature is not set to True"
+                    Status  = "False"
+                }
+            }
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
+        }
+        catch {
+        try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
                 -Name "RequireSecuritySignature" `
             | Select-Object -ExpandProperty "RequireSecuritySignature"
 
-            if (($regValue -ne 1)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
+                    Message = "Registry value is '$regValue'. Get-SMBServerConfiguration failed, resorted to checking registry, which might not be 100% accurate. See <a href=`"https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/overview-server-message-block-signing#policy-locations-for-smb-signing`">here</a> and <a href=`"https://techcommunity.microsoft.com/t5/storage-at-microsoft/smb-signing-required-by-default-in-windows-insider/ba-p/3831704`">here</a>"
+                    Status  = "Warning"
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
@@ -891,10 +936,6 @@
                 Status  = "False"
             }
         }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
         }
     }
 }
@@ -903,16 +944,27 @@
     Task = "(L1) Ensure 'Microsoft network server: Digitally sign communications (if client agrees)' is set to 'Enabled'"
     Test = {
         try {
+            if ((Get-SmbServerConfiguration -ErrorAction Stop).EnableSecuritySignature -ne $True) {
+                return @{
+                    Message = "EnableSecuritySignature is not set to True"
+                    Status  = "False"
+                }
+            }
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
+        }
+        catch {
+        try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
                 -Name "EnableSecuritySignature" `
             | Select-Object -ExpandProperty "EnableSecuritySignature"
 
-            if (($regValue -ne 1)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
+                    Message = "Registry value is '$regValue'. Get-SMBServerConfiguration failed, resorted to checking registry, which might not be 100% accurate. See <a href=`"https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/overview-server-message-block-signing#policy-locations-for-smb-signing`">here</a> and <a href=`"https://techcommunity.microsoft.com/t5/storage-at-microsoft/smb-signing-required-by-default-in-windows-insider/ba-p/3831704`">here</a>"
+                    Status  = "Warning"
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
@@ -927,10 +979,6 @@
                 Status  = "False"
             }
         }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
         }
     }
 }
@@ -940,13 +988,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
                 -Name "enableforcedlogoff" `
             | Select-Object -ExpandProperty "enableforcedlogoff"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -976,13 +1024,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
                 -Name "SMBServerNameHardeningLevel" `
             | Select-Object -ExpandProperty "SMBServerNameHardeningLevel"
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -1012,13 +1060,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "RestrictAnonymousSAM" `
             | Select-Object -ExpandProperty "RestrictAnonymousSAM"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -1048,13 +1096,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "RestrictAnonymous" `
             | Select-Object -ExpandProperty "RestrictAnonymous"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -1084,13 +1132,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "DisableDomainCreds" `
             | Select-Object -ExpandProperty "DisableDomainCreds"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -1120,13 +1168,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "EveryoneIncludesAnonymous" `
             | Select-Object -ExpandProperty "EveryoneIncludesAnonymous"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -1192,7 +1240,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedExactPaths" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedExactPaths" `
                 -Name "Machine" `
             | Select-Object -ExpandProperty "Machine"
 
@@ -1233,7 +1281,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedPaths" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurePipeServers\Winreg\AllowedPaths" `
                 -Name "Machine" `
             | Select-Object -ExpandProperty "Machine"
 
@@ -1286,9 +1334,9 @@
                 -Name "RestrictNullSessAccess" `
             | Select-Object -ExpandProperty "RestrictNullSessAccess"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -1354,7 +1402,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
                 -Name "NullSessionShares" `
             | Select-Object -ExpandProperty "NullSessionShares"
 
@@ -1390,13 +1438,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "ForceGuest" `
             | Select-Object -ExpandProperty "ForceGuest"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -1426,13 +1474,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "UseMachineId" `
             | Select-Object -ExpandProperty "UseMachineId"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -1462,13 +1510,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" `
                 -Name "AllowNullSessionFallback" `
             | Select-Object -ExpandProperty "AllowNullSessionFallback"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -1498,13 +1546,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\pku2u" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\pku2u" `
                 -Name "AllowOnlineID" `
             | Select-Object -ExpandProperty "AllowOnlineID"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -1534,13 +1582,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Kerberos\Parameters" `
                 -Name "SupportedEncryptionTypes" `
             | Select-Object -ExpandProperty "SupportedEncryptionTypes"
 
-            if (($regValue -ne 2147483640)) {
+            if ($regValue -ne 2147483640) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2147483640"
+                    Message = "Registry value is '$regValue'. Expected: 2147483640"
                     Status  = "False"
                 }
             }
@@ -1570,13 +1618,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "NoLMHash" `
             | Select-Object -ExpandProperty "NoLMHash"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -1606,13 +1654,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" `
                 -Name "LmCompatibilityLevel" `
             | Select-Object -ExpandProperty "LmCompatibilityLevel"
 
-            if (($regValue -ne 5)) {
+            if ($regValue -ne 5) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 5"
+                    Message = "Registry value is '$regValue'. Expected: 5"
                     Status  = "False"
                 }
             }
@@ -1648,7 +1696,7 @@
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -1678,13 +1726,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LDAP" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LDAP" `
                 -Name "LDAPClientIntegrity" `
             | Select-Object -ExpandProperty "LDAPClientIntegrity"
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -1714,13 +1762,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" `
                 -Name "NTLMMinClientSec" `
             | Select-Object -ExpandProperty "NTLMMinClientSec"
 
-            if (($regValue -ne 537395200)) {
+            if ($regValue -ne 537395200) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 537395200"
+                    Message = "Registry value is '$regValue'. Expected: 537395200"
                     Status  = "False"
                 }
             }
@@ -1750,13 +1798,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa\MSV1_0" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" `
                 -Name "NTLMMinServerSec" `
             | Select-Object -ExpandProperty "NTLMMinServerSec"
 
-            if (($regValue -ne 537395200)) {
+            if ($regValue -ne 537395200) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 537395200"
+                    Message = "Registry value is '$regValue'. Expected: 537395200"
                     Status  = "False"
                 }
             }
@@ -1790,9 +1838,9 @@
                 -Name "AuditReceivingNTLMTraffic" `
             | Select-Object -ExpandProperty "AuditReceivingNTLMTraffic"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -1828,7 +1876,7 @@
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -1858,13 +1906,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Cryptography" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Cryptography" `
                 -Name "ForceKeyProtection" `
             | Select-Object -ExpandProperty "ForceKeyProtection"
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -1894,13 +1942,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Kernel" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Kernel" `
                 -Name "ObCaseInsensitive" `
             | Select-Object -ExpandProperty "ObCaseInsensitive"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -1930,13 +1978,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager" `
                 -Name "ProtectionMode" `
             | Select-Object -ExpandProperty "ProtectionMode"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -1966,13 +2014,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "FilterAdministratorToken" `
             | Select-Object -ExpandProperty "FilterAdministratorToken"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -2002,13 +2050,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "ConsentPromptBehaviorAdmin" `
             | Select-Object -ExpandProperty "ConsentPromptBehaviorAdmin"
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -2038,13 +2086,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "ConsentPromptBehaviorUser" `
             | Select-Object -ExpandProperty "ConsentPromptBehaviorUser"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -2074,13 +2122,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "EnableInstallerDetection" `
             | Select-Object -ExpandProperty "EnableInstallerDetection"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -2110,13 +2158,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "EnableSecureUIAPaths" `
             | Select-Object -ExpandProperty "EnableSecureUIAPaths"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -2146,13 +2194,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "EnableLUA" `
             | Select-Object -ExpandProperty "EnableLUA"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -2182,13 +2230,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "PromptOnSecureDesktop" `
             | Select-Object -ExpandProperty "PromptOnSecureDesktop"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -2218,13 +2266,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "EnableVirtualization" `
             | Select-Object -ExpandProperty "EnableVirtualization"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -2258,9 +2306,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2294,9 +2342,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2330,9 +2378,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2366,9 +2414,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2402,9 +2450,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2438,9 +2486,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2474,9 +2522,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2510,9 +2558,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2546,9 +2594,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2582,9 +2630,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2618,9 +2666,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2654,9 +2702,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2690,9 +2738,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2726,9 +2774,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2762,9 +2810,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2798,9 +2846,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2834,9 +2882,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2870,9 +2918,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2906,9 +2954,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2942,9 +2990,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -2978,9 +3026,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3014,9 +3062,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3050,9 +3098,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3086,9 +3134,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3122,9 +3170,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3158,9 +3206,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3194,9 +3242,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3230,9 +3278,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3266,9 +3314,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3302,9 +3350,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3338,9 +3386,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3374,9 +3422,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3410,9 +3458,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3446,9 +3494,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3482,9 +3530,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3518,9 +3566,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3554,9 +3602,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3590,9 +3638,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3626,9 +3674,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3662,9 +3710,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3698,9 +3746,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3734,9 +3782,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -3763,252 +3811,133 @@
 [AuditTest] @{
     Id   = "9.1.1"
     Task = "(L1) Ensure 'Windows Firewall: Domain: Firewall state' is set to 'On (recommended)'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\DomainProfile" `
-                -Name "EnableFirewall" `
-            | Select-Object -ExpandProperty "EnableFirewall"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+    Constraints = @(
+        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
+    )
+    Test        = {
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile";
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile";
+        $key = "EnableFirewall";
+        $expectedValue = 1;
+        $profileType = "Domain"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
 [AuditTest] @{
     Id   = "9.1.2"
     Task = "(L1) Ensure 'Windows Firewall: Domain: Inbound connections' is set to 'Block (default)'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\DomainProfile" `
-                -Name "DefaultInboundAction" `
-            | Select-Object -ExpandProperty "DefaultInboundAction"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+    Constraints = @(
+        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
+    )
+    Test        = {
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile"       
+        $key = "DefaultInboundAction"
+        $expectedValue = 1;
+        $profileType = "Domain"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
 [AuditTest] @{
     Id   = "9.1.3"
     Task = "(L1) Ensure 'Windows Firewall: Domain: Settings: Display a notification' is set to 'No'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\DomainProfile" `
-                -Name "DisableNotifications" `
-            | Select-Object -ExpandProperty "DisableNotifications"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+    Constraints = @(
+        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
+    )
+    Test        = {
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile"       
+        $key = "DisableNotifications"
+        $expectedValue = 1;
+        $profileType = "Domain"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
 [AuditTest] @{
     Id   = "9.1.4"
     Task = "(L1) Ensure 'Windows Firewall: Domain: Logging: Name' is set to '%SystemRoot%\System32\logfiles\firewall\domainfw.log'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging" `
-                -Name "LogFilePath" `
-            | Select-Object -ExpandProperty "LogFilePath"
-
-            if ($regValue -ne "%SystemRoot%\System32\logfiles\firewall\domainfw.log") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: %SystemRoot%\System32\logfiles\firewall\domainfw.log"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+    Constraints = @(
+        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
+    )
+    Test        = {
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile\Logging"       
+        $key = "LogFilePath"
+        $expectedValue = "%SystemRoot%\System32\logfiles\firewall\domainfw.log";
+        $profileType = "Domain"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
 [AuditTest] @{
     Id   = "9.1.5"
     Task = "(L1) Ensure 'Windows Firewall: Domain: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging" `
-                -Name "LogFileSize" `
-            | Select-Object -ExpandProperty "LogFileSize"
-
-            if (($regValue -lt 16384)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x >= 16384"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+    Constraints = @(
+        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
+    )
+    Test        = {
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile\Logging"      
+        $key = "LogFileSize"
+        $expectedValue = 16384;
+        $profileType = "Domain"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
 [AuditTest] @{
     Id   = "9.1.6"
     Task = "(L1) Ensure 'Windows Firewall: Domain: Logging: Log dropped packets' is set to 'Yes'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging" `
-                -Name "LogDroppedPackets" `
-            | Select-Object -ExpandProperty "LogDroppedPackets"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+    Constraints = @(
+        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
+    )
+    Test        = {
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile\Logging"      
+        $key = "LogDroppedPackets"
+        $expectedValue = 1;
+        $profileType = "Domain"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
 [AuditTest] @{
     Id   = "9.1.7"
     Task = "(L1) Ensure 'Windows Firewall: Domain: Logging: Log successful connections' is set to 'Yes'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging" `
-                -Name "LogSuccessfulConnections" `
-            | Select-Object -ExpandProperty "LogSuccessfulConnections"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+    Constraints = @(
+        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
+    )
+    Test        = {
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile\Logging"      
+        $key = "LogSuccessfulConnections"
+        $expectedValue = 1;
+        $profileType = "Domain"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4016,35 +3945,15 @@
     Id   = "9.2.1"
     Task = "(L1) Ensure 'Windows Firewall: Private: Firewall state' is set to 'On (recommended)'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile" `
-                -Name "EnableFirewall" `
-            | Select-Object -ExpandProperty "EnableFirewall"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile"       
+        $key = "EnableFirewall"
+        $expectedValue = 1;
+        $profileType = "Private"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4052,35 +3961,15 @@
     Id   = "9.2.2"
     Task = "(L1) Ensure 'Windows Firewall: Private: Inbound connections' is set to 'Block (default)'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile" `
-                -Name "DefaultInboundAction" `
-            | Select-Object -ExpandProperty "DefaultInboundAction"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile"       
+        $key = "DefaultInboundAction"
+        $expectedValue = 1;
+        $profileType = "Private"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4088,35 +3977,15 @@
     Id   = "9.2.3"
     Task = "(L1) Ensure 'Windows Firewall: Private: Settings: Display a notification' is set to 'No'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile" `
-                -Name "DisableNotifications" `
-            | Select-Object -ExpandProperty "DisableNotifications"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile"       
+        $key = "DisableNotifications"
+        $expectedValue = 1;
+        $profileType = "Private"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4124,35 +3993,15 @@
     Id   = "9.2.4"
     Task = "(L1) Ensure 'Windows Firewall: Private: Logging: Name' is set to '%SystemRoot%\System32\logfiles\firewall\privatefw.log'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging" `
-                -Name "LogFilePath" `
-            | Select-Object -ExpandProperty "LogFilePath"
-
-            if ($regValue -ne "%SystemRoot%\System32\logfiles\firewall\privatefw.log") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: %SystemRoot%\System32\logfiles\firewall\privatefw.log"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\Logging"       
+        $key = "LogFilePath"
+        $expectedValue = "%SystemRoot%\System32\logfiles\firewall\privatefw.log";
+        $profileType = "Private"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4160,35 +4009,15 @@
     Id   = "9.2.5"
     Task = "(L1) Ensure 'Windows Firewall: Private: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging" `
-                -Name "LogFileSize" `
-            | Select-Object -ExpandProperty "LogFileSize"
-
-            if (($regValue -lt 16384)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x >= 16384"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\Logging"         
+        $key = "LogFileSize"
+        $expectedValue = 16384;
+        $profileType = "Private"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4196,35 +4025,15 @@
     Id   = "9.2.6"
     Task = "(L1) Ensure 'Windows Firewall: Private: Logging: Log dropped packets' is set to 'Yes'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging" `
-                -Name "LogDroppedPackets" `
-            | Select-Object -ExpandProperty "LogDroppedPackets"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\Logging"         
+        $key = "LogDroppedPackets"
+        $expectedValue = 1;
+        $profileType = "Private"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4232,35 +4041,15 @@
     Id   = "9.2.7"
     Task = "(L1) Ensure 'Windows Firewall: Private: Logging: Log successful connections' is set to 'Yes'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging" `
-                -Name "LogSuccessfulConnections" `
-            | Select-Object -ExpandProperty "LogSuccessfulConnections"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\Logging"         
+        $key = "LogSuccessfulConnections"
+        $expectedValue = 1;
+        $profileType = "Private"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4268,35 +4057,15 @@
     Id   = "9.3.1"
     Task = "(L1) Ensure 'Windows Firewall: Public: Firewall state' is set to 'On (recommended)'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PublicProfile" `
-                -Name "EnableFirewall" `
-            | Select-Object -ExpandProperty "EnableFirewall"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile"       
+        $key = "EnableFirewall"
+        $expectedValue = 1;
+        $profileType = "Public"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4304,35 +4073,15 @@
     Id   = "9.3.2"
     Task = "(L1) Ensure 'Windows Firewall: Public: Inbound connections' is set to 'Block (default)'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PublicProfile" `
-                -Name "DefaultInboundAction" `
-            | Select-Object -ExpandProperty "DefaultInboundAction"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile"       
+        $key = "DefaultInboundAction"
+        $expectedValue = 1;
+        $profileType = "Public"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4340,35 +4089,15 @@
     Id   = "9.3.3"
     Task = "(L1) Ensure 'Windows Firewall: Public: Settings: Display a notification' is set to 'No'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PublicProfile" `
-                -Name "DisableNotifications" `
-            | Select-Object -ExpandProperty "DisableNotifications"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile"       
+        $key = "DisableNotifications"
+        $expectedValue = 1;
+        $profileType = "Public"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4376,35 +4105,15 @@
     Id   = "9.3.4"
     Task = "(L1) Ensure 'Windows Firewall: Public: Settings: Apply local firewall rules' is set to 'No'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PublicProfile" `
-                -Name "AllowLocalPolicyMerge" `
-            | Select-Object -ExpandProperty "AllowLocalPolicyMerge"
-
-            if (($regValue -ne 0)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile"       
+        $key = "AllowLocalPolicyMerge"
+        $expectedValue = 0;
+        $profileType = "Public"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4412,35 +4121,15 @@
     Id   = "9.3.5"
     Task = "(L1) Ensure 'Windows Firewall: Public: Settings: Apply local connection security rules' is set to 'No'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PublicProfile" `
-                -Name "AllowLocalIPsecPolicyMerge" `
-            | Select-Object -ExpandProperty "AllowLocalIPsecPolicyMerge"
-
-            if (($regValue -ne 0)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile"       
+        $key = "AllowLocalIPsecPolicyMerge"
+        $expectedValue = 0;
+        $profileType = "Public"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4448,35 +4137,15 @@
     Id   = "9.3.6"
     Task = "(L1) Ensure 'Windows Firewall: Public: Logging: Name' is set to '%SystemRoot%\System32\logfiles\firewall\publicfw.log'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging" `
-                -Name "LogFilePath" `
-            | Select-Object -ExpandProperty "LogFilePath"
-
-            if ($regValue -ne "%SystemRoot%\System32\logfiles\firewall\publicfw.log") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: %SystemRoot%\System32\logfiles\firewall\publicfw.log"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile\Logging"       
+        $key = "LogFilePath"
+        $expectedValue = "%SystemRoot%\System32\logfiles\firewall\publicfw.log";
+        $profileType = "Public"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4484,35 +4153,15 @@
     Id   = "9.3.7"
     Task = "(L1) Ensure 'Windows Firewall: Public: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging" `
-                -Name "LogFileSize" `
-            | Select-Object -ExpandProperty "LogFileSize"
-
-            if (($regValue -lt 16384)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x >= 16384"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile\Logging"       
+        $key = "LogFileSize"
+        $expectedValue = 16384;
+        $profileType = "Public"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4520,35 +4169,15 @@
     Id   = "9.3.8"
     Task = "(L1) Ensure 'Windows Firewall: Public: Logging: Log dropped packets' is set to 'Yes'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging" `
-                -Name "LogDroppedPackets" `
-            | Select-Object -ExpandProperty "LogDroppedPackets"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile\Logging"       
+        $key = "LogDroppedPackets"
+        $expectedValue = 1;
+        $profileType = "Public"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4556,35 +4185,15 @@
     Id   = "9.3.9"
     Task = "(L1) Ensure 'Windows Firewall: Public: Logging: Log successful connections' is set to 'Yes'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging" `
-                -Name "LogSuccessfulConnections" `
-            | Select-Object -ExpandProperty "LogSuccessfulConnections"
-
-            if (($regValue -ne 1)) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
+        $path1 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging"
+        $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile\Logging"       
+        $key = "LogSuccessfulConnections"
+        $expectedValue = 1;
+        $profileType = "Public"
+        $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = $($result.Message)
+            Status  = $($result.Status)
         }
     }
 }
@@ -4594,13 +4203,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Personalization" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Personalization" `
                 -Name "NoLockScreenCamera" `
             | Select-Object -ExpandProperty "NoLockScreenCamera"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -4630,13 +4239,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Personalization" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Personalization" `
                 -Name "NoLockScreenSlideshow" `
             | Select-Object -ExpandProperty "NoLockScreenSlideshow"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -4670,9 +4279,9 @@
                 -Name "AllowInputPersonalization" `
             | Select-Object -ExpandProperty "AllowInputPersonalization"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -4706,9 +4315,9 @@
                 -Name "AllowOnlineTips" `
             | Select-Object -ExpandProperty "AllowOnlineTips"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -4742,9 +4351,9 @@
                 -Name "LocalAccountTokenFilterPolicy" `
             | Select-Object -ExpandProperty "LocalAccountTokenFilterPolicy"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -4778,9 +4387,9 @@
                 -Name "Start" `
             | Select-Object -ExpandProperty "Start"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -4814,9 +4423,9 @@
                 -Name "SMB1" `
             | Select-Object -ExpandProperty "SMB1"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -4850,9 +4459,9 @@
                 -Name "EnableCertPaddingCheck" `
             | Select-Object -ExpandProperty "EnableCertPaddingCheck"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -4886,9 +4495,9 @@
                 -Name "DisableExceptionChainValidation" `
             | Select-Object -ExpandProperty "DisableExceptionChainValidation"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -4922,9 +4531,9 @@
                 -Name "NodeType" `
             | Select-Object -ExpandProperty "NodeType"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -4958,9 +4567,9 @@
                 -Name "UseLogonCredential" `
             | Select-Object -ExpandProperty "UseLogonCredential"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -4990,7 +4599,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
                 -Name "AutoAdminLogon" `
             | Select-Object -ExpandProperty "AutoAdminLogon"
 
@@ -5026,13 +4635,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip6\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters" `
                 -Name "DisableIPSourceRouting" `
             | Select-Object -ExpandProperty "DisableIPSourceRouting"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -5062,13 +4671,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" `
                 -Name "DisableIPSourceRouting" `
             | Select-Object -ExpandProperty "DisableIPSourceRouting"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -5098,13 +4707,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\RasMan\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\RasMan\Parameters" `
                 -Name "disablesavepassword" `
             | Select-Object -ExpandProperty "disablesavepassword"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5134,13 +4743,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" `
                 -Name "EnableICMPRedirect" `
             | Select-Object -ExpandProperty "EnableICMPRedirect"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -5170,13 +4779,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" `
                 -Name "KeepAliveTime" `
             | Select-Object -ExpandProperty "KeepAliveTime"
 
-            if (($regValue -ne 300000)) {
+            if ($regValue -ne 300000) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 300000"
+                    Message = "Registry value is '$regValue'. Expected: 300000"
                     Status  = "False"
                 }
             }
@@ -5206,13 +4815,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\NetBT\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters" `
                 -Name "nonamereleaseondemand" `
             | Select-Object -ExpandProperty "nonamereleaseondemand"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5242,13 +4851,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" `
                 -Name "PerformRouterDiscovery" `
             | Select-Object -ExpandProperty "PerformRouterDiscovery"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -5282,9 +4891,9 @@
                 -Name "SafeDllSearchMode" `
             | Select-Object -ExpandProperty "SafeDllSearchMode"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5314,7 +4923,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" `
                 -Name "ScreenSaverGracePeriod" `
             | Select-Object -ExpandProperty "ScreenSaverGracePeriod"
 
@@ -5350,13 +4959,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\TCPIP6\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters" `
                 -Name "tcpmaxdataretransmissions" `
             | Select-Object -ExpandProperty "tcpmaxdataretransmissions"
 
-            if (($regValue -ne 3)) {
+            if ($regValue -ne 3) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 3"
+                    Message = "Registry value is '$regValue'. Expected: 3"
                     Status  = "False"
                 }
             }
@@ -5386,13 +4995,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Tcpip\Parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" `
                 -Name "tcpmaxdataretransmissions" `
             | Select-Object -ExpandProperty "tcpmaxdataretransmissions"
 
-            if (($regValue -ne 3)) {
+            if ($regValue -ne 3) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 3"
+                    Message = "Registry value is '$regValue'. Expected: 3"
                     Status  = "False"
                 }
             }
@@ -5458,13 +5067,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\DNSClient" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" `
                 -Name "EnableMDNS" `
             | Select-Object -ExpandProperty "EnableMDNS"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -5500,7 +5109,7 @@
 
             if (($regValue -ne 2) -and ($regValue -ne 0)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2 or x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 2 or 0"
                     Status  = "False"
                 }
             }
@@ -5530,13 +5139,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\DNSClient" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" `
                 -Name "DisableIPv6DefaultDnsServers" `
             | Select-Object -ExpandProperty "DisableIPv6DefaultDnsServers"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5570,9 +5179,9 @@
                 -Name "EnableMulticast" `
             | Select-Object -ExpandProperty "EnableMulticast"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -5606,9 +5215,9 @@
                 -Name "EnableFontProviders" `
             | Select-Object -ExpandProperty "EnableFontProviders"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -5642,9 +5251,9 @@
                 -Name "AuditClientDoesNotSupportEncryption" `
             | Select-Object -ExpandProperty "AuditClientDoesNotSupportEncryption"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5678,9 +5287,9 @@
                 -Name "AuditClientDoesNotSupportSigning" `
             | Select-Object -ExpandProperty "AuditClientDoesNotSupportSigning"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5714,9 +5323,9 @@
                 -Name "AuditInsecureGuestLogon" `
             | Select-Object -ExpandProperty "AuditInsecureGuestLogon"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5750,9 +5359,9 @@
                 -Name "EnableAuthRateLimiter" `
             | Select-Object -ExpandProperty "EnableAuthRateLimiter"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5786,9 +5395,9 @@
                 -Name "EnableMailslots" `
             | Select-Object -ExpandProperty "EnableMailslots"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -5894,9 +5503,9 @@
                 -Name "AuditInsecureGuestLogon" `
             | Select-Object -ExpandProperty "AuditInsecureGuestLogon"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5930,9 +5539,9 @@
                 -Name "AuditServerDoesNotSupportEncryption" `
             | Select-Object -ExpandProperty "AuditServerDoesNotSupportEncryption"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -5966,9 +5575,9 @@
                 -Name "AuditServerDoesNotSupportSigning" `
             | Select-Object -ExpandProperty "AuditServerDoesNotSupportSigning"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -6002,9 +5611,9 @@
                 -Name "AllowInsecureGuestAuth" `
             | Select-Object -ExpandProperty "AllowInsecureGuestAuth"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6038,9 +5647,9 @@
                 -Name "EnableMailslots" `
             | Select-Object -ExpandProperty "EnableMailslots"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6110,9 +5719,9 @@
                 -Name "RequireEncryption" `
             | Select-Object -ExpandProperty "RequireEncryption"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -6146,9 +5755,9 @@
                 -Name "AllowLLTDIOOnDomain" `
             | Select-Object -ExpandProperty "AllowLLTDIOOnDomain"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6182,9 +5791,9 @@
                 -Name "AllowLLTDIOOnPublicNet" `
             | Select-Object -ExpandProperty "AllowLLTDIOOnPublicNet"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6218,9 +5827,9 @@
                 -Name "EnableLLTDIO" `
             | Select-Object -ExpandProperty "EnableLLTDIO"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6254,9 +5863,9 @@
                 -Name "ProhibitLLTDIOOnPrivateNet" `
             | Select-Object -ExpandProperty "ProhibitLLTDIOOnPrivateNet"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6290,9 +5899,9 @@
                 -Name "AllowRspndrOnDomain" `
             | Select-Object -ExpandProperty "AllowRspndrOnDomain"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6326,9 +5935,9 @@
                 -Name "AllowRspndrOnPublicNet" `
             | Select-Object -ExpandProperty "AllowRspndrOnPublicNet"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6362,9 +5971,9 @@
                 -Name "EnableRspndr" `
             | Select-Object -ExpandProperty "EnableRspndr"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6398,9 +6007,9 @@
                 -Name "ProhibitRspndrOnPrivateNet" `
             | Select-Object -ExpandProperty "ProhibitRspndrOnPrivateNet"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6430,13 +6039,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Peernet" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Peernet" `
                 -Name "Disabled" `
             | Select-Object -ExpandProperty "Disabled"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -6470,9 +6079,9 @@
                 -Name "NC_AllowNetBridge_NLA" `
             | Select-Object -ExpandProperty "NC_AllowNetBridge_NLA"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6506,9 +6115,9 @@
                 -Name "NC_ShowSharedAccessUI" `
             | Select-Object -ExpandProperty "NC_ShowSharedAccessUI"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6538,13 +6147,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Network Connections" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Network Connections" `
                 -Name "NC_StdDomainUserSetLocation" `
             | Select-Object -ExpandProperty "NC_StdDomainUserSetLocation"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -6574,13 +6183,29 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths" `
                 -Name "\\*\NETLOGON" `
             | Select-Object -ExpandProperty "\\*\NETLOGON"
-
-            if ($regValue -ne "RequireMutualAuthentication=1, RequireIntegrity=1, RequirePrivacy=1") {
+        
+            if ($regValue -eq $null) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1, RequireIntegrity=1, RequirePrivacy=1"
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
+            }
+            $array = $regValue.Split(',') | ForEach-Object { $_.Trim() }
+
+            $missingElements = @()
+            $elementsToCheck = @("RequireMutualAuthentication=1", "RequireIntegrity=1", "RequirePrivacy=1")
+            foreach ($element in $elementsToCheck) {
+                if ($array -notcontains $element) {
+                    $missingElements += $element
+                }
+            }
+
+            if ($missingElements.Length -gt 0) {
+                return @{
+                    Message = ($missingElements -join " and ") + " not configured correctly."
                     Status  = "False"
                 }
             }
@@ -6610,13 +6235,29 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths" `
                 -Name "\\*\SYSVOL" `
             | Select-Object -ExpandProperty "\\*\SYSVOL"
-
-            if ($regValue -ne "RequireMutualAuthentication=1, RequireIntegrity=1, RequirePrivacy=1") {
+        
+            if ($regValue -eq $null) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1, RequireIntegrity=1, RequirePrivacy=1"
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
+            }
+            $array = $regValue.Split(',') | ForEach-Object { $_.Trim() }
+
+            $missingElements = @()
+            $elementsToCheck = @("RequireMutualAuthentication=1", "RequireIntegrity=1", "RequirePrivacy=1")
+            foreach ($element in $elementsToCheck) {
+                if ($array -notcontains $element) {
+                    $missingElements += $element
+                }
+            }
+
+            if ($missingElements.Length -gt 0) {
+                return @{
+                    Message = ($missingElements -join " and ") + " not configured correctly."
                     Status  = "False"
                 }
             }
@@ -6650,9 +6291,9 @@
                 -Name "DisabledComponents" `
             | Select-Object -ExpandProperty "DisabledComponents"
 
-            if (($regValue -ne 255)) {
+            if ($regValue -ne 255) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 255"
+                    Message = "Registry value is '$regValue'. Expected: 255"
                     Status  = "False"
                 }
             }
@@ -6682,13 +6323,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WCN\Registrars" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars" `
                 -Name "EnableRegistrars" `
             | Select-Object -ExpandProperty "EnableRegistrars"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6718,13 +6359,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WCN\Registrars" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars" `
                 -Name "DisableUPnPRegistrar" `
             | Select-Object -ExpandProperty "DisableUPnPRegistrar"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6754,13 +6395,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WCN\Registrars" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars" `
                 -Name "DisableInBand802DOT11Registrar" `
             | Select-Object -ExpandProperty "DisableInBand802DOT11Registrar"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6790,13 +6431,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WCN\Registrars" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars" `
                 -Name "DisableFlashConfigRegistrar" `
             | Select-Object -ExpandProperty "DisableFlashConfigRegistrar"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6826,13 +6467,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WCN\Registrars" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars" `
                 -Name "DisableWPDRegistrar" `
             | Select-Object -ExpandProperty "DisableWPDRegistrar"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -6862,13 +6503,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WCN\UI" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WCN\UI" `
                 -Name "DisableWcnUi" `
             | Select-Object -ExpandProperty "DisableWcnUi"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -6898,13 +6539,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WcmSvc\GroupPolicy" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy" `
                 -Name "fMinimizeConnections" `
             | Select-Object -ExpandProperty "fMinimizeConnections"
 
-            if (($regValue -ne 3)) {
+            if ($regValue -ne 3) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 3"
+                    Message = "Registry value is '$regValue'. Expected: 3"
                     Status  = "False"
                 }
             }
@@ -6934,13 +6575,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WcmSvc\GroupPolicy" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy" `
                 -Name "fBlockNonDomain" `
             | Select-Object -ExpandProperty "fBlockNonDomain"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -6974,9 +6615,9 @@
                 -Name "AutoConnectAllowedOEM" `
             | Select-Object -ExpandProperty "AutoConnectAllowedOEM"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -7006,13 +6647,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Printers" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers" `
                 -Name "RegisterSpoolerRemoteRpcEndPoint" `
             | Select-Object -ExpandProperty "RegisterSpoolerRemoteRpcEndPoint"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -7042,13 +6683,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Printers" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers" `
                 -Name "RedirectionGuardPolicy" `
             | Select-Object -ExpandProperty "RedirectionGuardPolicy"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7082,9 +6723,9 @@
                 -Name "RpcUseNamedPipeProtocol" `
             | Select-Object -ExpandProperty "RpcUseNamedPipeProtocol"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -7118,9 +6759,9 @@
                 -Name "RpcAuthentication" `
             | Select-Object -ExpandProperty "RpcAuthentication"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -7154,9 +6795,9 @@
                 -Name "RpcProtocols" `
             | Select-Object -ExpandProperty "RpcProtocols"
 
-            if (($regValue -ne 5)) {
+            if ($regValue -ne 5) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 5"
+                    Message = "Registry value is '$regValue'. Expected: 5"
                     Status  = "False"
                 }
             }
@@ -7192,7 +6833,7 @@
 
             if (($regValue -ne 0) -and ($regValue -ne 1)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0 or x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 0 or 1"
                     Status  = "False"
                 }
             }
@@ -7226,9 +6867,9 @@
                 -Name "RpcTcpPort" `
             | Select-Object -ExpandProperty "RpcTcpPort"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -7262,9 +6903,9 @@
                 -Name "RpcAuthnLevelPrivacyEnabled" `
             | Select-Object -ExpandProperty "RpcAuthnLevelPrivacyEnabled"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7298,9 +6939,9 @@
                 -Name "WindowsProtectedPrintGroupPolicyState" `
             | Select-Object -ExpandProperty "WindowsProtectedPrintGroupPolicyState"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7330,13 +6971,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint" `
                 -Name "RestrictDriverInstallationToAdministrators" `
             | Select-Object -ExpandProperty "RestrictDriverInstallationToAdministrators"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7370,9 +7011,9 @@
                 -Name "CopyFilesPolicy" `
             | Select-Object -ExpandProperty "CopyFilesPolicy"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7402,13 +7043,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint" `
                 -Name "NoWarningNoElevationOnInstall" `
             | Select-Object -ExpandProperty "NoWarningNoElevationOnInstall"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -7438,13 +7079,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint" `
                 -Name "UpdatePromptSettings" `
             | Select-Object -ExpandProperty "UpdatePromptSettings"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -7478,9 +7119,9 @@
                 -Name "NoCloudApplicationNotification" `
             | Select-Object -ExpandProperty "NoCloudApplicationNotification"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7514,9 +7155,9 @@
                 -Name "HideRecommendedPersonalizedSites" `
             | Select-Object -ExpandProperty "HideRecommendedPersonalizedSites"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7550,9 +7191,9 @@
                 -Name "ProcessCreationIncludeCmdLine_Enabled" `
             | Select-Object -ExpandProperty "ProcessCreationIncludeCmdLine_Enabled"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7586,9 +7227,9 @@
                 -Name "AllowEncryptionOracle" `
             | Select-Object -ExpandProperty "AllowEncryptionOracle"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -7622,9 +7263,9 @@
                 -Name "AllowProtectedCreds" `
             | Select-Object -ExpandProperty "AllowProtectedCreds"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7658,9 +7299,9 @@
                 -Name "EnableVirtualizationBasedSecurity" `
             | Select-Object -ExpandProperty "EnableVirtualizationBasedSecurity"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7696,7 +7337,7 @@
 
             if (($regValue -ne 1) -and ($regValue -ne 3)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 3"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 3"
                     Status  = "False"
                 }
             }
@@ -7730,9 +7371,9 @@
                 -Name "HypervisorEnforcedCodeIntegrity" `
             | Select-Object -ExpandProperty "HypervisorEnforcedCodeIntegrity"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7766,9 +7407,9 @@
                 -Name "HVCIMATRequired" `
             | Select-Object -ExpandProperty "HVCIMATRequired"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7802,9 +7443,9 @@
                 -Name "LsaCfgFlags" `
             | Select-Object -ExpandProperty "LsaCfgFlags"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7838,9 +7479,9 @@
                 -Name "ConfigureSystemGuardLaunch" `
             | Select-Object -ExpandProperty "ConfigureSystemGuardLaunch"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7874,9 +7515,9 @@
                 -Name "ConfigureKernelShadowStacksLaunch" `
             | Select-Object -ExpandProperty "ConfigureKernelShadowStacksLaunch"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7906,13 +7547,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DeviceInstall\Restrictions" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions" `
                 -Name "DenyDeviceClasses" `
             | Select-Object -ExpandProperty "DenyDeviceClasses"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -7942,7 +7583,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceClasses" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceClasses" `
                 -Name "1" `
             | Select-Object -ExpandProperty "1"
 
@@ -7978,7 +7619,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceClasses" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceClasses" `
                 -Name "2" `
             | Select-Object -ExpandProperty "2"
 
@@ -8014,7 +7655,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceClasses" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceClasses" `
                 -Name "3" `
             | Select-Object -ExpandProperty "3"
 
@@ -8050,7 +7691,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceClasses" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceClasses" `
                 -Name "4" `
             | Select-Object -ExpandProperty "4"
 
@@ -8086,13 +7727,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DeviceInstall\Restrictions" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions" `
                 -Name "DenyDeviceClassesRetroactive" `
             | Select-Object -ExpandProperty "DenyDeviceClassesRetroactive"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8126,9 +7767,9 @@
                 -Name "PreventDeviceMetadataFromNetwork" `
             | Select-Object -ExpandProperty "PreventDeviceMetadataFromNetwork"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8158,13 +7799,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Policies\EarlyLaunch" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Policies\EarlyLaunch" `
                 -Name "DriverLoadPolicy" `
             | Select-Object -ExpandProperty "DriverLoadPolicy"
 
-            if (($regValue -ne 3)) {
+            if ($regValue -ne 3) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 3"
+                    Message = "Registry value is '$regValue'. Expected: 3"
                     Status  = "False"
                 }
             }
@@ -8194,13 +7835,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}" `
                 -Name "NoBackgroundPolicy" `
             | Select-Object -ExpandProperty "NoBackgroundPolicy"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -8230,13 +7871,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}" `
                 -Name "NoGPOListChanges" `
             | Select-Object -ExpandProperty "NoGPOListChanges"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -8270,9 +7911,9 @@
                 -Name "NoBackgroundPolicy" `
             | Select-Object -ExpandProperty "NoBackgroundPolicy"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -8306,9 +7947,9 @@
                 -Name "NoGPOListChanges" `
             | Select-Object -ExpandProperty "NoGPOListChanges"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -8342,9 +7983,9 @@
                 -Name "EnableCdp" `
             | Select-Object -ExpandProperty "EnableCdp"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -8374,13 +8015,15 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "DisableBkGndGroupPolicy" `
             | Select-Object -ExpandProperty "DisableBkGndGroupPolicy"
 
-            return @{
-                Message = "Registry value found."
-                Status  = "False"
+            if ($regValue -ne 0) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 0"
+                    Status  = "False"
+                }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
@@ -8412,9 +8055,9 @@
                 -Name "NoUseStoreOpenWith" `
             | Select-Object -ExpandProperty "NoUseStoreOpenWith"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8444,13 +8087,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Printers" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers" `
                 -Name "DisableWebPnPDownload" `
             | Select-Object -ExpandProperty "DisableWebPnPDownload"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8480,13 +8123,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\TabletPC" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\TabletPC" `
                 -Name "PreventHandwritingDataSharing" `
             | Select-Object -ExpandProperty "PreventHandwritingDataSharing"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8516,13 +8159,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\HandwritingErrorReports" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\HandwritingErrorReports" `
                 -Name "PreventHandwritingErrorReports" `
             | Select-Object -ExpandProperty "PreventHandwritingErrorReports"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8552,13 +8195,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Internet Connection Wizard" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Internet Connection Wizard" `
                 -Name "ExitOnMSICW" `
             | Select-Object -ExpandProperty "ExitOnMSICW"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8588,13 +8231,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
                 -Name "NoWebServices" `
             | Select-Object -ExpandProperty "NoWebServices"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8624,13 +8267,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Printers" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Printers" `
                 -Name "DisableHTTPPrinting" `
             | Select-Object -ExpandProperty "DisableHTTPPrinting"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8660,13 +8303,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Registration Wizard Control" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Registration Wizard Control" `
                 -Name "NoRegistration" `
             | Select-Object -ExpandProperty "NoRegistration"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8696,13 +8339,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\SearchCompanion" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\SearchCompanion" `
                 -Name "DisableContentFileUpdates" `
             | Select-Object -ExpandProperty "DisableContentFileUpdates"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8732,13 +8375,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
                 -Name "NoOnlinePrintsWizard" `
             | Select-Object -ExpandProperty "NoOnlinePrintsWizard"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8768,13 +8411,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
                 -Name "NoPublishingWizard" `
             | Select-Object -ExpandProperty "NoPublishingWizard"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8804,13 +8447,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Messenger\Client" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Messenger\Client" `
                 -Name "CEIP" `
             | Select-Object -ExpandProperty "CEIP"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -8840,13 +8483,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\SQMClient\Windows" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\SQMClient\Windows" `
                 -Name "CEIPEnable" `
             | Select-Object -ExpandProperty "CEIPEnable"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -8876,13 +8519,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Windows Error Reporting" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" `
                 -Name "Disabled" `
             | Select-Object -ExpandProperty "Disabled"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -8912,13 +8555,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\PCHealth\ErrorReporting" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" `
                 -Name "DoReport" `
             | Select-Object -ExpandProperty "DoReport"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -8948,13 +8591,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\kerberos\parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\kerberos\parameters" `
                 -Name "DevicePKInitBehavior" `
             | Select-Object -ExpandProperty "DevicePKInitBehavior"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -8984,13 +8627,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\kerberos\parameters" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\kerberos\parameters" `
                 -Name "DevicePKInitEnabled" `
             | Select-Object -ExpandProperty "DevicePKInitEnabled"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9024,9 +8667,9 @@
                 -Name "DeviceEnumerationPolicy" `
             | Select-Object -ExpandProperty "DeviceEnumerationPolicy"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9062,7 +8705,7 @@
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -9096,9 +8739,9 @@
                 -Name "PwdExpirationProtectionEnabled" `
             | Select-Object -ExpandProperty "PwdExpirationProtectionEnabled"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9132,9 +8775,9 @@
                 -Name "ADPasswordEncryptionEnabled" `
             | Select-Object -ExpandProperty "ADPasswordEncryptionEnabled"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9168,9 +8811,9 @@
                 -Name "PasswordComplexity" `
             | Select-Object -ExpandProperty "PasswordComplexity"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -9314,7 +8957,7 @@
 
             if (($regValue -ne 3) -and ($regValue -ne 5)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 3 or x == 5"
+                    Message = "Registry value is '$regValue'. Expected: 3 or 5"
                     Status  = "False"
                 }
             }
@@ -9344,13 +8987,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System" `
                 -Name "AllowCustomSSPsAPs" `
             | Select-Object -ExpandProperty "AllowCustomSSPsAPs"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9384,9 +9027,9 @@
                 -Name "RunAsPPL" `
             | Select-Object -ExpandProperty "RunAsPPL"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9416,13 +9059,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Control Panel\International" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Control Panel\International" `
                 -Name "BlockUserInputMethodsForSignIn" `
             | Select-Object -ExpandProperty "BlockUserInputMethodsForSignIn"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9456,9 +9099,9 @@
                 -Name "BlockUserFromShowingAccountDetailsOnSignin" `
             | Select-Object -ExpandProperty "BlockUserFromShowingAccountDetailsOnSignin"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9488,13 +9131,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System" `
                 -Name "DontDisplayNetworkSelectionUI" `
             | Select-Object -ExpandProperty "DontDisplayNetworkSelectionUI"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9524,13 +9167,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System" `
                 -Name "DontEnumerateConnectedUsers" `
             | Select-Object -ExpandProperty "DontEnumerateConnectedUsers"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9560,13 +9203,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System" `
                 -Name "EnumerateLocalUsers" `
             | Select-Object -ExpandProperty "EnumerateLocalUsers"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9596,13 +9239,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System" `
                 -Name "DisableLockScreenAppNotifications" `
             | Select-Object -ExpandProperty "DisableLockScreenAppNotifications"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9632,13 +9275,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System" `
                 -Name "BlockDomainPicturePassword" `
             | Select-Object -ExpandProperty "BlockDomainPicturePassword"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9668,13 +9311,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System" `
                 -Name "AllowDomainPINLogon" `
             | Select-Object -ExpandProperty "AllowDomainPINLogon"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9708,9 +9351,9 @@
                 -Name "BlockNetbiosDiscovery" `
             | Select-Object -ExpandProperty "BlockNetbiosDiscovery"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9744,9 +9387,9 @@
                 -Name "AllowCrossDeviceClipboard" `
             | Select-Object -ExpandProperty "AllowCrossDeviceClipboard"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9780,9 +9423,9 @@
                 -Name "UploadUserActivities" `
             | Select-Object -ExpandProperty "UploadUserActivities"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9816,9 +9459,9 @@
                 -Name "DCSettingIndex" `
             | Select-Object -ExpandProperty "DCSettingIndex"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9852,9 +9495,9 @@
                 -Name "ACSettingIndex" `
             | Select-Object -ExpandProperty "ACSettingIndex"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9884,13 +9527,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\abfc2519-3608-4c2a-94ea-171b0ed546ab" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\abfc2519-3608-4c2a-94ea-171b0ed546ab" `
                 -Name "DCSettingIndex" `
             | Select-Object -ExpandProperty "DCSettingIndex"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9920,13 +9563,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\abfc2519-3608-4c2a-94ea-171b0ed546ab" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\abfc2519-3608-4c2a-94ea-171b0ed546ab" `
                 -Name "ACSettingIndex" `
             | Select-Object -ExpandProperty "ACSettingIndex"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -9956,13 +9599,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51" `
                 -Name "DCSettingIndex" `
             | Select-Object -ExpandProperty "DCSettingIndex"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -9992,13 +9635,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51" `
                 -Name "ACSettingIndex" `
             | Select-Object -ExpandProperty "ACSettingIndex"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10028,13 +9671,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\policies\Microsoft\Windows NT\Terminal Services" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\policies\Microsoft\Windows NT\Terminal Services" `
                 -Name "fAllowUnsolicited" `
             | Select-Object -ExpandProperty "fAllowUnsolicited"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -10064,13 +9707,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\policies\Microsoft\Windows NT\Terminal Services" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\policies\Microsoft\Windows NT\Terminal Services" `
                 -Name "fAllowToGetHelp" `
             | Select-Object -ExpandProperty "fAllowToGetHelp"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -10100,13 +9743,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Rpc" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Rpc" `
                 -Name "EnableAuthEpResolution" `
             | Select-Object -ExpandProperty "EnableAuthEpResolution"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10136,13 +9779,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Rpc" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Rpc" `
                 -Name "RestrictRemoteClients" `
             | Select-Object -ExpandProperty "RestrictRemoteClients"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10176,9 +9819,9 @@
                 -Name "SamrChangeUserPasswordApiPolicy" `
             | Select-Object -ExpandProperty "SamrChangeUserPasswordApiPolicy"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10212,9 +9855,9 @@
                 -Name "DisableQueryRemoteServer" `
             | Select-Object -ExpandProperty "DisableQueryRemoteServer"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -10244,13 +9887,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WDI\{9c5a40da-b965-4fc3-8781-88dd50a6299d}" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WDI\{9c5a40da-b965-4fc3-8781-88dd50a6299d}" `
                 -Name "ScenarioExecutionEnabled" `
             | Select-Object -ExpandProperty "ScenarioExecutionEnabled"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -10284,9 +9927,9 @@
                 -Name "DisabledByGroupPolicy" `
             | Select-Object -ExpandProperty "DisabledByGroupPolicy"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10320,9 +9963,9 @@
                 -Name "Enabled" `
             | Select-Object -ExpandProperty "Enabled"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10356,9 +9999,9 @@
                 -Name "Enabled" `
             | Select-Object -ExpandProperty "Enabled"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -10392,9 +10035,9 @@
                 -Name "Enabled" `
             | Select-Object -ExpandProperty "Enabled"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -10428,9 +10071,9 @@
                 -Name "DisableAPISamping" `
             | Select-Object -ExpandProperty "DisableAPISamping"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10464,9 +10107,9 @@
                 -Name "DisableApplicationFootprint" `
             | Select-Object -ExpandProperty "DisableApplicationFootprint"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10500,9 +10143,9 @@
                 -Name "DisableInstallTracing" `
             | Select-Object -ExpandProperty "DisableInstallTracing"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10536,9 +10179,9 @@
                 -Name "AllowSharedLocalAppData" `
             | Select-Object -ExpandProperty "AllowSharedLocalAppData"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -10568,13 +10211,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Appx" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Appx" `
                 -Name "DisablePerUserUnsignedPackagesByDefault" `
             | Select-Object -ExpandProperty "DisablePerUserUnsignedPackagesByDefault"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10604,13 +10247,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Appx" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Appx" `
                 -Name "BlockNonAdminUserInstall" `
             | Select-Object -ExpandProperty "BlockNonAdminUserInstall"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10644,9 +10287,9 @@
                 -Name "LetAppsActivateWithVoiceAboveLock" `
             | Select-Object -ExpandProperty "LetAppsActivateWithVoiceAboveLock"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -10676,13 +10319,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "MSAOptional" `
             | Select-Object -ExpandProperty "MSAOptional"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10716,9 +10359,9 @@
                 -Name "BlockHostedAppAccessWinRT" `
             | Select-Object -ExpandProperty "BlockHostedAppAccessWinRT"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10748,13 +10391,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Explorer" `
                 -Name "NoAutoplayfornonVolume" `
             | Select-Object -ExpandProperty "NoAutoplayfornonVolume"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10788,9 +10431,9 @@
                 -Name "NoAutorun" `
             | Select-Object -ExpandProperty "NoAutorun"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10820,13 +10463,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
                 -Name "NoDriveTypeAutoRun" `
             | Select-Object -ExpandProperty "NoDriveTypeAutoRun"
 
-            if (($regValue -ne 255)) {
+            if ($regValue -ne 255) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 255"
+                    Message = "Registry value is '$regValue'. Expected: 255"
                     Status  = "False"
                 }
             }
@@ -10860,9 +10503,9 @@
                 -Name "EnhancedAntiSpoofing" `
             | Select-Object -ExpandProperty "EnhancedAntiSpoofing"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10892,13 +10535,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "FDVDiscoveryVolumeType" `
             | Select-Object -ExpandProperty "FDVDiscoveryVolumeType"
 
             if ($regValue -ne "") {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: "
+                    Message = "Registry value is '$regValue'. Expected: This value should be empty."
                     Status  = "False"
                 }
             }
@@ -10932,9 +10575,9 @@
                 -Name "FDVRecovery" `
             | Select-Object -ExpandProperty "FDVRecovery"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -10968,9 +10611,9 @@
                 -Name "FDVManageDRA" `
             | Select-Object -ExpandProperty "FDVManageDRA"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11006,7 +10649,7 @@
 
             if (($regValue -ne 2) -and ($regValue -ne 1)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2 or x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 2 or 1"
                     Status  = "False"
                 }
             }
@@ -11042,7 +10685,7 @@
 
             if (($regValue -ne 2) -and ($regValue -ne 1)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2 or x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 2 or 1"
                     Status  = "False"
                 }
             }
@@ -11076,9 +10719,9 @@
                 -Name "FDVHideRecoveryPage" `
             | Select-Object -ExpandProperty "FDVHideRecoveryPage"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11112,9 +10755,9 @@
                 -Name "FDVActiveDirectoryBackup" `
             | Select-Object -ExpandProperty "FDVActiveDirectoryBackup"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -11148,9 +10791,9 @@
                 -Name "FDVActiveDirectoryInfoToStore" `
             | Select-Object -ExpandProperty "FDVActiveDirectoryInfoToStore"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11184,9 +10827,9 @@
                 -Name "FDVRequireActiveDirectoryBackup" `
             | Select-Object -ExpandProperty "FDVRequireActiveDirectoryBackup"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -11220,9 +10863,9 @@
                 -Name "FDVHardwareEncryption" `
             | Select-Object -ExpandProperty "FDVHardwareEncryption"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -11252,13 +10895,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "FDVPassphrase" `
             | Select-Object -ExpandProperty "FDVPassphrase"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -11288,13 +10931,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "FDVAllowUserCert" `
             | Select-Object -ExpandProperty "FDVAllowUserCert"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11324,13 +10967,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "FDVEnforceUserCert" `
             | Select-Object -ExpandProperty "FDVEnforceUserCert"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11360,13 +11003,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "UseEnhancedPin" `
             | Select-Object -ExpandProperty "UseEnhancedPin"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11396,13 +11039,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "OSAllowSecureBootForIntegrity" `
             | Select-Object -ExpandProperty "OSAllowSecureBootForIntegrity"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11436,9 +11079,9 @@
                 -Name "OSRecovery" `
             | Select-Object -ExpandProperty "OSRecovery"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11472,9 +11115,9 @@
                 -Name "OSManageDRA" `
             | Select-Object -ExpandProperty "OSManageDRA"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -11508,9 +11151,9 @@
                 -Name "OSRecoveryPassword" `
             | Select-Object -ExpandProperty "OSRecoveryPassword"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11544,9 +11187,9 @@
                 -Name "OSRecoveryKey" `
             | Select-Object -ExpandProperty "OSRecoveryKey"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -11580,9 +11223,9 @@
                 -Name "OSHideRecoveryPage" `
             | Select-Object -ExpandProperty "OSHideRecoveryPage"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11616,9 +11259,9 @@
                 -Name "OSActiveDirectoryBackup" `
             | Select-Object -ExpandProperty "OSActiveDirectoryBackup"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11652,9 +11295,9 @@
                 -Name "OSActiveDirectoryInfoToStore" `
             | Select-Object -ExpandProperty "OSActiveDirectoryInfoToStore"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11688,9 +11331,9 @@
                 -Name "OSRequireActiveDirectoryBackup" `
             | Select-Object -ExpandProperty "OSRequireActiveDirectoryBackup"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11724,9 +11367,9 @@
                 -Name "OSHardwareEncryption" `
             | Select-Object -ExpandProperty "OSHardwareEncryption"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -11756,13 +11399,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "OSPassphrase" `
             | Select-Object -ExpandProperty "OSPassphrase"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -11796,9 +11439,9 @@
                 -Name "UseAdvancedStartup" `
             | Select-Object -ExpandProperty "UseAdvancedStartup"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11832,9 +11475,9 @@
                 -Name "EnableBDEWithNoTPM" `
             | Select-Object -ExpandProperty "EnableBDEWithNoTPM"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -11864,13 +11507,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "RDVDiscoveryVolumeType" `
             | Select-Object -ExpandProperty "RDVDiscoveryVolumeType"
 
             if ($regValue -ne "") {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: "
+                    Message = "Registry value is '$regValue'. Expected: This value should be empty."
                     Status  = "False"
                 }
             }
@@ -11904,9 +11547,9 @@
                 -Name "RDVRecovery" `
             | Select-Object -ExpandProperty "RDVRecovery"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11940,9 +11583,9 @@
                 -Name "RDVManageDRA" `
             | Select-Object -ExpandProperty "RDVManageDRA"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -11976,9 +11619,9 @@
                 -Name "RDVRecoveryPassword" `
             | Select-Object -ExpandProperty "RDVRecoveryPassword"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -12012,9 +11655,9 @@
                 -Name "RDVRecoveryKey" `
             | Select-Object -ExpandProperty "RDVRecoveryKey"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -12048,9 +11691,9 @@
                 -Name "RDVHideRecoveryPage" `
             | Select-Object -ExpandProperty "RDVHideRecoveryPage"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12084,9 +11727,9 @@
                 -Name "RDVActiveDirectoryBackup" `
             | Select-Object -ExpandProperty "RDVActiveDirectoryBackup"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -12120,9 +11763,9 @@
                 -Name "RDVActiveDirectoryInfoToStore" `
             | Select-Object -ExpandProperty "RDVActiveDirectoryInfoToStore"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12156,9 +11799,9 @@
                 -Name "RDVRequireActiveDirectoryBackup" `
             | Select-Object -ExpandProperty "RDVRequireActiveDirectoryBackup"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -12192,9 +11835,9 @@
                 -Name "RDVHardwareEncryption" `
             | Select-Object -ExpandProperty "RDVHardwareEncryption"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -12224,13 +11867,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "RDVPassphrase" `
             | Select-Object -ExpandProperty "RDVPassphrase"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -12260,13 +11903,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "RDVAllowUserCert" `
             | Select-Object -ExpandProperty "RDVAllowUserCert"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12296,13 +11939,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "RDVEnforceUserCert" `
             | Select-Object -ExpandProperty "RDVEnforceUserCert"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12332,13 +11975,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Policies\Microsoft\FVE" `
                 -Name "RDVDenyWriteAccess" `
             | Select-Object -ExpandProperty "RDVDenyWriteAccess"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12368,13 +12011,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\FVE" `
                 -Name "RDVDenyCrossOrg" `
             | Select-Object -ExpandProperty "RDVDenyCrossOrg"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -12408,9 +12051,9 @@
                 -Name "DisableExternalDMAUnderLock" `
             | Select-Object -ExpandProperty "DisableExternalDMAUnderLock"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12443,11 +12086,11 @@
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Camera" `
                 -Name "AllowCamera" `
             | Select-Object -ExpandProperty "AllowCamera"
-
-            if (($regValue -ne 0)) {
+        
+            if ($regValue -eq 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
-                    Status  = "False"
+                    Message = "Compliant"
+                    Status  = "True"
                 }
             }
         }
@@ -12464,9 +12107,35 @@
             }
         }
 
+        try {
+            $regValue = Get-ItemProperty -ErrorAction Stop `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam" `
+                -Name "Value" `
+            | Select-Object -ExpandProperty "Value"
+        
+            if ($regValue -match "Deny") {
+                return @{
+                    Message = "Compliant"
+                    Status  = "True"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+        
         return @{
-            Message = "Compliant"
-            Status  = "True"
+            Message = "Camera is not deactivated."
+            Status  = "False"
         }
     }
 }
@@ -12480,9 +12149,9 @@
                 -Name "DisableConsumerAccountStateContent" `
             | Select-Object -ExpandProperty "DisableConsumerAccountStateContent"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12516,9 +12185,9 @@
                 -Name "DisableCloudOptimizedContent" `
             | Select-Object -ExpandProperty "DisableCloudOptimizedContent"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12552,9 +12221,9 @@
                 -Name "DisableWindowsConsumerFeatures" `
             | Select-Object -ExpandProperty "DisableWindowsConsumerFeatures"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12590,7 +12259,7 @@
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -12620,13 +12289,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CredUI" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CredUI" `
                 -Name "DisablePasswordReveal" `
             | Select-Object -ExpandProperty "DisablePasswordReveal"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12656,13 +12325,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\CredUI" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\CredUI" `
                 -Name "EnumerateAdministrators" `
             | Select-Object -ExpandProperty "EnumerateAdministrators"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -12696,9 +12365,9 @@
                 -Name "NoLocalPasswordResetQuestions" `
             | Select-Object -ExpandProperty "NoLocalPasswordResetQuestions"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12728,13 +12397,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DataCollection" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection" `
                 -Name "AllowTelemetry" `
             | Select-Object -ExpandProperty "AllowTelemetry"
 
             if (($regValue -ne 0) -and ($regValue -ne 1)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0 or x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 0 or 1"
                     Status  = "False"
                 }
             }
@@ -12768,9 +12437,9 @@
                 -Name "DisableEnterpriseAuthProxy" `
             | Select-Object -ExpandProperty "DisableEnterpriseAuthProxy"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12804,9 +12473,9 @@
                 -Name "DisableOneSettingsDownloads" `
             | Select-Object -ExpandProperty "DisableOneSettingsDownloads"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12840,9 +12509,9 @@
                 -Name "DoNotShowFeedbackNotifications" `
             | Select-Object -ExpandProperty "DoNotShowFeedbackNotifications"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12876,9 +12545,9 @@
                 -Name "EnableOneSettingsAuditing" `
             | Select-Object -ExpandProperty "EnableOneSettingsAuditing"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12912,9 +12581,9 @@
                 -Name "LimitDiagnosticLogCollection" `
             | Select-Object -ExpandProperty "LimitDiagnosticLogCollection"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12948,9 +12617,9 @@
                 -Name "LimitDumpCollection" `
             | Select-Object -ExpandProperty "LimitDumpCollection"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -12980,7 +12649,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\DeliveryOptimization" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization" `
                 -Name "DODownloadMode" `
             | Select-Object -ExpandProperty "DODownloadMode"
 
@@ -13020,9 +12689,9 @@
                 -Name "EnableAppInstaller" `
             | Select-Object -ExpandProperty "EnableAppInstaller"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13056,9 +12725,9 @@
                 -Name "EnableExperimentalFeatures" `
             | Select-Object -ExpandProperty "EnableExperimentalFeatures"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13092,9 +12761,9 @@
                 -Name "EnableHashOverride" `
             | Select-Object -ExpandProperty "EnableHashOverride"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13128,9 +12797,9 @@
                 -Name "EnableLocalArchiveMalwareScanOverride" `
             | Select-Object -ExpandProperty "EnableLocalArchiveMalwareScanOverride"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13164,9 +12833,9 @@
                 -Name "EnableBypassCertificatePinningForMicrosoftStore" `
             | Select-Object -ExpandProperty "EnableBypassCertificatePinningForMicrosoftStore"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13200,9 +12869,9 @@
                 -Name "EnableMSAppInstallerProtocol" `
             | Select-Object -ExpandProperty "EnableMSAppInstallerProtocol"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13236,9 +12905,9 @@
                 -Name "EnableWindowsPackageManagerCommandLineInterfaces" `
             | Select-Object -ExpandProperty "EnableWindowsPackageManagerCommandLineInterfaces"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13268,7 +12937,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Application" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application" `
                 -Name "Retention" `
             | Select-Object -ExpandProperty "Retention"
 
@@ -13304,7 +12973,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Application" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EventLog\Application" `
                 -Name "MaxSize" `
             | Select-Object -ExpandProperty "MaxSize"
 
@@ -13340,7 +13009,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Security" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EventLog\Security" `
                 -Name "Retention" `
             | Select-Object -ExpandProperty "Retention"
 
@@ -13376,7 +13045,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Security" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EventLog\Security" `
                 -Name "MaxSize" `
             | Select-Object -ExpandProperty "MaxSize"
 
@@ -13412,7 +13081,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Setup" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EventLog\Setup" `
                 -Name "Retention" `
             | Select-Object -ExpandProperty "Retention"
 
@@ -13448,7 +13117,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\Setup" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EventLog\Setup" `
                 -Name "MaxSize" `
             | Select-Object -ExpandProperty "MaxSize"
 
@@ -13484,7 +13153,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EventLog\System" `
                 -Name "Retention" `
             | Select-Object -ExpandProperty "Retention"
 
@@ -13520,7 +13189,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\EventLog\System" `
                 -Name "MaxSize" `
             | Select-Object -ExpandProperty "MaxSize"
 
@@ -13560,9 +13229,9 @@
                 -Name "DisableGraphRecentItems" `
             | Select-Object -ExpandProperty "DisableGraphRecentItems"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -13592,13 +13261,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Explorer" `
                 -Name "NoDataExecutionPrevention" `
             | Select-Object -ExpandProperty "NoDataExecutionPrevention"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13628,13 +13297,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Explorer" `
                 -Name "DisableMotWOnInsecurePathCopy" `
             | Select-Object -ExpandProperty "DisableMotWOnInsecurePathCopy"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13664,13 +13333,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Explorer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Explorer" `
                 -Name "NoHeapTerminationOnCorruption" `
             | Select-Object -ExpandProperty "NoHeapTerminationOnCorruption"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13700,13 +13369,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" `
                 -Name "PreXPSP2ShellProtocolBehavior" `
             | Select-Object -ExpandProperty "PreXPSP2ShellProtocolBehavior"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13740,9 +13409,9 @@
                 -Name "DisableLocation" `
             | Select-Object -ExpandProperty "DisableLocation"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -13776,9 +13445,9 @@
                 -Name "AllowMessageSync" `
             | Select-Object -ExpandProperty "AllowMessageSync"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13812,9 +13481,9 @@
                 -Name "DisableUserAuth" `
             | Select-Object -ExpandProperty "DisableUserAuth"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -13848,9 +13517,9 @@
                 -Name "PassiveRemediation" `
             | Select-Object -ExpandProperty "PassiveRemediation"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -13879,14 +13548,23 @@
     Task = "(L1) Ensure 'Configure local setting override for reporting to Microsoft MAPS' is set to 'Disabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" `
                 -Name "LocalSettingOverrideSpynetReporting" `
             | Select-Object -ExpandProperty "LocalSettingOverrideSpynetReporting"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13915,14 +13593,23 @@
     Task = "(L2) Ensure 'Join Microsoft MAPS' is set to 'Disabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Spynet" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" `
                 -Name "SpynetReporting" `
             | Select-Object -ExpandProperty "SpynetReporting"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -13951,14 +13638,42 @@
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules' is set to 'Enabled'"
     Test = {
         try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR" `
-                -Name "ExploitGuard_ASR_Rules" `
-            | Select-Object -ExpandProperty "ExploitGuard_ASR_Rules"
+            if ($avstatus) {
 
-            if (($regValue -ne 1)) {
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR"
+            $Value = "ExploitGuard_ASR_Rules"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR"
+            $Value2 = "ExploitGuard_ASR_Rules"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -13988,7 +13703,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
                 -Name "26190899-1602-49e8-8b27-eb1d0a1ce869" `
             | Select-Object -ExpandProperty "26190899-1602-49e8-8b27-eb1d0a1ce869"
 
@@ -14024,369 +13739,9 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
                 -Name "3b576869-a4ec-4529-8536-b80a7769e899" `
             | Select-Object -ExpandProperty "3b576869-a4ec-4529-8536-b80a7769e899"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 D"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block execution of potentially obfuscated scripts'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "5beb7efe-fd9a-4556-801d-275e5ffc04cc" `
-            | Select-Object -ExpandProperty "5beb7efe-fd9a-4556-801d-275e5ffc04cc"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 E"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from injecting code into other processes'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84" `
-            | Select-Object -ExpandProperty "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 F"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Adobe Reader from creating child processes'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c" `
-            | Select-Object -ExpandProperty "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 G"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Win32 API calls from Office macro'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b" `
-            | Select-Object -ExpandProperty "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 H"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block credential stealing from the Windows local security authority subsystem (lsass.exe)'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2" `
-            | Select-Object -ExpandProperty "9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 I"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block untrusted and unsigned processes that run from USB'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4" `
-            | Select-Object -ExpandProperty "b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 K"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block JavaScript or VBScript from launching downloaded executable content'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "d3e037e1-3eb8-44c8-a917-57927947596d" `
-            | Select-Object -ExpandProperty "d3e037e1-3eb8-44c8-a917-57927947596d"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 L"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from creating child processes'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "d4f940ab-401b-4efc-aadc-ad5f3c50688a" `
-            | Select-Object -ExpandProperty "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 J"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block executable content from email client and webmail'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550" `
-            | Select-Object -ExpandProperty "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550"
-
-            if ($regValue -ne "1") {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "18.10.43.6.1.2 M"
-    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block persistence through WMI event subscription'"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "e6db77e5-3df2-4cf1-b95a-636979351e5b" `
-            | Select-Object -ExpandProperty "e6db77e5-3df2-4cf1-b95a-636979351e5b"
 
             if ($regValue -ne "1") {
                 return @{
@@ -14419,12 +13774,680 @@
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block abuse of exploited vulnerable signed drivers'"
     Test = {
         try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "56a863a9-875e-4185-98a7-b882c64b5ce5" `
-            | Select-Object -ExpandProperty "56a863a9-875e-4185-98a7-b882c64b5ce5"
+            if ($avstatus) {
 
-            if ($regValue -ne "1") {
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "56a863a9-875e-4185-98a7-b882c64b5ce5"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "56a863a9-875e-4185-98a7-b882c64b5ce5"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 D"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block execution of potentially obfuscated scripts'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "5beb7efe-fd9a-4556-801d-275e5ffc04cc" 
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "5beb7efe-fd9a-4556-801d-275e5ffc04cc" 
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 E"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from injecting code into other processes'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 F"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Adobe Reader from creating child processes'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 G"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Win32 API calls from Office macro'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 H"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block credential stealing from the Windows local security authority subsystem (lsass.exe)'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 I"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block untrusted and unsigned processes that run from USB'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 J"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block executable content from email client and webmail'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 K"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block JavaScript or VBScript from launching downloaded executable content'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "d3e037e1-3eb8-44c8-a917-57927947596d"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "d3e037e1-3eb8-44c8-a917-57927947596d"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 L"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from creating child processes'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
+                return @{
+                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Status  = "False"
+                }
+            }
+        }
+        catch [System.Management.Automation.PSArgumentException] {
+            return @{
+                Message = "Registry value not found."
+                Status  = "False"
+            }
+        }
+        catch [System.Management.Automation.ItemNotFoundException] {
+            return @{
+                Message = "Registry key not found."
+                Status  = "False"
+            }
+        }
+
+        return @{
+            Message = "Compliant"
+            Status  = "True"
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "18.10.43.6.1.2 M"
+    Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block persistence through WMI event subscription'"
+    Test = {
+        try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "e6db77e5-3df2-4cf1-b95a-636979351e5b"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "e6db77e5-3df2-4cf1-b95a-636979351e5b"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
@@ -14455,14 +14478,23 @@
     Task = "(L1) Ensure 'Prevent users and apps from accessing dangerous websites' is set to 'Enabled: Block'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" `
                 -Name "EnableNetworkProtection" `
             | Select-Object -ExpandProperty "EnableNetworkProtection"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -14491,14 +14523,23 @@
     Task = "(L1) Ensure 'Enable file hash computation feature' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\MpEngine" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\MpEngine" `
                 -Name "EnableFileHashComputation" `
             | Select-Object -ExpandProperty "EnableFileHashComputation"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -14527,14 +14568,23 @@
     Task = "(L2) Ensure 'Convert warn verdict to block' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\NIS" `
                 -Name "EnableConvertWarnToBlock" `
             | Select-Object -ExpandProperty "EnableConvertWarnToBlock"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -14563,14 +14613,23 @@
     Task = "(L1) Ensure 'Configure real-time protection and Security Intelligence Updates during OOBE' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" `
                 -Name "OobeEnableRtpAndSigUpdate" `
             | Select-Object -ExpandProperty "OobeEnableRtpAndSigUpdate"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -14599,14 +14658,23 @@
     Task = "(L1) Ensure 'Scan all downloaded files and attachments' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" `
                 -Name "DisableIOAVProtection" `
             | Select-Object -ExpandProperty "DisableIOAVProtection"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -14635,14 +14703,23 @@
     Task = "(L1) Ensure 'Turn off real-time protection' is set to 'Disabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" `
                 -Name "DisableRealtimeMonitoring" `
             | Select-Object -ExpandProperty "DisableRealtimeMonitoring"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -14671,14 +14748,23 @@
     Task = "(L1) Ensure 'Turn on behavior monitoring' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" `
                 -Name "DisableBehaviorMonitoring" `
             | Select-Object -ExpandProperty "DisableBehaviorMonitoring"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -14707,14 +14793,23 @@
     Task = "(L1) Ensure 'Turn on script scanning' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows Defender\Real-Time Protection" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" `
                 -Name "DisableScriptScanning" `
             | Select-Object -ExpandProperty "DisableScriptScanning"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -14743,6 +14838,15 @@
     Task = "(L2) Ensure 'Configure Brute-Force Protection aggressiveness' is set to 1 - 'Enabled: Medium' or 2 - higher"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation\Behavioral Network Blocks\Brute Force Protection" `
                 -Name "BruteForceProtectionAggressiveness" `
@@ -14750,7 +14854,7 @@
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -14779,6 +14883,15 @@
     Task = "(L1) Ensure 'Configure Remote Encryption Protection Mode' is set to 2 - 'Enabled: Audit' or 1 - higher"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation\Behavioral Network Blocks\Brute Force Protection" `
                 -Name "BruteForceProtectionConfiguredState" `
@@ -14786,7 +14899,7 @@
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -14815,6 +14928,15 @@
     Task = "(L2) Ensure 'Configure how aggressively Remote Encryption Protection blocks threats' is set to 1 - 'Enabled: Medium' or 2 - higher"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Remediation\Behavioral Network Blocks\Remote Encryption Protection" `
                 -Name "RemoteEncryptionProtectionAggressiveness" `
@@ -14822,7 +14944,7 @@
 
             if (($regValue -ne 1) -and ($regValue -ne 2)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 2"
                     Status  = "False"
                 }
             }
@@ -14851,14 +14973,23 @@
     Task = "(L2) Ensure 'Configure Watson events' is set to 'Disabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting" `
                 -Name "DisableGenericReports" `
             | Select-Object -ExpandProperty "DisableGenericReports"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -14887,14 +15018,23 @@
     Task = "(L1) Ensure 'Scan excluded files and directories during quick scans' is set to 'Enabled: 1'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" `
                 -Name "QuickScanIncludeExclusions" `
             | Select-Object -ExpandProperty "QuickScanIncludeExclusions"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -14923,14 +15063,23 @@
     Task = "(L1) Ensure 'Scan packed executables' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" `
                 -Name "DisablePackedExeScanning" `
             | Select-Object -ExpandProperty "DisablePackedExeScanning"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -14959,14 +15108,23 @@
     Task = "(L1) Ensure 'Scan removable drives' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" `
                 -Name "DisableRemovableDriveScanning" `
             | Select-Object -ExpandProperty "DisableRemovableDriveScanning"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -14995,6 +15153,15 @@
     Task = "(L1) Ensure 'Trigger a quick scan after X days without any scans' is set to 'Enabled: 7'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" `
                 -Name "DaysUntilAggressiveCatchupQuickScan" `
@@ -15002,7 +15169,7 @@
 
             if (($regValue -ne 7)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 7"
+                    Message = "Registry value is '$regValue'. Expected: 7"
                     Status  = "False"
                 }
             }
@@ -15031,14 +15198,23 @@
     Task = "(L1) Ensure 'Turn on e-mail scanning' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Scan" `
                 -Name "DisableEmailScanning" `
             | Select-Object -ExpandProperty "DisableEmailScanning"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -15067,14 +15243,23 @@
     Task = "(L1) Ensure 'Configure detection for potentially unwanted applications' is set to 'Enabled: Block'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender" `
                 -Name "PUAProtection" `
             | Select-Object -ExpandProperty "PUAProtection"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15103,14 +15288,23 @@
     Task = "(L1) Ensure 'Control whether exclusions are visible to local users' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender" `
                 -Name "HideExclusionsFromLocalUsers" `
             | Select-Object -ExpandProperty "HideExclusionsFromLocalUsers"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15144,9 +15338,9 @@
                 -Name "AuditApplicationGuard" `
             | Select-Object -ExpandProperty "AuditApplicationGuard"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15180,9 +15374,9 @@
                 -Name "AllowCameraMicrophoneRedirection" `
             | Select-Object -ExpandProperty "AllowCameraMicrophoneRedirection"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -15216,9 +15410,9 @@
                 -Name "AllowPersistence" `
             | Select-Object -ExpandProperty "AllowPersistence"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -15252,9 +15446,9 @@
                 -Name "SaveFilesToHost" `
             | Select-Object -ExpandProperty "SaveFilesToHost"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -15288,9 +15482,9 @@
                 -Name "AppHVSIClipboardSettings" `
             | Select-Object -ExpandProperty "AppHVSIClipboardSettings"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15324,9 +15518,9 @@
                 -Name "AllowAppHVSI_ProviderSet" `
             | Select-Object -ExpandProperty "AllowAppHVSI_ProviderSet"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15360,9 +15554,9 @@
                 -Name "EnableFeeds" `
             | Select-Object -ExpandProperty "EnableFeeds"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -15392,13 +15586,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\OneDrive" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\OneDrive" `
                 -Name "DisableFileSyncNGSC" `
             | Select-Object -ExpandProperty "DisableFileSyncNGSC"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15432,9 +15626,9 @@
                 -Name "DisablePushToInstall" `
             | Select-Object -ExpandProperty "DisablePushToInstall"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15468,9 +15662,9 @@
                 -Name "DisableCloudClipboardIntegration" `
             | Select-Object -ExpandProperty "DisableCloudClipboardIntegration"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15504,9 +15698,9 @@
                 -Name "DisablePasswordSaving" `
             | Select-Object -ExpandProperty "DisablePasswordSaving"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15540,9 +15734,9 @@
                 -Name "fDenyTSConnections" `
             | Select-Object -ExpandProperty "fDenyTSConnections"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15576,9 +15770,9 @@
                 -Name "EnableUiaRedirection" `
             | Select-Object -ExpandProperty "EnableUiaRedirection"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -15612,9 +15806,9 @@
                 -Name "fDisableCcm" `
             | Select-Object -ExpandProperty "fDisableCcm"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15648,9 +15842,9 @@
                 -Name "fDisableCdm" `
             | Select-Object -ExpandProperty "fDisableCdm"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15684,9 +15878,9 @@
                 -Name "fDisableLocationRedir" `
             | Select-Object -ExpandProperty "fDisableLocationRedir"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15720,9 +15914,9 @@
                 -Name "fDisableLPT" `
             | Select-Object -ExpandProperty "fDisableLPT"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15756,9 +15950,9 @@
                 -Name "fDisablePNPRedir" `
             | Select-Object -ExpandProperty "fDisablePNPRedir"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15792,9 +15986,9 @@
                 -Name "fDisableWebAuthn" `
             | Select-Object -ExpandProperty "fDisableWebAuthn"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15828,9 +16022,9 @@
                 -Name "SCClipLevel" `
             | Select-Object -ExpandProperty "SCClipLevel"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -15864,9 +16058,9 @@
                 -Name "fPromptForPassword" `
             | Select-Object -ExpandProperty "fPromptForPassword"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15896,13 +16090,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows NT\Terminal Services" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" `
                 -Name "fEncryptRPCTraffic" `
             | Select-Object -ExpandProperty "fEncryptRPCTraffic"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -15936,9 +16130,9 @@
                 -Name "SecurityLayer" `
             | Select-Object -ExpandProperty "SecurityLayer"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -15972,9 +16166,9 @@
                 -Name "UserAuthentication" `
             | Select-Object -ExpandProperty "UserAuthentication"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16008,9 +16202,9 @@
                 -Name "MinEncryptionLevel" `
             | Select-Object -ExpandProperty "MinEncryptionLevel"
 
-            if (($regValue -ne 3)) {
+            if ($regValue -ne 3) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 3"
+                    Message = "Registry value is '$regValue'. Expected: 3"
                     Status  = "False"
                 }
             }
@@ -16080,9 +16274,9 @@
                 -Name "MaxDisconnectionTime" `
             | Select-Object -ExpandProperty "MaxDisconnectionTime"
 
-            if (($regValue -ne 60000)) {
+            if ($regValue -ne 60000) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 60000"
+                    Message = "Registry value is '$regValue'. Expected: 60000"
                     Status  = "False"
                 }
             }
@@ -16116,9 +16310,9 @@
                 -Name "DeleteTempDirsOnExit" `
             | Select-Object -ExpandProperty "DeleteTempDirsOnExit"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16152,9 +16346,9 @@
                 -Name "DisableEnclosureDownload" `
             | Select-Object -ExpandProperty "DisableEnclosureDownload"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16184,13 +16378,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Internet Explorer\Feeds" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\Feeds" `
                 -Name "AllowBasicAuthInClear" `
             | Select-Object -ExpandProperty "AllowBasicAuthInClear"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -16224,9 +16418,9 @@
                 -Name "AllowCloudSearch" `
             | Select-Object -ExpandProperty "AllowCloudSearch"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -16260,9 +16454,9 @@
                 -Name "AllowCortana" `
             | Select-Object -ExpandProperty "AllowCortana"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -16296,9 +16490,9 @@
                 -Name "AllowCortanaAboveLock" `
             | Select-Object -ExpandProperty "AllowCortanaAboveLock"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -16332,9 +16526,9 @@
                 -Name "AllowIndexingEncryptedStoresOrItems" `
             | Select-Object -ExpandProperty "AllowIndexingEncryptedStoresOrItems"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -16368,9 +16562,9 @@
                 -Name "AllowSearchToUseLocation" `
             | Select-Object -ExpandProperty "AllowSearchToUseLocation"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -16404,9 +16598,9 @@
                 -Name "EnableDynamicContentInWSB" `
             | Select-Object -ExpandProperty "EnableDynamicContentInWSB"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -16440,9 +16634,9 @@
                 -Name "NoGenTicket" `
             | Select-Object -ExpandProperty "NoGenTicket"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16476,9 +16670,9 @@
                 -Name "DisableStoreApps" `
             | Select-Object -ExpandProperty "DisableStoreApps"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16512,9 +16706,9 @@
                 -Name "AutoDownload" `
             | Select-Object -ExpandProperty "AutoDownload"
 
-            if (($regValue -ne 4)) {
+            if ($regValue -ne 4) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 4"
+                    Message = "Registry value is '$regValue'. Expected: 4"
                     Status  = "False"
                 }
             }
@@ -16548,9 +16742,9 @@
                 -Name "DisableOSUpgrade" `
             | Select-Object -ExpandProperty "DisableOSUpgrade"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16584,9 +16778,9 @@
                 -Name "RemoveWindowsStore" `
             | Select-Object -ExpandProperty "RemoveWindowsStore"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16620,9 +16814,9 @@
                 -Name "AllowNewsAndInterests" `
             | Select-Object -ExpandProperty "AllowNewsAndInterests"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -16656,9 +16850,9 @@
                 -Name "CaptureThreatWindow" `
             | Select-Object -ExpandProperty "CaptureThreatWindow"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16688,13 +16882,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WTDS\Components" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WTDS\Components" `
                 -Name "NotifyMalicious" `
             | Select-Object -ExpandProperty "NotifyMalicious"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16724,13 +16918,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WTDS\Components" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WTDS\Components" `
                 -Name "NotifyPasswordReuse" `
             | Select-Object -ExpandProperty "NotifyPasswordReuse"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16760,13 +16954,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WTDS\Components" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WTDS\Components" `
                 -Name "NotifyUnsafeApp" `
             | Select-Object -ExpandProperty "NotifyUnsafeApp"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16796,13 +16990,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WTDS\Components" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WTDS\Components" `
                 -Name "ServiceEnabled" `
             | Select-Object -ExpandProperty "ServiceEnabled"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16836,9 +17030,9 @@
                 -Name "EnableSmartScreen" `
             | Select-Object -ExpandProperty "EnableSmartScreen"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16908,9 +17102,9 @@
                 -Name "AllowGameDVR" `
             | Select-Object -ExpandProperty "AllowGameDVR"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -16944,9 +17138,9 @@
                 -Name "EnableESSwithSupportedPeripherals" `
             | Select-Object -ExpandProperty "EnableESSwithSupportedPeripherals"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -16980,9 +17174,9 @@
                 -Name "AllowSuggestedAppsInWindowsInkWorkspace" `
             | Select-Object -ExpandProperty "AllowSuggestedAppsInWindowsInkWorkspace"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17018,7 +17212,7 @@
 
             if (($regValue -ne 1) -and ($regValue -ne 0)) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1 or x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 1 or 0"
                     Status  = "False"
                 }
             }
@@ -17048,13 +17242,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Installer" `
                 -Name "EnableUserControl" `
             | Select-Object -ExpandProperty "EnableUserControl"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17088,9 +17282,9 @@
                 -Name "AlwaysInstallElevated" `
             | Select-Object -ExpandProperty "AlwaysInstallElevated"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17120,13 +17314,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Installer" `
                 -Name "SafeForScripting" `
             | Select-Object -ExpandProperty "SafeForScripting"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17156,13 +17350,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "EnableMPR" `
             | Select-Object -ExpandProperty "EnableMPR"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17192,13 +17386,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
                 -Name "DisableAutomaticRestartSignOn" `
             | Select-Object -ExpandProperty "DisableAutomaticRestartSignOn"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -17232,9 +17426,9 @@
                 -Name "EnableScriptBlockLogging" `
             | Select-Object -ExpandProperty "EnableScriptBlockLogging"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -17268,9 +17462,9 @@
                 -Name "EnableTranscripting" `
             | Select-Object -ExpandProperty "EnableTranscripting"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -17300,13 +17494,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Client" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Client" `
                 -Name "AllowBasic" `
             | Select-Object -ExpandProperty "AllowBasic"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17336,13 +17530,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Client" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Client" `
                 -Name "AllowUnencryptedTraffic" `
             | Select-Object -ExpandProperty "AllowUnencryptedTraffic"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17372,13 +17566,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Client" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Client" `
                 -Name "AllowDigest" `
             | Select-Object -ExpandProperty "AllowDigest"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17408,13 +17602,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service" `
                 -Name "AllowBasic" `
             | Select-Object -ExpandProperty "AllowBasic"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17448,9 +17642,9 @@
                 -Name "AllowAutoConfig" `
             | Select-Object -ExpandProperty "AllowAutoConfig"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17480,13 +17674,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service" `
                 -Name "AllowUnencryptedTraffic" `
             | Select-Object -ExpandProperty "AllowUnencryptedTraffic"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17516,13 +17710,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service" `
                 -Name "DisableRunAs" `
             | Select-Object -ExpandProperty "DisableRunAs"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -17552,13 +17746,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\Service\WinRS" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Service\WinRS" `
                 -Name "AllowRemoteShellAccess" `
             | Select-Object -ExpandProperty "AllowRemoteShellAccess"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17592,9 +17786,9 @@
                 -Name "AllowClipboardRedirection" `
             | Select-Object -ExpandProperty "AllowClipboardRedirection"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17628,9 +17822,9 @@
                 -Name "AllowWriteToMappedFolders" `
             | Select-Object -ExpandProperty "AllowWriteToMappedFolders"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17664,9 +17858,9 @@
                 -Name "AllowNetworking" `
             | Select-Object -ExpandProperty "AllowNetworking"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17695,14 +17889,23 @@
     Task = "(L1) Ensure 'Prevent users from modifying settings' is set to 'Enabled'"
     Test = {
         try {
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\App and Browser protection" `
                 -Name "DisallowExploitProtectionOverride" `
             | Select-Object -ExpandProperty "DisallowExploitProtectionOverride"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -17732,13 +17935,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" `
                 -Name "NoAutoRebootWithLoggedOnUsers" `
             | Select-Object -ExpandProperty "NoAutoRebootWithLoggedOnUsers"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17768,13 +17971,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" `
                 -Name "NoAutoUpdate" `
             | Select-Object -ExpandProperty "NoAutoUpdate"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17804,13 +18007,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\AU" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" `
                 -Name "ScheduledInstallDay" `
             | Select-Object -ExpandProperty "ScheduledInstallDay"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17844,9 +18047,9 @@
                 -Name "AllowTemporaryEnterpriseFeatureControl" `
             | Select-Object -ExpandProperty "AllowTemporaryEnterpriseFeatureControl"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -17880,9 +18083,9 @@
                 -Name "SetDisablePauseUXAccess" `
             | Select-Object -ExpandProperty "SetDisablePauseUXAccess"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -17916,9 +18119,9 @@
                 -Name "ManagePreviewBuildsPolicyValue" `
             | Select-Object -ExpandProperty "ManagePreviewBuildsPolicyValue"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -17948,13 +18151,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" `
                 -Name "DeferFeatureUpdates" `
             | Select-Object -ExpandProperty "DeferFeatureUpdates"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -17984,7 +18187,7 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" `
                 -Name "DeferFeatureUpdatesPeriodInDays" `
             | Select-Object -ExpandProperty "DeferFeatureUpdatesPeriodInDays"
 
@@ -18020,13 +18223,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" `
                 -Name "DeferQualityUpdates" `
             | Select-Object -ExpandProperty "DeferQualityUpdates"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -18056,13 +18259,13 @@
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" `
                 -Name "DeferQualityUpdatesPeriodInDays" `
             | Select-Object -ExpandProperty "DeferQualityUpdatesPeriodInDays"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -18096,9 +18299,9 @@
                 -Name "AllowOptionalContent" `
             | Select-Object -ExpandProperty "AllowOptionalContent"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -18132,9 +18335,9 @@
                 -Name "NoToastApplicationNotificationOnLockScreen" `
             | Select-Object -ExpandProperty "NoToastApplicationNotificationOnLockScreen"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -18168,9 +18371,9 @@
                 -Name "NoImplicitFeedback" `
             | Select-Object -ExpandProperty "NoImplicitFeedback"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -18204,9 +18407,9 @@
                 -Name "SaveZoneInformation" `
             | Select-Object -ExpandProperty "SaveZoneInformation"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -18240,9 +18443,9 @@
                 -Name "ScanWithAntiVirus" `
             | Select-Object -ExpandProperty "ScanWithAntiVirus"
 
-            if (($regValue -ne 3)) {
+            if ($regValue -ne 3) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 3"
+                    Message = "Registry value is '$regValue'. Expected: 3"
                     Status  = "False"
                 }
             }
@@ -18276,9 +18479,9 @@
                 -Name "ConfigureWindowsSpotlight" `
             | Select-Object -ExpandProperty "ConfigureWindowsSpotlight"
 
-            if (($regValue -ne 2)) {
+            if ($regValue -ne 2) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 2"
+                    Message = "Registry value is '$regValue'. Expected: 2"
                     Status  = "False"
                 }
             }
@@ -18312,9 +18515,9 @@
                 -Name "DisableThirdPartySuggestions" `
             | Select-Object -ExpandProperty "DisableThirdPartySuggestions"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -18348,9 +18551,9 @@
                 -Name "DisableTailoredExperiencesWithDiagnosticData" `
             | Select-Object -ExpandProperty "DisableTailoredExperiencesWithDiagnosticData"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -18384,9 +18587,9 @@
                 -Name "DisableWindowsSpotlightFeatures" `
             | Select-Object -ExpandProperty "DisableWindowsSpotlightFeatures"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -18420,9 +18623,9 @@
                 -Name "DisableSpotlightCollectionOnDesktop" `
             | Select-Object -ExpandProperty "DisableSpotlightCollectionOnDesktop"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -18456,9 +18659,9 @@
                 -Name "NoInplaceSharing" `
             | Select-Object -ExpandProperty "NoInplaceSharing"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -18492,9 +18695,9 @@
                 -Name "TurnOffWindowsCopilot" `
             | Select-Object -ExpandProperty "TurnOffWindowsCopilot"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
@@ -18528,9 +18731,9 @@
                 -Name "AlwaysInstallElevated" `
             | Select-Object -ExpandProperty "AlwaysInstallElevated"
 
-            if (($regValue -ne 0)) {
+            if ($regValue -ne 0) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value is '$regValue'. Expected: 0"
                     Status  = "False"
                 }
             }
@@ -18564,9 +18767,9 @@
                 -Name "PreventCodecDownload" `
             | Select-Object -ExpandProperty "PreventCodecDownload"
 
-            if (($regValue -ne 1)) {
+            if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
                 }
             }
