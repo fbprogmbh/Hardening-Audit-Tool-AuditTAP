@@ -193,6 +193,7 @@ Microsoft Windows Server 2012 (R2) | V2R19 | 3.0.0 | - | - | -
 Microsoft Windows Server 2016 | V1R12 | 3.0.0 | FINAL | - | -
 Microsoft Windows Server 2019 | V1R5 | 3.0.0 | FINAL | - | -
 Microsoft Windows Server 2022 | V1R1 | 3.0.0 | FINAL | - | -
+Microsoft Windows Server 2025 | - | 1.0.0 | FINAL | - | -
 
 The report *Microsoft Windows 10 BSI* aggregates the results of all *BSI recommendations for Microsoft Windows 10* reports.
 
