@@ -59,7 +59,7 @@ function Get-MitreMappingMetaData {
 }
 
 function Get-MitreTacticName {
-		<#
+	<#
 	.SYNOPSIS
 		Returns the corresponding name for a given Mitre Tactic Id
 
@@ -84,10 +84,10 @@ function Get-MitreTactics {
 	.EXAMPLE
 		Get-MitreTactics -TechniqueID 'T1133'
 	#>
-    param(
+	param(
 		[Parameter(Mandatory = $true)]
-        $TechniqueID
-    )
+		$TechniqueID
+	)
 	return $CISToAttackMappingData.'TechniquesToTactis'.$TechniqueID
 }
 
@@ -99,10 +99,10 @@ function Get-MitreTechniqueName {
 	.EXAMPLE
 		Get-MitreTechniqueName -TechniqueID 'T1133'
 	#>
-    param(
+	param(
 		[Parameter(Mandatory = $true)]
-        $TechniqueID
-    )
+		$TechniqueID
+	)
 	return $CISToAttackMappingData.'AttackTechniques'.$TechniqueID.'name'
 }
 
@@ -116,11 +116,11 @@ function Test-CompatibleMitreReport {
 	#>
 	param(
 		[Parameter(Mandatory = $true)]
-        $Title,
+		$Title,
 		[Parameter(Mandatory = $true)]
-        $os
-    )
-	if(($Title -eq "Windows 10 Report" -or $Title -eq "Windows 11 Report" -or $Title -eq "Windows Server 2019 Audit Report" -or $Title -eq "Windows Server 2022 Audit Report") -and $os -match "Win32NT") {
+		$os
+	)
+	if (($Title -eq "Windows 10 Report" -or $Title -eq "Windows 11 Report" -or $Title -eq "Windows Server 2019 Audit Report" -or $Title -eq "Windows Server 2022 Audit Report") -and $os -match "Win32NT") {
 		return $true
 	}
 	else {
@@ -137,16 +137,16 @@ function Get-MitreTechniqueCategories {
 	.EXAMPLE
 		Get-MitreTechniqueCategories -TechniqueID 'T1133'
 	#>
-    param(
+	param(
 		[Parameter(Mandatory = $true)]
-        $TechniqueID
-    )
+		$TechniqueID
+	)
 	return $CISToAttackMappingData.'AttackTechniques'.$TechniqueID.'categories'
 }
 
 
 class MitreMap {
-    [System.Collections.Generic.Dictionary[string, [System.Collections.Generic.Dictionary[string, [System.Collections.Generic.Dictionary[string, AuditInfoStatus]]]]]] $Map
+	[System.Collections.Generic.Dictionary[string, [System.Collections.Generic.Dictionary[string, [System.Collections.Generic.Dictionary[string, AuditInfoStatus]]]]]] $Map
 
 	MitreMap() {
 		$this.Map = @{}
@@ -155,49 +155,49 @@ class MitreMap {
 		$techniques = $global:CISToAttackMappingData.'AttackTechniques'
 		$tactics = $global:CISToAttackMappingData.'AttackTactics'
 
-		foreach($tacitc in $tactics.psobject.properties.name) {
+		foreach ($tacitc in $tactics.psobject.properties.name) {
 			$this.Map[$tacitc] = @{}
 		}
 
 		#add all techniques and tactics to map
-		foreach($technique in $techniques.psobject.properties.name){
+		foreach ($technique in $techniques.psobject.properties.name) {
 			$tactics = Get-MitreTactics -TechniqueID $techniques.$technique.'ID'
-			foreach($tactic in $tactics){
-				if($null -eq $this.Map[$tactic][$techniques.$technique.'ID']) {
+			foreach ($tactic in $tactics) {
+				if ($null -eq $this.Map[$tactic][$techniques.$technique.'ID']) {
 					$this.Map[$tactic][$techniques.$technique.'ID'] = @{}
 				}
 			}
 		}
 	}
 
-    [void] Add($tactic, $technique, $id, $value) {
-        if($tactic -and $technique -and $id -and $null -ne $value -and $tactic.GetType().Name -eq 'String' -and $technique.GetType().Name -eq 'String' -and $id.GetType().Name -eq 'String' -and $value.GetType().Name -eq 'AuditInfoStatus'){
-			if($null -eq $this.Map[$tactic]) {
-                $this.Map[$tactic] = @{}
-            }
-            if($null -eq $this.Map[$tactic][$technique]) {
-                $this.Map[$tactic][$technique] = @{}
-            }
-            $this.Map[$tactic][$technique][$id] = $value
-        }
-        else {
-			if(!$tactic) {
+	[void] Add($tactic, $technique, $id, $value) {
+		if ($tactic -and $technique -and $id -and $null -ne $value -and $tactic.GetType().Name -eq 'String' -and $technique.GetType().Name -eq 'String' -and $id.GetType().Name -eq 'String' -and $value.GetType().Name -eq 'AuditInfoStatus') {
+			if ($null -eq $this.Map[$tactic]) {
+				$this.Map[$tactic] = @{}
+			}
+			if ($null -eq $this.Map[$tactic][$technique]) {
+				$this.Map[$tactic][$technique] = @{}
+			}
+			$this.Map[$tactic][$technique][$id] = $value
+		}
+		else {
+			if (!$tactic) {
 				Write-Error -Message 'Could not add value to Map. $tactic is $null or empty' -Category InvalidType
 			}
-			elseif(!$technique) {
+			elseif (!$technique) {
 				Write-Error -Message 'Could not add value to Map. $technique is $null or empty' -Category InvalidType
 			}
-			elseif(!$id) {
+			elseif (!$id) {
 				Write-Error -Message 'Could not add value to Map. $id is $null or empty' -Category InvalidType
 			}
-			elseif($null -eq $value) {
+			elseif ($null -eq $value) {
 				Write-Error -Message 'Could not add value to Map. $value is $null' -Category InvalidType
 			}
-			else{
+			else {
 				Write-Error -Message 'Could not add value to Map' -Category InvalidType
 			}
-        }
-    }
+		}
+	}
 
 	[void] Print() {
 		foreach ($tactic in $this.Map.Keys) {
@@ -212,7 +212,7 @@ class MitreMap {
 	}
 }
 
-function get-MitreLink{
+function get-MitreLink {
 	<#
 	.SYNOPSIS
 		Creates a url which points to the documentation of mitre for a given tactic or technique
@@ -349,59 +349,59 @@ function Convert-SectionTitleToHtmlId {
 	return ([char[]]$Title | ForEach-Object $charMap) -join ''
 }
 
-function CreateToc{
+function CreateToc {
 	param(
 		[Parameter(Mandatory = $true)]
 		$title
 	)
 	htmlElement 'li' @{} {
-		htmlElement 'a' @{ href = "#$($title)" } {"$($title)" }
+		htmlElement 'a' @{ href = "#$($title)" } { "$($title)" }
 	}
 }
 
 
 
-function CreateHashTable{
-	htmlElement 'div'@{id="hashTableDiv"}{
-		htmlElement 'h2' @{style="margin-top: 0;"}{"Overall integrity"}
-		htmlElement 'p' @{} {"This table outlines integrity checksums for each hardening recommendation. This allows for a quick comparison between reports by simply comparing provided hash values."}
-		htmlElement 'table'@{ id="hashTable"}{
-			htmlElement 'thead' @{}{
-				htmlElement 'tr' @{}{
-					htmlElement 'th'  @{style="border: 1px solid #d2d2d2; border-collapse: collapse; background-color: lightgray;" } {"Integrity Check for following scopes"}
-					htmlElement 'th'  @{style="border: 1px solid #d2d2d2; border-collapse: collapse; background-color: lightgray;" } {"Checksum (SHA-256)"}
+function CreateHashTable {
+	htmlElement 'div'@{id = "hashTableDiv" } {
+		htmlElement 'h2' @{style = "margin-top: 0;" } { "Overall integrity" }
+		htmlElement 'p' @{} { "This table outlines integrity checksums for each hardening recommendation. This allows for a quick comparison between reports by simply comparing provided hash values." }
+		htmlElement 'table'@{ id = "hashTable" } {
+			htmlElement 'thead' @{} {
+				htmlElement 'tr' @{} {
+					htmlElement 'th'  @{style = "border: 1px solid #d2d2d2; border-collapse: collapse; background-color: lightgray;" } { "Integrity Check for following scopes" }
+					htmlElement 'th'  @{style = "border: 1px solid #d2d2d2; border-collapse: collapse; background-color: lightgray;" } { "Checksum (SHA-256)" }
 				}
 			}
-			htmlElement 'tbody' @{id="hashTableBody"}{
-				htmlElement 'tr' @{}{
+			htmlElement 'tbody' @{id = "hashTableBody" } {
+				htmlElement 'tr' @{} {
 					#Scope
-					htmlElement 'td' @{style="border: 1px solid #d2d2d2; border-collapse: collapse;vertical-align: middle; " } {"Overall integrity check"}
+					htmlElement 'td' @{style = "border: 1px solid #d2d2d2; border-collapse: collapse;vertical-align: middle; " } { "Overall integrity check" }
 					#Checksum
-					htmlElement 'td' @{style="border: 1px solid #d2d2d2; border-collapse: collapse; " } {
-						htmlElement 'p' @{style="padding-right: 20px;"} {"$($hashtable_sha256.Get_Item($Title))"}
+					htmlElement 'td' @{style = "border: 1px solid #d2d2d2; border-collapse: collapse; " } {
+						htmlElement 'p' @{style = "padding-right: 20px;" } { "$($hashtable_sha256.Get_Item($Title))" }
 					}
 				}
 				$index = 0
 				$trColorSwitch = 0
-				foreach($section in $Sections){
-					if($trColorSwitch -eq 0){
-						htmlElement 'tr'  @{style="border: 1px solid #d2d2d2; border-collapse: collapse; background-color: #efefef;" }{
+				foreach ($section in $Sections) {
+					if ($trColorSwitch -eq 0) {
+						htmlElement 'tr'  @{style = "border: 1px solid #d2d2d2; border-collapse: collapse; background-color: #efefef;" } {
 							#Scope
-							htmlElement 'td'  @{style="border: 1px solid #d2d2d2; border-collapse:; vertical-align: middle; " } { "$($section.Title)"}
+							htmlElement 'td'  @{style = "border: 1px solid #d2d2d2; border-collapse:; vertical-align: middle; " } { "$($section.Title)" }
 							#Checksum
-							htmlElement 'td'  @{style="border: 1px solid #d2d2d2; border-collapse: collapse; " } {
-								htmlElement 'p' @{style="padding-right: 20px;"} {"$($hashtable_sha256.Get_Item($section.Title))"}
+							htmlElement 'td'  @{style = "border: 1px solid #d2d2d2; border-collapse: collapse; " } {
+								htmlElement 'p' @{style = "padding-right: 20px;" } { "$($hashtable_sha256.Get_Item($section.Title))" }
 							}
 						}
 						$trColorSwitch = 1
 					}
-					else{
-						htmlElement 'tr'  @{style="border: 1px solid #d2d2d2; border-collapse: collapse;" }{
+					else {
+						htmlElement 'tr'  @{style = "border: 1px solid #d2d2d2; border-collapse: collapse;" } {
 							#Scope
-							htmlElement 'td'  @{style="border: 1px solid #d2d2d2; border-collapse:; vertical-align: middle; " } { "$($section.Title)"}
+							htmlElement 'td'  @{style = "border: 1px solid #d2d2d2; border-collapse:; vertical-align: middle; " } { "$($section.Title)" }
 							#Checksum
-							htmlElement 'td'  @{style="border: 1px solid #d2d2d2; border-collapse: collapse; " } {
-								htmlElement 'p' @{style="padding-right: 20px;"} {"$($hashtable_sha256.Get_Item($section.Title))"}
+							htmlElement 'td'  @{style = "border: 1px solid #d2d2d2; border-collapse: collapse; " } {
+								htmlElement 'p' @{style = "padding-right: 20px;" } { "$($hashtable_sha256.Get_Item($section.Title))" }
 							}
 						}
 						$trColorSwitch = 0
@@ -413,7 +413,7 @@ function CreateHashTable{
 	}
 }
 
-function CreateReportContent{
+function CreateReportContent {
 	param(
 		[Parameter(Mandatory = $true)]
 		$tests,
@@ -421,54 +421,54 @@ function CreateReportContent{
 		$title
 	)
 	$amountOfFailedTests = 0
-	foreach($test in $tests){
-		if($test.Status -eq 'False'){
+	foreach ($test in $tests) {
+		if ($test.Status -eq 'False') {
 			$amountOfFailedTests ++
 		}
 	}
 	#if at least one test is failed
-	if($amountOfFailedTests -gt 0){
-		htmlElement 'h2' @{ id="$($title)"; style="padding: 5px 10px; border-radius: 8px; color:white; background-color: #cc0000; display: inline;"}{"$($title)"}
+	if ($amountOfFailedTests -gt 0) {
+		htmlElement 'h2' @{ id = "$($title)"; style = "padding: 5px 10px; border-radius: 8px; color:white; background-color: #cc0000; display: inline;" } { "$($title)" }
 	}
-	else{
-		htmlElement 'h2' @{ id="$($title)"; style="padding: 5px 10px; border-radius: 8px; color:white; background-color: #33cca6; display: inline;"}{"$($title)"}
+	else {
+		htmlElement 'h2' @{ id = "$($title)"; style = "padding: 5px 10px; border-radius: 8px; color:white; background-color: #33cca6; display: inline;" } { "$($title)" }
 	}
-	htmlElement 'table' @{class = 'audit-info'; style = 'margin-bottom: 50px; margin-top: 20px;'} {
-		htmlElement 'tbody' @{}{
-			htmlElement 'tr' @{}{
-				htmlElement 'th' @{} {"Id"}
-				htmlElement 'th' @{} {"Task"}
-				htmlElement 'th' @{} {"Message"}
-				htmlElement 'th' @{} {"Status"}
+	htmlElement 'table' @{class = 'audit-info'; style = 'margin-bottom: 50px; margin-top: 20px;' } {
+		htmlElement 'tbody' @{} {
+			htmlElement 'tr' @{} {
+				htmlElement 'th' @{} { "Id" }
+				htmlElement 'th' @{} { "Task" }
+				htmlElement 'th' @{} { "Message" }
+				htmlElement 'th' @{} { "Status" }
 			}
-			foreach($test in $tests){
-				htmlElement 'tr' @{}{
-					htmlElement 'td' @{} { "$($test.Id)"}
-					htmlElement 'td' @{} { "$($test.Task)"}
-					htmlElement 'td' @{} { "$($test.Message)"}
+			foreach ($test in $tests) {
+				htmlElement 'tr' @{} {
+					htmlElement 'td' @{} { "$($test.Id)" }
+					htmlElement 'td' @{} { "$($test.Task)" }
+					htmlElement 'td' @{} { "$($test.Message)" }
 					htmlElement 'td' @{} { 
-						if($test.Status -eq 'False'){
-							htmlElement 'span' @{class="severityResultFalse"}{
+						if ($test.Status -eq 'False') {
+							htmlElement 'span' @{class = "severityResultFalse" } {
 								"$($test.Status)"
 							}
 						}
-						elseif($test.Status -eq 'True'){
-							htmlElement 'span' @{class="severityResultTrue"}{
+						elseif ($test.Status -eq 'True') {
+							htmlElement 'span' @{class = "severityResultTrue" } {
 								"$($test.Status)"
 							}
 						}
-						elseif($test.Status -eq 'None'){
-							htmlElement 'span' @{class="severityResultNone"}{
+						elseif ($test.Status -eq 'None') {
+							htmlElement 'span' @{class = "severityResultNone" } {
 								"$($test.Status)"
 							}
 						}
-						elseif($test.Status -eq 'Warning'){
-							htmlElement 'span' @{class="severityResultWarning"}{
+						elseif ($test.Status -eq 'Warning') {
+							htmlElement 'span' @{class = "severityResultWarning" } {
 								"$($test.Status)"
 							}
 						}
-						elseif($test.Status -eq 'Error'){
-							htmlElement 'span' @{class="severityResultError"}{
+						elseif ($test.Status -eq 'Error') {
+							htmlElement 'span' @{class = "severityResultError" } {
 								"$($test.Status)"
 							}
 						}
@@ -532,7 +532,7 @@ function Get-HtmlToc {
 }
 
 function Merge-CisAuditsToMitreMap {
-    <#
+	<#
 	.Synopsis
 		Merges the stati of multiple AuditInfos into a 2 dimensional map which can be indexd by the corresponding Mitre tactics an techniques. 
 		This allows to simply find out how many Audits where succesfull for a given Mitre technique.
@@ -550,31 +550,31 @@ function Merge-CisAuditsToMitreMap {
 		$mitreMap.Print()
 	#>
     
-    param(
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        $Audit
-    )
-    Begin {
+	param(
+		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+		$Audit
+	)
+	Begin {
 		$json = $global:CISToAttackMappingData.'CISAttackMapping'
 		$mitreMap = [MitreMap]::new()
-    }
+	}
         
-    Process {
+	Process {
 		$id = $Audit.Id
 		$technique1 = $json.$id.'Technique1'
 		$technique2 = $json.$id.'Technique2'
 
-		if($technique1) {
-			foreach ($tactic in Get-MitreTactics -TechniqueID $technique1){
-				if($tactic) {
+		if ($technique1) {
+			foreach ($tactic in Get-MitreTactics -TechniqueID $technique1) {
+				if ($tactic) {
 					$mitreMap.Add($tactic, $technique1, $id, $Audit.Status)
 				}
 			}
 		}
 
-		if($technique2) {
-			foreach ($tactic in Get-MitreTactics -TechniqueID $technique2){
-				if($tactic) {
+		if ($technique2) {
+			foreach ($tactic in Get-MitreTactics -TechniqueID $technique2) {
+				if ($tactic) {
 					$mitreMap.Add($tactic, $technique2, $id, $Audit.Status)
 				}
 			}
@@ -599,9 +599,9 @@ function Get-MitigationsFromFailedTests {
 	#>
 
 	param(
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        $Mappings
-    )
+		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+		$Mappings
+	)
 	Begin {
 		$json = $global:CISToAttackMappingData.'CISAttackMapping'
 		#mapping with Mitigation IDs as keys
@@ -610,79 +610,79 @@ function Get-MitigationsFromFailedTests {
 		$CISAMitigationsFromPaper = [ordered]@{
 			'M1017' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Train users to be aware of access or manipulation attempts by an adversary to reduce the risk of successful spear-phishing and social engineering.'
+				'Mitigation'        = 'Train users to be aware of access or manipulation attempts by an adversary to reduce the risk of successful spear-phishing and social engineering.'
 			}
 			'M1018' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Manage the creation, modification, use, and permissions associated to user accounts.'
+				'Mitigation'        = 'Manage the creation, modification, use, and permissions associated to user accounts.'
 			}
 			'M1021' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Restrict or block certain websites.'
+				'Mitigation'        = 'Restrict or block certain websites.'
 			}
 			'M1027' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Set and enforce secure password policies for accounts.'
+				'Mitigation'        = 'Set and enforce secure password policies for accounts.'
 			}
 			'M1028' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Make configuration changes related to the operating system or a common feature of the operating system that result in system hardening against techniques.'
+				'Mitigation'        = 'Make configuration changes related to the operating system or a common feature of the operating system that result in system hardening against techniques.'
 			}
 			'M1030' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Architect sections of the network to isolate critical systems, functions, or resources. Use physical and logical segmentation to prevent access to sensitive systems and information.'
+				'Mitigation'        = 'Architect sections of the network to isolate critical systems, functions, or resources. Use physical and logical segmentation to prevent access to sensitive systems and information.'
 			}
 			'M1031' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Configure Network Intrusion Prevention systems to block malicious file signatures and file types at the network boundary.'
+				'Mitigation'        = 'Configure Network Intrusion Prevention systems to block malicious file signatures and file types at the network boundary.'
 			}
 			'M1038' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Block execution of code on a system.'
+				'Mitigation'        = 'Block execution of code on a system.'
 			}
 			'M1041' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Use strong encryption mechanisms to protect sensitive data.'
+				'Mitigation'        = 'Use strong encryption mechanisms to protect sensitive data.'
 			}
 			'M1042' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Remove or deny access to unnecessary and potentially vulnerable software to prevent abuse by adversaries.'
+				'Mitigation'        = 'Remove or deny access to unnecessary and potentially vulnerable software to prevent abuse by adversaries.'
 			}
 			'M1057' = @{
 				'MitreTechniqueIDs' = @()
-				'Mitigation' = 'Use a data loss prevention (DLP) strategy to categorize sensitive data, identify data formats indicative of personally identifiable information (PII), and restrict exfiltration of sensitive data.'
+				'Mitigation'        = 'Use a data loss prevention (DLP) strategy to categorize sensitive data, identify data formats indicative of personally identifiable information (PII), and restrict exfiltration of sensitive data.'
 			}
 		}
 		$CISAMitigations = @()
 		$KeysToRemove = @()
-    }
+	}
 
 	Process {
 		foreach ($tactic in $Mappings.Keys) {
 			foreach ($technique in $Mappings[$tactic].Keys) {
 				$Mappings[$tactic][$technique].Keys | 
 				#checks for each technique if there is a failed test
-				Where-Object {$Mappings[$tactic][$technique][$_] -eq [AuditInfoStatus]::False} | 
+				Where-Object { $Mappings[$tactic][$technique][$_] -eq [AuditInfoStatus]::False } | 
 				ForEach-Object {
 					#if the mitigation from the failed test is in ihe mitigation from the cisa paper
-					if($null -ne $json.$_.'Mitigation1' -and $CISAMitigationsFromPaper.Keys -contains $json.$_.'Mitigation1') {
+					if ($null -ne $json.$_.'Mitigation1' -and $CISAMitigationsFromPaper.Keys -contains $json.$_.'Mitigation1') {
 						#put the technique in the mapping (no doubles)
-						if($CISAMitigationsFromPaper[$json.$_.'Mitigation1']['MitreTechniqueIDs'] -notcontains $technique) {
+						if ($CISAMitigationsFromPaper[$json.$_.'Mitigation1']['MitreTechniqueIDs'] -notcontains $technique) {
 							$CISAMitigationsFromPaper[$json.$_.'Mitigation1']['MitreTechniqueIDs'] += $technique
 						}
 						#put the mitigation in a separate array (no doubles)
-						if($CISAMitigations -notcontains $json.$_.'Mitigation1') {
+						if ($CISAMitigations -notcontains $json.$_.'Mitigation1') {
 							$CISAMitigations += $json.$_.'Mitigation1'
 						}
 					}
 					#if the mitigation from the failed test is in ihe mitigation from the cisa paper
-					if($null -ne $json.$_.'Mitigation2' -and $CISAMitigationsFromPaper.Keys -contains $json.$_.'Mitigation2') {
+					if ($null -ne $json.$_.'Mitigation2' -and $CISAMitigationsFromPaper.Keys -contains $json.$_.'Mitigation2') {
 						#put the technique in the mapping (no doubles)
-						if($CISAMitigationsFromPaper[$json.$_.'Mitigation2']['MitreTechniqueIDs'] -notcontains $technique) {
+						if ($CISAMitigationsFromPaper[$json.$_.'Mitigation2']['MitreTechniqueIDs'] -notcontains $technique) {
 							$CISAMitigationsFromPaper[$json.$_.'Mitigation2']['MitreTechniqueIDs'] += $technique
 						}
 						#put the mitigation in a separate array (no doubles)
-						if($CISAMitigations -notcontains $json.$_.'Mitigation2') {
+						if ($CISAMitigations -notcontains $json.$_.'Mitigation2') {
 							$CISAMitigations += $json.$_.'Mitigation2'
 						}
 					}
@@ -690,11 +690,11 @@ function Get-MitigationsFromFailedTests {
 			}
 		}
 		#write keys which where not in the sperat mitigation array in $KeysToRemove beacause you can't delete in a foreach over the object you want to delete from
-		$CISAMitigationsFromPaper.Keys | Where-Object {$CISAMitigations -notcontains $_} | ForEach-Object {$KeysToRemove += $_}
+		$CISAMitigationsFromPaper.Keys | Where-Object { $CISAMitigations -notcontains $_ } | ForEach-Object { $KeysToRemove += $_ }
 		#delete the keys from $CISAMitigation from paper which were not in the sperate mitigation array
-		$KeysToRemove | ForEach-Object {$CISAMitigationsFromPaper.Remove($_)}
+		$KeysToRemove | ForEach-Object { $CISAMitigationsFromPaper.Remove($_) }
 	}
-	End{
+	End {
 		return $CISAMitigationsFromPaper
 	}
 }
@@ -709,44 +709,44 @@ function ConvertTo-HtmlTable {
 		ConvertTo-HtmlTable $Mappings.map
 
 	#>
-    param(
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        $Mappings
-    )
+	param(
+		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+		$Mappings
+	)
 
-    htmlElement 'table' @{id='MITRETable'} {
-        htmlElement 'thead' @{id='MITREthead'} {
-            htmlElement 'tr' @{} {
-                foreach ($tactic in $Mappings.Keys) {
-                    $url = get-MitreLink -type tactics -id $tactic
+	htmlElement 'table' @{id = 'MITRETable' } {
+		htmlElement 'thead' @{id = 'MITREthead' } {
+			htmlElement 'tr' @{} {
+				foreach ($tactic in $Mappings.Keys) {
+					$url = get-MitreLink -type tactics -id $tactic
 					$TacticCount = Get-TacticCounter $tactic $Mappings
 					htmlElement 'td' @{} {
 						$tacticName = Get-MitreTacticName -TacticId $tactic
-						$link = htmlElement 'a' @{href = $url; target="_blank"} {"$tacticName"}
-						htmlElement 'p' @{} {$link + "`n" +"$TacticCount/" + $Mappings[$tactic].Count}
+						$link = htmlElement 'a' @{href = $url; target = "blank" } { "$tacticName" }
+						htmlElement 'p' @{} { $link + "`n" + "$TacticCount/" + $Mappings[$tactic].Count }
 					}
-                }
-            }
-        }
-		htmlElement 'tbody' @{id='MITREtbody'} {
-            htmlElement 'tr' @{} {
-                foreach ($tactic in $Mappings.Keys) {
-                    htmlElement 'td' @{} {
-                        foreach ($technique in $Mappings[$tactic].Keys){
+				}
+			}
+		}
+		htmlElement 'tbody' @{id = 'MITREtbody' } {
+			htmlElement 'tr' @{} {
+				foreach ($tactic in $Mappings.Keys) {
+					htmlElement 'td' @{} {
+						foreach ($technique in $Mappings[$tactic].Keys) {
 							$successCounter = 0
 							foreach ($id in $Mappings[$tactic][$technique].Keys) {
-								if($Mappings[$tactic][$technique][$id] -eq [AuditInfoStatus]::True){
+								if ($Mappings[$tactic][$technique][$id] -eq [AuditInfoStatus]::True) {
 									$successCounter++
 								}
 							}
 							$url = get-MitreLink -type techniques -id $technique
 							$color = Get-ColorValue $successCounter $Mappings[$tactic][$technique].Count
 							$categories = Get-MitreTechniqueCategories -TechniqueID $technique
-							htmlElement 'div' @{class="MITRETechnique $categories"; style="background-color: $color; background-clip: border-box"} {
-								htmlElement 'a' @{href = $url; target="_blank"; class = "tooltip"} { "$technique" 
-									htmlElement 'span' @{class = "tooltiptext"} { Get-MitreTechniqueName -TechniqueID $technique }
+							htmlElement 'div' @{class = "MITRETechnique $categories"; style = "background-color: $color; background-clip: border-box" } {
+								htmlElement 'a' @{href = $url; target = "_blank"; class = "tooltip" } { "$technique" 
+									htmlElement 'span' @{class = "tooltiptext" } { Get-MitreTechniqueName -TechniqueID $technique }
 								} 
-								htmlElement 'span' @{} {": $successCounter/" + $Mappings[$tactic][$technique].Count}
+								htmlElement 'span' @{} { ": $successCounter/" + $Mappings[$tactic][$technique].Count }
 							}
 						}
 					}
@@ -765,44 +765,44 @@ function ConvertTo-HtmlCISA {
 	#>
 
 	param(
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        $CISAMitigations
-    )
+		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+		$CISAMitigations
+	)
 	#create CISA table
-	htmlElement 'table' @{id='CISATable'} {
+	htmlElement 'table' @{id = 'CISATable' } {
 		#create table head with the column CISA Mitigation, MITRE Mitigation ID, MITRE Technique IDs
-        htmlElement 'thead' @{id='CISAthead'} {
+		htmlElement 'thead' @{id = 'CISAthead' } {
 			htmlElement 'tr' @{} {
-				htmlElement 'th' @{class='CISAMitigationIDs'} {
+				htmlElement 'th' @{class = 'CISAMitigationIDs' } {
 					'ID'
 				}
-				htmlElement 'th' @{class='CISAMitigations'} {
+				htmlElement 'th' @{class = 'CISAMitigations' } {
 					'Mitigation Description'
 				}
-				htmlElement 'th' @{class='CISAMitreTechniqueIDs'} {
+				htmlElement 'th' @{class = 'CISAMitreTechniqueIDs' } {
 					'caused Audit failures'
 				}
 			}
 		}
 		#fill the columns with the information from the $CISAMitigation map
-		htmlElement 'tbody' @{id='CISAtbody'} {
+		htmlElement 'tbody' @{id = 'CISAtbody' } {
 			$KeyOrder = $CISAMitigations.GetEnumerator() | Sort-Object { $_.Value.MitreTechniqueIDs.Count } -Descending
 			$KeyOrder | ForEach-Object {
 				htmlElement 'tr' @{} {
-					htmlElement 'td' @{class='CISAMitigationIDs'} {
-						htmlElement 'a' @{href = $(get-MitreLink -type mitigations -id $_.Key); target="_blank"} {
+					htmlElement 'td' @{class = 'CISAMitigationIDs' } {
+						htmlElement 'a' @{href = $(get-MitreLink -type mitigations -id $_.Key); target = "_blank" } {
 							$_.Key
 						}
 					}
-					htmlElement 'td' @{class='CISAMitigations'} {
+					htmlElement 'td' @{class = 'CISAMitigations' } {
 						htmlElement 'a' @{} {
 							$CISAMitigations[$_.Key]['Mitigation']
 						}	
 					}
-					htmlElement 'td' @{class='CISAMitreTechniqueIDs'} {
+					htmlElement 'td' @{class = 'CISAMitreTechniqueIDs' } {
 						$mitigationsList = $CISAMitigations[$_.Key]['MitreTechniqueIDs']
 						for ($i = 0; $i -lt $mitigationsList.Length; $i++) {
-							htmlElement 'a' @{href = $(get-MitreLink -type techniques -id $mitigationsList[$i]); target="_blank"} {
+							htmlElement 'a' @{href = $(get-MitreLink -type techniques -id $mitigationsList[$i]); target = "_blank" } {
 								$mitigationsList[$i]
 							}
 						}
@@ -813,46 +813,46 @@ function ConvertTo-HtmlCISA {
 	}
 }
 
-function Get-ColorValue{
+function Get-ColorValue {
 	<#
 	.Synopsis 
 		Compares two Integer variables returns true if equal, false if not
 	.Example 
 		$colorValue = Get-ColorValue $successCounter $Mappings[$tactic][$technique].Count
 	#>
-    param (
-        [Parameter(Mandatory=$true, ValueFromPipeline = $true)]
-        [int]$FirstValue,
+	param (
+		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+		[int]$FirstValue,
 
-        [Parameter(Mandatory=$true, ValueFromPipeline = $true)]
-        [int]$SecondValue
-    )
+		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+		[int]$SecondValue
+	)
 
-	if($SecondValue -eq 0) {
+	if ($SecondValue -eq 0) {
 		$result = '#a7a7a7'
 	}
 	else {
 		$successPercentage = ($FirstValue / $SecondValue)
 
 		switch ($successPercentage) {
-			1 {$result = '#33cca6'}
-			{$_ -le 0.99} {$result = '#52CC8F'}
-			{$_ -le 0.89} {$result = '#70CC78'}
-			{$_ -le 0.79} {$result = '#8FCC61'}
-			{$_ -le 0.69} {$result = '#ADCC4A'}
-			{$_ -le 0.59} {$result = '#CCCC33'}
-			{$_ -le 0.49} {$result = '#CCA329'}
-			{$_ -le 0.39} {$result = '#CC7A1F'}
-			{$_ -le 0.29} {$result = '#CC5214'}
-			{$_ -le 0.19} {$result = '#CC290A'}
-			{$_ -le 0.09} {$result = '#cc0000'}
+			1 { $result = '#33cca6' }
+			{ $_ -le 0.99 } { $result = '#52CC8F' }
+			{ $_ -le 0.89 } { $result = '#70CC78' }
+			{ $_ -le 0.79 } { $result = '#8FCC61' }
+			{ $_ -le 0.69 } { $result = '#ADCC4A' }
+			{ $_ -le 0.59 } { $result = '#CCCC33' }
+			{ $_ -le 0.49 } { $result = '#CCA329' }
+			{ $_ -le 0.39 } { $result = '#CC7A1F' }
+			{ $_ -le 0.29 } { $result = '#CC5214' }
+			{ $_ -le 0.19 } { $result = '#CC290A' }
+			{ $_ -le 0.09 } { $result = '#cc0000' }
 		}
 	}
 
 	return $result
 }
 
-function Get-TacticCounter{
+function Get-TacticCounter {
 	<#
 	.Synopsis 
 		Counts the amount of successful techniques per tactic
@@ -860,20 +860,20 @@ function Get-TacticCounter{
 		$TacticCounter = Get-TacticCounter $tactic $Mappings
 	#>
 	param (
-        [Parameter(Mandatory=$true, ValueFromPipeline = $true)]
-        [object]$tactic,
+		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+		[object]$tactic,
 
-		[Parameter(Mandatory=$true, ValueFromPipeline = $true)]
-        [object]$Mappings
-    )
+		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+		[object]$Mappings
+	)
 	$TacticCount = 0
-	foreach ($technique in $Mappings[$tactic].Keys){
+	foreach ($technique in $Mappings[$tactic].Keys) {
 		$successCounter = 0
 		foreach ($id in $Mappings[$tactic][$technique].Keys) {
-			if($Mappings[$tactic][$technique][$id] -eq [AuditInfoStatus]::True){
+			if ($Mappings[$tactic][$technique][$id] -eq [AuditInfoStatus]::True) {
 				$successCounter++
 			}
-			if($successCounter -eq $Mappings[$tactic][$technique].Count -And $successCounter -gt 0){
+			if ($successCounter -eq $Mappings[$tactic][$technique].Count -And $successCounter -gt 0) {
 				$TacticCount++
 			}
 		}    
@@ -912,8 +912,8 @@ function Compare-EqualCISVersions {
 	)
 	$os = [System.Environment]::OSVersion.Platform
 
-	if(Test-CompatibleMitreReport -Title $Title -os $os){
-		$ReportBasedOn = $ReportBasedOn | Where-Object {$_ -match 'CIS'}
+	if (Test-CompatibleMitreReport -Title $Title -os $os) {
+		$ReportBasedOn = $ReportBasedOn | Where-Object { $_ -match 'CIS' }
 		return $($null -ne $ReportBasedOn -and $null -ne $MitreMappingCompatible -and $($ReportBasedOn -in $MitreMappingCompatible))
 	}
 	return $false
@@ -989,18 +989,18 @@ function Get-ATAPHostInformation {
 	$unixOS = [System.Environment]::OSVersion.Platform -eq 'Unix' # returns 'Unix' on Linux and MacOS and 'Win32NT' on Windows, PS v6+ has builtin environment variable for this
 	if ($unixOS) {
 		return @{
-			"Hostname"                  = hostname
-			"Operating System"          = (Get-Content /etc/os-release | Select-String -Pattern '^PRETTY_NAME=\"(.*)\"$').Matches.Groups[1].Value
-			"Installation Language"     = (($(locale) | Where-Object { $_ -match "LANG=" }) -split '=')[1]
-			"Kernel Version"            = uname -r
-			"Free physical memory" = "{0:N1} GB" -f (( -split (Get-Content /proc/meminfo | Where-Object { $_ -match 'MemFree:' }))[1] / 1MB)
-			"Free disk space"      = "{0:N1} GB" -f ((Get-PSDrive | Where-Object { $_.Name -eq '/' }).Free / 1GB)
-			"System Uptime"				= uptime -p
-			"OS Architecture"			= lscpu | awk '/Architecture/ {print $2}'
-			"System Manufacturer"		= (dmidecode -t system)[6] | cut -d ':' -f 2 | xargs
-			"System SKU"				= (dmidecode -t system)[12] | cut -d ':' -f 2 | xargs
-			"System Serialnumber"		= (dmidecode -t system)[9] | cut -d ':' -f 2 | xargs
-			"BIOS Version"				= dmidecode -s bios-version
+			"Hostname"              = hostname
+			"Operating System"      = (Get-Content /etc/os-release | Select-String -Pattern '^PRETTY_NAME=\"(.*)\"$').Matches.Groups[1].Value
+			"Installation Language" = (($(locale) | Where-Object { $_ -match "LANG=" }) -split '=')[1]
+			"Kernel Version"        = uname -r
+			"Free physical memory"  = "{0:N1} GB" -f (( -split (Get-Content /proc/meminfo | Where-Object { $_ -match 'MemFree:' }))[1] / 1MB)
+			"Free disk space"       = "{0:N1} GB" -f ((Get-PSDrive | Where-Object { $_.Name -eq '/' }).Free / 1GB)
+			"System Uptime"         = uptime -p
+			"OS Architecture"       = lscpu | awk '/Architecture/ {print $2}'
+			"System Manufacturer"   = (dmidecode -t system)[6] | cut -d ':' -f 2 | xargs
+			"System SKU"            = (dmidecode -t system)[12] | cut -d ':' -f 2 | xargs
+			"System Serialnumber"   = (dmidecode -t system)[9] | cut -d ':' -f 2 | xargs
+			"BIOS Version"          = dmidecode -s bios-version
 		}
 	}
 }
@@ -1204,14 +1204,14 @@ function Get-ATAPHtmlReport {
 		$body = htmlElement 'body' @{onload = "startConditions()" } {
 			# Header
 			htmlElement 'div' @{ class = 'header content' } {
-				htmlElement 'div' @{ id = "logo"} {
-					htmlElement 'h1' @{id ="companyName"} {"FB PRO GMBH"}
-					htmlElement 'p' @{} {"System Hardening & Data Protection"}
+				htmlElement 'div' @{ id = "logo" } {
+					htmlElement 'h1' @{id = "companyName" } { "FB PRO GMBH" }
+					htmlElement 'p' @{} { "System Hardening & Data Protection" }
 				}
-				htmlElement 'div' @{ id = "reportInformation"} {
+				htmlElement 'div' @{ id = "reportInformation" } {
 					htmlElement 'h1' @{} { $Title }
 					$datum = "{0:d}. {1} {2} {3:D2}:{4:D2}" -f (Get-Date).Day, (Get-Date).ToString("MMMM"), (Get-Date).Year, (Get-Date).Hour, (Get-Date).Minute					
-					htmlElement 'div' @{} {"Generated on $($datum)"}
+					htmlElement 'div' @{} { "Generated on $($datum)" }
 				}
 			}
 			# Main section
@@ -1233,54 +1233,54 @@ function Get-ATAPHtmlReport {
 					$os = [System.Environment]::OSVersion.Platform
 
 					###  Risk Checks ###
-					if($RiskScore){
+					if ($RiskScore) {
 						# Quantity
 						$TotalAmountOfRules = $completionStatus.TotalCount;
 						$AmountOfCompliantRules = 0;
 						$AmountOfNonCompliantRules = 0;
 						$None_Rules = 0;
 						foreach ($value in $StatusValues) {
-							if($value -eq 'True'){
+							if ($value -eq 'True') {
 								$AmountOfCompliantRules = $completionStatus[$value].Count
 							}
 							#exclude Rules, which are set to None, to make an independent calculation between Compliant and non Compliant
-							if($value -eq 'None'){
+							if ($value -eq 'None') {
 								$None_Rules = $completionStatus[$value].Count
 							}
-							if($value -eq 'False'){
+							if ($value -eq 'False') {
 								$AmountOfNonCompliantRules = $completionStatus[$value].Count
 							}
 						}
 						$TotalAmountOfRules = $TotalAmountOfRules - $None_Rules
-						if($os -match "Win32NT" -and $Title -match "Win"){
+						if ($os -match "Win32NT" -and $Title -match "Win") {
 							# percentage of compliance quantity
-							$QuantityCompliance = [math]::round(($AmountOfCompliantRules / $TotalAmountOfRules) * 100,2);	
+							$QuantityCompliance = [math]::round(($AmountOfCompliantRules / $TotalAmountOfRules) * 100, 2);	
 							# Variables, which will be evaluated in report.js
-							htmlElement 'div' @{id="AmountOfNonCompliantRules"} {"$($AmountOfNonCompliantRules)"}
-							htmlElement 'div' @{id="AmountOfCompliantRules"} {"$($AmountOfCompliantRules)"}
-							htmlElement 'div' @{id="TotalAmountOfRules"} {"$($TotalAmountOfRules)"}
-							htmlElement 'div' @{id="QuantityCompliance"} {"$($QuantityCompliance)"}
+							htmlElement 'div' @{id = "AmountOfNonCompliantRules" } { "$($AmountOfNonCompliantRules)" }
+							htmlElement 'div' @{id = "AmountOfCompliantRules" } { "$($AmountOfCompliantRules)" }
+							htmlElement 'div' @{id = "TotalAmountOfRules" } { "$($TotalAmountOfRules)" }
+							htmlElement 'div' @{id = "QuantityCompliance" } { "$($QuantityCompliance)" }
 		
 							# Severity
-							htmlElement 'div' @{id="TotalAmountOfSeverityRules"} {"$($RSReport.RSSeverityReport.AuditInfos.Length)"}
+							htmlElement 'div' @{id = "TotalAmountOfSeverityRules" } { "$($RSReport.RSSeverityReport.AuditInfos.Length)" }
 							$AmountOfFailedSeverityRules = 0;
-							foreach($rule in $RSReport.RSSeverityReport.AuditInfos){
-								if($rule.Status -eq "False"){
+							foreach ($rule in $RSReport.RSSeverityReport.AuditInfos) {
+								if ($rule.Status -eq "False") {
 									$AmountOfFailedSeverityRules ++;
 								}
 							}
-							htmlElement 'div' @{id="AmountOfFailedSeverityRules"} {"$($AmountOfFailedSeverityRules)"}
+							htmlElement 'div' @{id = "AmountOfFailedSeverityRules" } { "$($AmountOfFailedSeverityRules)" }
 						}
 					}
 
 					htmlElement 'div' @{id = 'navigationButtons' } {
 						htmlElement 'button' @{type = 'button'; class = 'navButton'; id = 'summaryBtn'; onclick = "clickButton('1')" } { "Benchmark Compliance" }
 						htmlElement 'button' @{type = 'button'; class = 'navButton'; id = 'foundationDataBtn'; onclick = "clickButton('5')" } { "Security Base Data" }
-						if($RiskScore -and ($os -match "Win32NT" -and $Title -match "Win")){
+						if ($RiskScore -and ($os -match "Win32NT" -and $Title -match "Win")) {
 							htmlElement 'button' @{type = 'button'; class = 'navButton'; id = 'riskScoreBtn'; onclick = "clickButton('2')" } { "Risk Score" }
 						}
-						if($MITRE){
-							if(Test-CompatibleMitreReport -Title $Title -os $os){
+						if ($MITRE) {
+							if (Test-CompatibleMitreReport -Title $Title -os $os) {
 								htmlElement 'button' @{type = 'button'; class = 'navButton'; id = 'MITREBtn'; onclick = "clickButton('6')" } { "MITRE ATT&CK" }
 								htmlElement 'button' @{type = 'button'; class = 'navButton'; id = 'CISABtn'; onclick = "clickButton('7')" } { "CISA Recommendations" }
 							}
@@ -1290,16 +1290,16 @@ function Get-ATAPHtmlReport {
 					}
 
 					Write-Progress -Activity "Creating settings overview page" -Status "Progress:" -PercentComplete 25
-					htmlElement 'div' @{class = 'tabContent'; id = 'settingsOverview'} {
+					htmlElement 'div' @{class = 'tabContent'; id = 'settingsOverview' } {
 						# Table of Contents
 						htmlElement 'h1' @{ id = 'toc' } { 'Hardening Settings' }
 						CreateHashTable
-						htmlElement 'h2' @{} {"Table Of Contents"}
+						htmlElement 'h2' @{} { "Table Of Contents" }
 						htmlElement 'p' @{} { 'Click the link(s) below for quick access to a report section.' }
 						htmlElement 'ul' @{} {
 							foreach ($section in $Sections) { $section | Get-HtmlToc }
 						}
-						htmlElement 'h2' @{} {"Benchmark Details"}
+						htmlElement 'h2' @{} { "Benchmark Details" }
 
 						# Report Sections for hardening settings
 						foreach ($section in $Sections) {
@@ -1312,12 +1312,12 @@ function Get-ATAPHtmlReport {
 					htmlElement 'div' @{class = 'tabContent'; id = 'summary' } {
 						# Host information
 						htmlElement 'h1' @{} { 'Benchmark Compliance' }
-						htmlElement 'div' @{style="float: left;"} {
+						htmlElement 'div' @{style = "float: left;" } {
 							htmlElement 'p' @{} {
 								"Modules:"
 								htmlElement 'ul' @{} {
-									htmlElement 'div' @{} {"ATAPAuditor version $AuditorVersion"}
-									htmlElement 'div' @{} {"ATAPHtmlReport version $ModuleVersion"}
+									htmlElement 'div' @{} { "ATAPAuditor version $AuditorVersion" }
+									htmlElement 'div' @{} { "ATAPHtmlReport version $ModuleVersion" }
 								}
 							}
 							htmlElement 'p' @{} {
@@ -1328,96 +1328,96 @@ function Get-ATAPHtmlReport {
 									}
 								}
 								htmlElement 'div' @{} {
-									"Does your system show low benchmark compliance? Check out our <a href=`"$($Settings.SolutionsLink)`">hardening solutions</a>."
+									"Does your system show low benchmark compliance? Check out our <a href=`"$($Settings.SolutionsLink)`"target=`"blank`">hardening solutions</a>."
 								}
 							}
 						}
-						htmlElement 'div' @{id='riskMatrixSummaryArea'}{
-							if($RiskScore -and ($os -match "Win32NT" -and $Title -match "Win")){
-								htmlElement 'h2' @{id = 'CurrentRiskScore'} {"Current Risk Score of tested System: "}
-								htmlElement 'h3' @{} {'For further information, please head to the tab "Risk Score".'}
-								htmlElement 'div' @{id ='riskMatrixSummary'}{
-									htmlElement 'div' @{id='dotSummaryTab'}{}
-									htmlElement 'div' @{id ='severity'} {
-										htmlElement 'p' @{id = 'severityArea'}{'Severity'}
+						htmlElement 'div' @{id = 'riskMatrixSummaryArea' } {
+							if ($RiskScore -and ($os -match "Win32NT" -and $Title -match "Win")) {
+								htmlElement 'h2' @{id = 'CurrentRiskScore' } { "Current Risk Score of tested System: " }
+								htmlElement 'h3' @{} { 'For further information, please head to the tab "Risk Score".' }
+								htmlElement 'div' @{id = 'riskMatrixSummary' } {
+									htmlElement 'div' @{id = 'dotSummaryTab' } {}
+									htmlElement 'div' @{id = 'severity' } {
+										htmlElement 'p' @{id = 'severityArea' } { 'Severity' }
 									}
-									htmlElement 'div' @{id ='quantity'} {
-										htmlElement 'p' @{id = 'quantityArea'}{'Quantity'}
+									htmlElement 'div' @{id = 'quantity' } {
+										htmlElement 'p' @{id = 'quantityArea' } { 'Quantity' }
 									}
-									htmlElement 'div' @{id ='severityCritical'}{"Critical"}
-									htmlElement 'div' @{id ='severityHigh'}{"High"}
-									htmlElement 'div' @{id ='severityMedium'}{"Medium"}
-									htmlElement 'div' @{id ='severityLow'}{"Low"}
+									htmlElement 'div' @{id = 'severityCritical' } { "Critical" }
+									htmlElement 'div' @{id = 'severityHigh' } { "High" }
+									htmlElement 'div' @{id = 'severityMedium' } { "Medium" }
+									htmlElement 'div' @{id = 'severityLow' } { "Low" }
 		
-									htmlElement 'div' @{id ='quantityCritical'}{"Critical"}
-									htmlElement 'div' @{id ='quantityHigh'}{"High"}
-									htmlElement 'div' @{id ='quantityMedium'}{"Medium"}
-									htmlElement 'div' @{id ='quantityLow'}{"Low"}
+									htmlElement 'div' @{id = 'quantityCritical' } { "Critical" }
+									htmlElement 'div' @{id = 'quantityHigh' } { "High" }
+									htmlElement 'div' @{id = 'quantityMedium' } { "Medium" }
+									htmlElement 'div' @{id = 'quantityLow' } { "Low" }
 		
 									#colored areas
-									htmlElement 'div' @{id ='critical_low'}{}
-									htmlElement 'div' @{id ='high_low'}{}
-									htmlElement 'div' @{id ='medium_low'}{}
-									htmlElement 'div' @{id ='low_low'}{}
+									htmlElement 'div' @{id = 'critical_low' } {}
+									htmlElement 'div' @{id = 'high_low' } {}
+									htmlElement 'div' @{id = 'medium_low' } {}
+									htmlElement 'div' @{id = 'low_low' } {}
 		
-									htmlElement 'div' @{id ='critical_medium'}{}
-									htmlElement 'div' @{id ='high_medium'}{}
-									htmlElement 'div' @{id ='medium_medium'}{}
-									htmlElement 'div' @{id ='low_medium'}{}
+									htmlElement 'div' @{id = 'critical_medium' } {}
+									htmlElement 'div' @{id = 'high_medium' } {}
+									htmlElement 'div' @{id = 'medium_medium' } {}
+									htmlElement 'div' @{id = 'low_medium' } {}
 		
-									htmlElement 'div' @{id ='critical_high'}{}
-									htmlElement 'div' @{id ='high_high'}{}
-									htmlElement 'div' @{id ='medium_high'}{}
-									htmlElement 'div' @{id ='low_high'}{}
+									htmlElement 'div' @{id = 'critical_high' } {}
+									htmlElement 'div' @{id = 'high_high' } {}
+									htmlElement 'div' @{id = 'medium_high' } {}
+									htmlElement 'div' @{id = 'low_high' } {}
 		
-									htmlElement 'div' @{id ='critical_critical'}{}
-									htmlElement 'div' @{id ='high_critical'}{}
-									htmlElement 'div' @{id ='medium_critical'}{}
-									htmlElement 'div' @{id ='low_critical'}{}
+									htmlElement 'div' @{id = 'critical_critical' } {}
+									htmlElement 'div' @{id = 'high_critical' } {}
+									htmlElement 'div' @{id = 'medium_critical' } {}
+									htmlElement 'div' @{id = 'low_critical' } {}
 								}
 							}
-							else{
-								if($RiskScore){
-									htmlElement 'h2' @{id = 'CurrentRiskScore'} {"Current Risk Score of tested System:"}
-									htmlElement 'h2' @{id = 'invalidOS'} {"N/A"}
-									htmlElement 'h3' @{} {'Risk Score calculation implemented for Microsoft Windows OS for now.'}
-									htmlElement 'div' @{id ='riskMatrixSummary'}{
-										htmlElement 'div' @{id ='severity'} {
-											htmlElement 'p' @{id = 'severityArea'}{'Severity'}
+							else {
+								if ($RiskScore) {
+									htmlElement 'h2' @{id = 'CurrentRiskScore' } { "Current Risk Score of tested System:" }
+									htmlElement 'h2' @{id = 'invalidOS' } { "N/A" }
+									htmlElement 'h3' @{} { 'Risk Score calculation implemented for Microsoft Windows OS for now.' }
+									htmlElement 'div' @{id = 'riskMatrixSummary' } {
+										htmlElement 'div' @{id = 'severity' } {
+											htmlElement 'p' @{id = 'severityArea' } { 'Severity' }
 										}
-										htmlElement 'div' @{id ='quantity'} {
-											htmlElement 'p' @{id = 'quantityArea'}{'Quantity'}
+										htmlElement 'div' @{id = 'quantity' } {
+											htmlElement 'p' @{id = 'quantityArea' } { 'Quantity' }
 										}
-										htmlElement 'div' @{id ='severityCritical'}{"Critical"}
-										htmlElement 'div' @{id ='severityHigh'}{"High"}
-										htmlElement 'div' @{id ='severityMedium'}{"Medium"}
-										htmlElement 'div' @{id ='severityLow'}{"Low"}
+										htmlElement 'div' @{id = 'severityCritical' } { "Critical" }
+										htmlElement 'div' @{id = 'severityHigh' } { "High" }
+										htmlElement 'div' @{id = 'severityMedium' } { "Medium" }
+										htmlElement 'div' @{id = 'severityLow' } { "Low" }
 			
-										htmlElement 'div' @{id ='quantityCritical'}{"Critical"}
-										htmlElement 'div' @{id ='quantityHigh'}{"High"}
-										htmlElement 'div' @{id ='quantityMedium'}{"Medium"}
-										htmlElement 'div' @{id ='quantityLow'}{"Low"}
+										htmlElement 'div' @{id = 'quantityCritical' } { "Critical" }
+										htmlElement 'div' @{id = 'quantityHigh' } { "High" }
+										htmlElement 'div' @{id = 'quantityMedium' } { "Medium" }
+										htmlElement 'div' @{id = 'quantityLow' } { "Low" }
 			
 										#colored areas
-										htmlElement 'div' @{id ='critical_low'}{}
-										htmlElement 'div' @{id ='high_low'}{}
-										htmlElement 'div' @{id ='medium_low'}{}
-										htmlElement 'div' @{id ='low_low'}{}
+										htmlElement 'div' @{id = 'critical_low' } {}
+										htmlElement 'div' @{id = 'high_low' } {}
+										htmlElement 'div' @{id = 'medium_low' } {}
+										htmlElement 'div' @{id = 'low_low' } {}
 			
-										htmlElement 'div' @{id ='critical_medium'}{}
-										htmlElement 'div' @{id ='high_medium'}{}
-										htmlElement 'div' @{id ='medium_medium'}{}
-										htmlElement 'div' @{id ='low_medium'}{}
+										htmlElement 'div' @{id = 'critical_medium' } {}
+										htmlElement 'div' @{id = 'high_medium' } {}
+										htmlElement 'div' @{id = 'medium_medium' } {}
+										htmlElement 'div' @{id = 'low_medium' } {}
 			
-										htmlElement 'div' @{id ='critical_high'}{}
-										htmlElement 'div' @{id ='high_high'}{}
-										htmlElement 'div' @{id ='medium_high'}{}
-										htmlElement 'div' @{id ='low_high'}{}
+										htmlElement 'div' @{id = 'critical_high' } {}
+										htmlElement 'div' @{id = 'high_high' } {}
+										htmlElement 'div' @{id = 'medium_high' } {}
+										htmlElement 'div' @{id = 'low_high' } {}
 			
-										htmlElement 'div' @{id ='critical_critical'}{}
-										htmlElement 'div' @{id ='high_critical'}{}
-										htmlElement 'div' @{id ='medium_critical'}{}
-										htmlElement 'div' @{id ='low_critical'}{}
+										htmlElement 'div' @{id = 'critical_critical' } {}
+										htmlElement 'div' @{id = 'high_critical' } {}
+										htmlElement 'div' @{id = 'medium_critical' } {}
+										htmlElement 'div' @{id = 'low_critical' } {}
 									}
 								}
 							}
@@ -1498,211 +1498,211 @@ function Get-ATAPHtmlReport {
 					}
 
 					Write-Progress -Activity "Creating foundation data page" -Status "Progress:" -PercentComplete 50
-					htmlElement 'div' @{class = 'tabContent'; id = 'foundationData'}{
+					htmlElement 'div' @{class = 'tabContent'; id = 'foundationData' } {
 						#Tab: Foundation Data (Only works for Windows OS!)
-						htmlElement 'h1' @{} {"Security Base Data"}
-						htmlElement 'div' @{id="testGrid"} {
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 2; grid-row-start: 1; grid-row-end: 2; font-size: 23px; font-weight: bold; border: 0; padding-top: 0px;"} {"System Information"}
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 3; grid-row-start: 2; grid-row-end: 3; font-weight: bold; background-color: lightgray;"} {"Software Information"}
-								htmlElement 'div' @{style="grid-column-start: 4; grid-column-end: 6; grid-row-start: 2; grid-row-end: 3; font-weight: bold; background-color: lightgray;"} {"Hardware Information"}
+						htmlElement 'h1' @{} { "Security Base Data" }
+						htmlElement 'div' @{id = "testGrid" } {
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 2; grid-row-start: 1; grid-row-end: 2; font-size: 23px; font-weight: bold; border: 0; padding-top: 0px;" } { "System Information" }
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 3; grid-row-start: 2; grid-row-end: 3; font-weight: bold; background-color: lightgray;" } { "Software Information" }
+							htmlElement 'div' @{style = "grid-column-start: 4; grid-column-end: 6; grid-row-start: 2; grid-row-end: 3; font-weight: bold; background-color: lightgray;" } { "Hardware Information" }
 
-								htmlElement 'div' @{style="grid-column-start: 4; grid-column-end: 5; grid-row-start: 3; grid-row-end: 4; background-color: #efefef; font-weight: bold;"} { "System Manufacturer" }
-								htmlElement 'div' @{style="grid-column-start: 5; grid-column-end: 6; grid-row-start: 3; grid-row-end: 4; background-color: #efefef;"} { $($SystemInformation.HardwareInformation.SystemManufacturer) }
+							htmlElement 'div' @{style = "grid-column-start: 4; grid-column-end: 5; grid-row-start: 3; grid-row-end: 4; background-color: #efefef; font-weight: bold;" } { "System Manufacturer" }
+							htmlElement 'div' @{style = "grid-column-start: 5; grid-column-end: 6; grid-row-start: 3; grid-row-end: 4; background-color: #efefef;" } { $($SystemInformation.HardwareInformation.SystemManufacturer) }
 								
-								htmlElement 'div' @{style="grid-column-start: 4; grid-column-end: 5; grid-row-start: 4; grid-row-end: 5; font-weight: bold;"} { "System SKU" }
-								htmlElement 'div' @{style="grid-column-start: 5; grid-column-end: 6; grid-row-start: 4; grid-row-end: 5;"} { $($SystemInformation.HardwareInformation.SystemSKU) }
+							htmlElement 'div' @{style = "grid-column-start: 4; grid-column-end: 5; grid-row-start: 4; grid-row-end: 5; font-weight: bold;" } { "System SKU" }
+							htmlElement 'div' @{style = "grid-column-start: 5; grid-column-end: 6; grid-row-start: 4; grid-row-end: 5;" } { $($SystemInformation.HardwareInformation.SystemSKU) }
 
-								htmlElement 'div' @{style="grid-column-start: 4; grid-column-end: 5; grid-row-start: 5; grid-row-end: 6; background-color: #efefef; font-weight: bold;"} { "System Model" }
-								htmlElement 'div' @{style="grid-column-start: 5; grid-column-end: 6; grid-row-start: 5; grid-row-end: 6; background-color: #efefef;"} { $($SystemInformation.HardwareInformation.SystemModel) }
+							htmlElement 'div' @{style = "grid-column-start: 4; grid-column-end: 5; grid-row-start: 5; grid-row-end: 6; background-color: #efefef; font-weight: bold;" } { "System Model" }
+							htmlElement 'div' @{style = "grid-column-start: 5; grid-column-end: 6; grid-row-start: 5; grid-row-end: 6; background-color: #efefef;" } { $($SystemInformation.HardwareInformation.SystemModel) }
 
-								htmlElement 'div' @{style="grid-column-start: 4; grid-column-end: 5; grid-row-start: 6; grid-row-end: 7; font-weight: bold;"} { "System Serialnumber" }
-								htmlElement 'div' @{style="grid-column-start: 5; grid-column-end: 6; grid-row-start: 6; grid-row-end: 7;"} { $($SystemInformation.HardwareInformation.SystemSerialnumber) }
+							htmlElement 'div' @{style = "grid-column-start: 4; grid-column-end: 5; grid-row-start: 6; grid-row-end: 7; font-weight: bold;" } { "System Serialnumber" }
+							htmlElement 'div' @{style = "grid-column-start: 5; grid-column-end: 6; grid-row-start: 6; grid-row-end: 7;" } { $($SystemInformation.HardwareInformation.SystemSerialnumber) }
 
-								htmlElement 'div' @{style="grid-column-start: 4; grid-column-end: 5; grid-row-start: 7; grid-row-end: 8; background-color: #efefef; font-weight: bold;"} { "BIOS Version" }
-								htmlElement 'div' @{style="grid-column-start: 5; grid-column-end: 6; grid-row-start: 7; grid-row-end: 8; background-color: #efefef;"} { $($SystemInformation.HardwareInformation.BIOSVersion) }
+							htmlElement 'div' @{style = "grid-column-start: 4; grid-column-end: 5; grid-row-start: 7; grid-row-end: 8; background-color: #efefef; font-weight: bold;" } { "BIOS Version" }
+							htmlElement 'div' @{style = "grid-column-start: 5; grid-column-end: 6; grid-row-start: 7; grid-row-end: 8; background-color: #efefef;" } { $($SystemInformation.HardwareInformation.BIOSVersion) }
 
-								htmlElement 'div' @{style="grid-column-start: 4; grid-column-end: 5; grid-row-start: 8; grid-row-end: 9; font-weight: bold;"} { "Free disk space (C:)" }
-								htmlElement 'div' @{style="grid-column-start: 5; grid-column-end: 6; grid-row-start: 8; grid-row-end: 9;"} { $($SystemInformation.HardwareInformation.FreeDiskSpace) }
+							htmlElement 'div' @{style = "grid-column-start: 4; grid-column-end: 5; grid-row-start: 8; grid-row-end: 9; font-weight: bold;" } { "Free disk space (C:)" }
+							htmlElement 'div' @{style = "grid-column-start: 5; grid-column-end: 6; grid-row-start: 8; grid-row-end: 9;" } { $($SystemInformation.HardwareInformation.FreeDiskSpace) }
 
-								htmlElement 'div' @{style="grid-column-start: 4; grid-column-end: 5; grid-row-start: 9; grid-row-end: 10; background-color: #efefef; font-weight: bold;"} { "Free physical memory" }
-								htmlElement 'div' @{style="grid-column-start: 5; grid-column-end: 6; grid-row-start: 9; grid-row-end: 10; background-color: #efefef;"} { $($SystemInformation.HardwareInformation.FreePhysicalMemory) }
-
-
+							htmlElement 'div' @{style = "grid-column-start: 4; grid-column-end: 5; grid-row-start: 9; grid-row-end: 10; background-color: #efefef; font-weight: bold;" } { "Free physical memory" }
+							htmlElement 'div' @{style = "grid-column-start: 5; grid-column-end: 6; grid-row-start: 9; grid-row-end: 10; background-color: #efefef;" } { $($SystemInformation.HardwareInformation.FreePhysicalMemory) }
 
 
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 2; grid-row-start: 3; grid-row-end: 4; background-color: #efefef; font-weight: bold;"} { "Hostname" }
-								htmlElement 'div' @{style="grid-column-start: 2; grid-column-end: 3; grid-row-start: 3; grid-row-end: 4; background-color: #efefef;"} { $($SystemInformation.SoftwareInformation.Hostname) }
 
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 2; grid-row-start: 4; grid-row-end: 5; font-weight: bold;"} { "System Uptime" }
-								htmlElement 'div' @{style="grid-column-start: 2; grid-column-end: 3; grid-row-start: 4; grid-row-end: 5;"} { $($SystemInformation.SoftwareInformation.SystemUptime) }
 
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 2; grid-row-start: 5; grid-row-end: 6; background-color: #efefef; font-weight: bold;"} { "Operating System" }
-								htmlElement 'div' @{style="grid-column-start: 2; grid-column-end: 3; grid-row-start: 5; grid-row-end: 6; background-color: #efefef;"} { $($SystemInformation.SoftwareInformation.OperatingSystem) }
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 2; grid-row-start: 3; grid-row-end: 4; background-color: #efefef; font-weight: bold;" } { "Hostname" }
+							htmlElement 'div' @{style = "grid-column-start: 2; grid-column-end: 3; grid-row-start: 3; grid-row-end: 4; background-color: #efefef;" } { $($SystemInformation.SoftwareInformation.Hostname) }
 
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 2; grid-row-start: 6; grid-row-end: 7; font-weight: bold;"} { "Build Number" }
-								htmlElement 'div' @{style="grid-column-start: 2; grid-column-end: 3; grid-row-start: 6; grid-row-end: 7;"} { $($SystemInformation.SoftwareInformation.BuildNumber) }
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 2; grid-row-start: 4; grid-row-end: 5; font-weight: bold;" } { "System Uptime" }
+							htmlElement 'div' @{style = "grid-column-start: 2; grid-column-end: 3; grid-row-start: 4; grid-row-end: 5;" } { $($SystemInformation.SoftwareInformation.SystemUptime) }
 
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 2; grid-row-start: 7; grid-row-end: 8; background-color: #efefef; font-weight: bold;"} { "OS Architecture" }
-								htmlElement 'div' @{style="grid-column-start: 2; grid-column-end: 3; grid-row-start: 7; grid-row-end: 8; background-color: #efefef;"} { $($SystemInformation.SoftwareInformation.OSArchitecture) }
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 2; grid-row-start: 5; grid-row-end: 6; background-color: #efefef; font-weight: bold;" } { "Operating System" }
+							htmlElement 'div' @{style = "grid-column-start: 2; grid-column-end: 3; grid-row-start: 5; grid-row-end: 6; background-color: #efefef;" } { $($SystemInformation.SoftwareInformation.OperatingSystem) }
 
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 2; grid-row-start: 8; grid-row-end: 9; font-weight: bold;"} { "License Status" }
-								htmlElement 'div' @{style="grid-column-start: 2; grid-column-end: 3; grid-row-start: 8; grid-row-end: 9;"} { $($SystemInformation.SoftwareInformation.LicenseStatus) }
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 2; grid-row-start: 6; grid-row-end: 7; font-weight: bold;" } { "Build Number" }
+							htmlElement 'div' @{style = "grid-column-start: 2; grid-column-end: 3; grid-row-start: 6; grid-row-end: 7;" } { $($SystemInformation.SoftwareInformation.BuildNumber) }
 
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 2; grid-row-start: 9; grid-row-end: 10; background-color: #efefef; font-weight: bold;"} { "Installation Language" }
-								htmlElement 'div' @{style="grid-column-start: 2; grid-column-end: 3; grid-row-start: 9; grid-row-end: 10; background-color: #efefef;"} { $($SystemInformation.SoftwareInformation.InstallationLanguage) }
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 2; grid-row-start: 7; grid-row-end: 8; background-color: #efefef; font-weight: bold;" } { "OS Architecture" }
+							htmlElement 'div' @{style = "grid-column-start: 2; grid-column-end: 3; grid-row-start: 7; grid-row-end: 8; background-color: #efefef;" } { $($SystemInformation.SoftwareInformation.OSArchitecture) }
 
-								htmlElement 'div' @{style="grid-column-start: 1; grid-column-end: 2; grid-row-start: 10; grid-row-end: 11; font-weight: bold;"} { "Domain role" }
-								htmlElement 'div' @{style="grid-column-start: 2; grid-column-end: 3; grid-row-start: 10; grid-row-end: 11;"} { $($SystemInformation.SoftwareInformation.DomainRole) }
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 2; grid-row-start: 8; grid-row-end: 9; font-weight: bold;" } { "License Status" }
+							htmlElement 'div' @{style = "grid-column-start: 2; grid-column-end: 3; grid-row-start: 8; grid-row-end: 9;" } { $($SystemInformation.SoftwareInformation.LicenseStatus) }
+
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 2; grid-row-start: 9; grid-row-end: 10; background-color: #efefef; font-weight: bold;" } { "Installation Language" }
+							htmlElement 'div' @{style = "grid-column-start: 2; grid-column-end: 3; grid-row-start: 9; grid-row-end: 10; background-color: #efefef;" } { $($SystemInformation.SoftwareInformation.InstallationLanguage) }
+
+							htmlElement 'div' @{style = "grid-column-start: 1; grid-column-end: 2; grid-row-start: 10; grid-row-end: 11; font-weight: bold;" } { "Domain role" }
+							htmlElement 'div' @{style = "grid-column-start: 2; grid-column-end: 3; grid-row-start: 10; grid-row-end: 11;" } { $($SystemInformation.SoftwareInformation.DomainRole) }
 						}
 						# htmlElement 'div' @{id="systemData"} {
 						# }
-						if([System.Environment]::OSVersion.Platform -ne 'Unix'){
-							htmlElement 'h2' @{} {"Table Of Contents"}
+						if ([System.Environment]::OSVersion.Platform -ne 'Unix') {
+							htmlElement 'h2' @{} { "Table Of Contents" }
 							htmlElement 'p' @{} { 'Use below links to jump to a specific report section.' }
 							htmlElement 'ul' @{} {
 								foreach ($section in $FoundationReport.Sections) { $section | Get-HtmlToc }
 							}
-							htmlElement 'h2' @{} {"Details"}
+							htmlElement 'h2' @{} { "Details" }
 							# Report Sections
 							foreach ($section in $FoundationReport.Sections) { $section | Get-HtmlReportSection }
 						}
 					}
 					
-					if($RiskScore){
+					if ($RiskScore) {
 						Write-Progress -Activity "Creating risk score  page" -Status "Progress:" -PercentComplete 63
 						htmlElement 'div' @{class = 'tabContent'; id = 'riskScore' } {
-							htmlElement 'h1'@{} {"Risk Score"}
-							htmlElement 'p'@{} {"The risk score provides a quick overview of how secure the system is configured. This is made up of the areas `"Severity`" and `"Quantity`". The higher risk is used as the overall risk."}
-							htmlElement 'h2' @{id = 'CurrentRiskScoreRS'} {"Current Risk Score of tested System: "}
+							htmlElement 'h1'@{} { "Risk Score" }
+							htmlElement 'p'@{} { "The risk score provides a quick overview of how secure the system is configured. This is made up of the areas `"Severity`" and `"Quantity`". The higher risk is used as the overall risk." }
+							htmlElement 'h2' @{id = 'CurrentRiskScoreRS' } { "Current Risk Score of tested System: " }
 	
-							htmlElement 'div' @{id ='riskMatrixContainer'}{
-								htmlElement 'div' @{id='dotRiskScoreTab'}{}
-								htmlElement 'div' @{id ='severity'} {
-									htmlElement 'p' @{id = 'severityArea'}{'Severity'}
+							htmlElement 'div' @{id = 'riskMatrixContainer' } {
+								htmlElement 'div' @{id = 'dotRiskScoreTab' } {}
+								htmlElement 'div' @{id = 'severity' } {
+									htmlElement 'p' @{id = 'severityArea' } { 'Severity' }
 								}
-								htmlElement 'div' @{id ='quantity'} {
-									htmlElement 'p' @{id = 'quantityArea'}{'Quantity'}
+								htmlElement 'div' @{id = 'quantity' } {
+									htmlElement 'p' @{id = 'quantityArea' } { 'Quantity' }
 								}
-								htmlElement 'div' @{id ='severityCritical'}{"Critical"}
-								htmlElement 'div' @{id ='severityHigh'}{"High"}
-								htmlElement 'div' @{id ='severityMedium'}{"Medium"}
-								htmlElement 'div' @{id ='severityLow'}{"Low"}
+								htmlElement 'div' @{id = 'severityCritical' } { "Critical" }
+								htmlElement 'div' @{id = 'severityHigh' } { "High" }
+								htmlElement 'div' @{id = 'severityMedium' } { "Medium" }
+								htmlElement 'div' @{id = 'severityLow' } { "Low" }
 	
-								htmlElement 'div' @{id ='quantityCritical'}{"Critical"}
-								htmlElement 'div' @{id ='quantityHigh'}{"High"}
-								htmlElement 'div' @{id ='quantityMedium'}{"Medium"}
-								htmlElement 'div' @{id ='quantityLow'}{"Low"}
+								htmlElement 'div' @{id = 'quantityCritical' } { "Critical" }
+								htmlElement 'div' @{id = 'quantityHigh' } { "High" }
+								htmlElement 'div' @{id = 'quantityMedium' } { "Medium" }
+								htmlElement 'div' @{id = 'quantityLow' } { "Low" }
 	
 								#colored areas
-								htmlElement 'div' @{id ='critical_low'}{}
-								htmlElement 'div' @{id ='high_low'}{}
-								htmlElement 'div' @{id ='medium_low'}{}
-								htmlElement 'div' @{id ='low_low'}{}
+								htmlElement 'div' @{id = 'critical_low' } {}
+								htmlElement 'div' @{id = 'high_low' } {}
+								htmlElement 'div' @{id = 'medium_low' } {}
+								htmlElement 'div' @{id = 'low_low' } {}
 	
-								htmlElement 'div' @{id ='critical_medium'}{}
-								htmlElement 'div' @{id ='high_medium'}{}
-								htmlElement 'div' @{id ='medium_medium'}{}
-								htmlElement 'div' @{id ='low_medium'}{}
+								htmlElement 'div' @{id = 'critical_medium' } {}
+								htmlElement 'div' @{id = 'high_medium' } {}
+								htmlElement 'div' @{id = 'medium_medium' } {}
+								htmlElement 'div' @{id = 'low_medium' } {}
 	
-								htmlElement 'div' @{id ='critical_high'}{}
-								htmlElement 'div' @{id ='high_high'}{}
-								htmlElement 'div' @{id ='medium_high'}{}
-								htmlElement 'div' @{id ='low_high'}{}
+								htmlElement 'div' @{id = 'critical_high' } {}
+								htmlElement 'div' @{id = 'high_high' } {}
+								htmlElement 'div' @{id = 'medium_high' } {}
+								htmlElement 'div' @{id = 'low_high' } {}
 	
-								htmlElement 'div' @{id ='critical_critical'}{}
-								htmlElement 'div' @{id ='high_critical'}{}
-								htmlElement 'div' @{id ='medium_critical'}{}
-								htmlElement 'div' @{id ='low_critical'}{}
+								htmlElement 'div' @{id = 'critical_critical' } {}
+								htmlElement 'div' @{id = 'high_critical' } {}
+								htmlElement 'div' @{id = 'medium_critical' } {}
+								htmlElement 'div' @{id = 'low_critical' } {}
 							}
 	
-							htmlElement 'div' @{id='calculationTables'} {
-								htmlElement 'h3' @{class = 'calculationTablesText'} {"Risk Score Calculation"}
-								htmlElement 'p' @{class = 'calculationTablesText'} {"Risk Score calculation is based on the quantitative amount of compliant rules and the severity of incompliant checks."}
-								htmlElement 'p' @{class = 'calculationTablesText'} {"Note: Quantity is calculated by dividing all compliant rules with the total number (minus none-compliant) of checks."}
-								htmlElement 'table' @{id='quantityTable'}{
-									htmlElement 'tr' @{}{
-										htmlElement 'th' @{}{'Compliance to Benchmarks (Quantity)'}
-										htmlElement 'th' @{}{'Risk Assessment'}
+							htmlElement 'div' @{id = 'calculationTables' } {
+								htmlElement 'h3' @{class = 'calculationTablesText' } { "Risk Score Calculation" }
+								htmlElement 'p' @{class = 'calculationTablesText' } { "Risk Score calculation is based on the quantitative amount of compliant rules and the severity of incompliant checks." }
+								htmlElement 'p' @{class = 'calculationTablesText' } { "Note: Quantity is calculated by dividing all compliant rules with the total number (minus none-compliant) of checks." }
+								htmlElement 'table' @{id = 'quantityTable' } {
+									htmlElement 'tr' @{} {
+										htmlElement 'th' @{} { 'Compliance to Benchmarks (Quantity)' }
+										htmlElement 'th' @{} { 'Risk Assessment' }
 									}
-									htmlElement 'tr' @{}{
-										htmlElement 'td' @{}{'More than 80%'}
-										htmlElement 'td' @{}{'Low'}
+									htmlElement 'tr' @{} {
+										htmlElement 'td' @{} { 'More than 80%' }
+										htmlElement 'td' @{} { 'Low' }
 									}
-									htmlElement 'tr' @{}{
-										htmlElement 'td' @{}{'Between 65% and 80%'}
-										htmlElement 'td' @{}{'Medium'}
+									htmlElement 'tr' @{} {
+										htmlElement 'td' @{} { 'Between 65% and 80%' }
+										htmlElement 'td' @{} { 'Medium' }
 									}
-									htmlElement 'tr' @{}{
-										htmlElement 'td' @{}{'Between 50% and 65%'}
-										htmlElement 'td' @{}{'High'}
+									htmlElement 'tr' @{} {
+										htmlElement 'td' @{} { 'Between 50% and 65%' }
+										htmlElement 'td' @{} { 'High' }
 									}
-									htmlElement 'tr' @{}{
-										htmlElement 'td' @{}{'Less than 50%'}
-										htmlElement 'td' @{}{'Critical'}
+									htmlElement 'tr' @{} {
+										htmlElement 'td' @{} { 'Less than 50%' }
+										htmlElement 'td' @{} { 'Critical' }
 									}
 								}
 		
-								htmlElement 'table' @{id='severityTable'}{
-									htmlElement 'tr' @{}{
-										htmlElement 'th' @{}{'Compliance to Benchmarks (Severity)'}
-										htmlElement 'th' @{}{'Risk Assessment'}
+								htmlElement 'table' @{id = 'severityTable' } {
+									htmlElement 'tr' @{} {
+										htmlElement 'th' @{} { 'Compliance to Benchmarks (Severity)' }
+										htmlElement 'th' @{} { 'Risk Assessment' }
 									}
-									htmlElement 'tr' @{}{
-										htmlElement 'td' @{}{'All critical settings compliant'}
-										htmlElement 'td' @{}{'Low'}
+									htmlElement 'tr' @{} {
+										htmlElement 'td' @{} { 'All critical settings compliant' }
+										htmlElement 'td' @{} { 'Low' }
 									}
-									htmlElement 'tr' @{}{
-										htmlElement 'td' @{}{'1 or more incompliant setting(s)'}
-										htmlElement 'td' @{}{'Critical'}
+									htmlElement 'tr' @{} {
+										htmlElement 'td' @{} { '1 or more incompliant setting(s)' }
+										htmlElement 'td' @{} { 'Critical' }
 									}
 								}
 							}
 	
 	
-							htmlElement 'div' @{id ="severityCompliance"} {
-								htmlElement 'h2' @{}{'Details'}
-								htmlElement 'p' @{id="complianceStatus"}{'Table Of Severity Rules'}
-								htmlElement 'span' @{class="sectionAction collapseButton"; id="severityComplianceCollapse"} {"-"}
-								htmlElement 'table' @{id = 'severityDetails'}{
-									htmlElement 'tr' @{}{
-										htmlElement 'th' @{}{'Id'}
-										htmlElement 'th' @{}{'Task'}
-										htmlElement 'th' @{}{'Status'}
-										htmlElement 'th' @{}{'Severity'}
+							htmlElement 'div' @{id = "severityCompliance" } {
+								htmlElement 'h2' @{} { 'Details' }
+								htmlElement 'p' @{id = "complianceStatus" } { 'Table Of Severity Rules' }
+								htmlElement 'span' @{class = "sectionAction collapseButton"; id = "severityComplianceCollapse" } { "-" }
+								htmlElement 'table' @{id = 'severityDetails' } {
+									htmlElement 'tr' @{} {
+										htmlElement 'th' @{} { 'Id' }
+										htmlElement 'th' @{} { 'Task' }
+										htmlElement 'th' @{} { 'Status' }
+										htmlElement 'th' @{} { 'Severity' }
 									}
-									foreach($info in $RSReport.RSSeverityReport.AuditInfos){
-										htmlElement 'tr' @{}{
-											htmlElement 'td' @{} {"$($info.Id)"}
-											htmlElement 'td' @{} {"$($info.Task)"}
+									foreach ($info in $RSReport.RSSeverityReport.AuditInfos) {
+										htmlElement 'tr' @{} {
+											htmlElement 'td' @{} { "$($info.Id)" }
+											htmlElement 'td' @{} { "$($info.Task)" }
 											htmlElement 'td' @{} {
-												if($info.Status -eq 'False'){
-													htmlElement 'span' @{class="severityResultFalse"}{
+												if ($info.Status -eq 'False') {
+													htmlElement 'span' @{class = "severityResultFalse" } {
 														"$($info.Status)"
 													}
 												}
-												elseif($info.Status -eq 'True'){
-													htmlElement 'span' @{class="severityResultTrue"}{
+												elseif ($info.Status -eq 'True') {
+													htmlElement 'span' @{class = "severityResultTrue" } {
 														"$($info.Status)"
 													}
 												}
-												elseif($info.Status -eq 'None'){
-													htmlElement 'span' @{class="severityResultNone"}{
+												elseif ($info.Status -eq 'None') {
+													htmlElement 'span' @{class = "severityResultNone" } {
 														"$($info.Status)"
 													}
 												}
-												elseif($info.Status -eq 'Warning'){
-													htmlElement 'span' @{class="severityResultWarning"}{
+												elseif ($info.Status -eq 'Warning') {
+													htmlElement 'span' @{class = "severityResultWarning" } {
 														"$($info.Status)"
 													}
 												}
-												elseif($info.Status -eq 'Error'){
-													htmlElement 'span' @{class="severityResultError"}{
+												elseif ($info.Status -eq 'Error') {
+													htmlElement 'span' @{class = "severityResultError" } {
 														"$($info.Status)"
 													}
 												}
 											}
 											htmlElement 'td' @{} {
-												htmlElement 'p' @{style="margin: 5px auto;"}{"Critical"}
+												htmlElement 'p' @{style = "margin: 5px auto;" } { "Critical" }
 											}
 										}
 									}
@@ -1712,93 +1712,93 @@ function Get-ATAPHtmlReport {
 						}
 					}
 
-					if($MITRE) {
-						if(Test-CompatibleMitreReport -Title $Title -os $os){
+					if ($MITRE) {
+						if (Test-CompatibleMitreReport -Title $Title -os $os) {
 							Write-Progress -Activity "Creating mitre heatmap page" -Status "Progress:" -PercentComplete 75
 							
 							$Mappings = $Sections | 
-							Where-Object { $_.Title -eq "CIS Benchmarks" -or $_.Title -eq "CIS Stand-alone Benchmarks"} | 
+							Where-Object { $_.Title -eq "CIS Benchmarks" -or $_.Title -eq "CIS Stand-alone Benchmarks" } | 
 							ForEach-Object { return $_.SubSections } | 
 							ForEach-Object { return $_.AuditInfos } | 
 							Merge-CisAuditsToMitreMap
 							
 							htmlElement 'div' @{class = 'tabContent'; id = 'MITRE' } {
-								htmlElement 'h1'@{} {"MITRE ATT&CK"}
-								htmlElement 'p'@{} {'To get a quick overview of how good your system is hardened in terms of the MITRE ATT&CK Framework we made a heatmap.'}
-								htmlElement 'p' @{id='Tip'} {'Tip: Hover over the MITRE IDs to get a quick information to each Technique'}
-								htmlElement 'h2'@{} {"Version of CIS in MITRE Mapping and tests"}
-								htmlElement 'p'@{} {$(Get-MitreMappingMetaData Version) + "."}
-								htmlElement 'p'@{} {"Based on: " + $(Get-MitreMappingMetaData BasedOn) + "."}
+								htmlElement 'h1'@{} { "MITRE ATT&CK" }
+								htmlElement 'p'@{} { 'To get a quick overview of how good your system is hardened in terms of the MITRE ATT&CK Framework we made a heatmap.' }
+								htmlElement 'p' @{id = 'Tip' } { 'Tip: Hover over the MITRE IDs to get a quick information to each Technique' }
+								htmlElement 'h2'@{} { "Version of CIS in MITRE Mapping and tests" }
+								htmlElement 'p'@{} { $(Get-MitreMappingMetaData Version) + "." }
+								htmlElement 'p'@{} { "Based on: " + $(Get-MitreMappingMetaData BasedOn) + "." }
 								$MitreMappingCompatible = Get-MitreMappingMetaData Compatible
-								if (-not $(Compare-EqualCISVersions -Title:$Title -ReportBasedOn:$BasedOn -MitreMappingCompatible:$MitreMappingCompatible)){
+								if (-not $(Compare-EqualCISVersions -Title:$Title -ReportBasedOn:$BasedOn -MitreMappingCompatible:$MitreMappingCompatible)) {
 									Write-Warning "The CIS version used for the MITRE mapping doesn't match with the CIS version used for the tests. The Mitre heatmap will still be generated but might contain false information."
-									htmlElement 'p'@{style = "font-size: 1.2em; color: red;"} {"The CIS version used for the MITRE mapping doesn't match with the CIS version used for the tests."}
+									htmlElement 'p'@{style = "font-size: 1.2em; color: red;" } { "The CIS version used for the MITRE mapping doesn't match with the CIS version used for the tests." }
 								}
-								htmlElement 'h2' @{} {'Explanation of the cell colors'}
+								htmlElement 'h2' @{} { 'Explanation of the cell colors' }
 
-								htmlElement 'div' @{class='square-container'}{
+								htmlElement 'div' @{class = 'square-container' } {
 									$color_S = Get-ColorValue 1 1
-									htmlElement 'div' @{class='square'; style="background: $color_S"} {} 
-									htmlElement 'div'@{} {'= 100% of the tests were successful, the system is protected in the best possible way'}
+									htmlElement 'div' @{class = 'square'; style = "background: $color_S" } {} 
+									htmlElement 'div'@{} { '= 100% of the tests were successful, the system is protected in the best possible way' }
 								}
 								
-								htmlElement 'div' @{class='square-container'}{
+								htmlElement 'div' @{class = 'square-container' } {
 									$color_F = Get-ColorValue 0 1
-									htmlElement 'div' @{class='square'; style="background: $color_F"} {}
-									htmlElement 'div'@{} {'= 0% of the tests were successful, consider looking into possibilities to harden your system regarding this tactic / technique'}
+									htmlElement 'div' @{class = 'square'; style = "background: $color_F" } {}
+									htmlElement 'div'@{} { '= 0% of the tests were successful, consider looking into possibilities to harden your system regarding this tactic / technique' }
 								}
 								
-								htmlElement 'div' @{class='square-container'}{
+								htmlElement 'div' @{class = 'square-container' } {
 									$color_S = Get-ColorValue 1 1
 									$color_F = Get-ColorValue 0 1
-									htmlElement 'div' @{class='square'; style="background: linear-gradient($color_S,$color_F)"} {}
-									htmlElement 'div'@{} {'= the color gradient moves in 10% steps. The greener the cell, the more tests were successful'}
+									htmlElement 'div' @{class = 'square'; style = "background: linear-gradient($color_S,$color_F)" } {}
+									htmlElement 'div'@{} { '= the color gradient moves in 10% steps. The greener the cell, the more tests were successful' }
 								}
 								
-								htmlElement 'div' @{class='square-container'}{
+								htmlElement 'div' @{class = 'square-container' } {
 									$color_E = Get-ColorValue 1 0
-									htmlElement 'div' @{class='square'; style="background: $color_E"} {}
-									htmlElement 'div'@{} {'= No tests available yet'}
+									htmlElement 'div' @{class = 'square'; style = "background: $color_E" } {}
+									htmlElement 'div'@{} { '= No tests available yet' }
 								}
 								
-								htmlElement 'h2' @{} {"Filters"}
+								htmlElement 'h2' @{} { "Filters" }
 
 								htmlElement 'label' @{} {
 									"Hide techniques that are performed outside of enterprise defenses and controls:"
-									htmlElement 'input' @{type = "checkbox"; id = "mitreFilterCheckbox"; onchange = "hideMitreTechniques(this, '.orgMeasure')"} {}
+									htmlElement 'input' @{type = "checkbox"; id = "mitreFilterCheckbox"; onchange = "hideMitreTechniques(this, '.orgMeasure')" } {}
 								}
 
 								htmlElement 'p' @{} {
 									htmlElement 'label' @{} {
 										"Hide techniques that cannot be easily mitigated with preventive controls:"
-										htmlElement 'input' @{type = "checkbox"; id = "noEasyMitigationCheckbox"; onchange = "hideMitreTechniques(this, '.noEasyMitigation')"} {}
+										htmlElement 'input' @{type = "checkbox"; id = "noEasyMitigationCheckbox"; onchange = "hideMitreTechniques(this, '.noEasyMitigation')" } {}
 									}
 								}
 
-								htmlElement 'p' @{}{
-									htmlElement 'label' @{}{
+								htmlElement 'p' @{} {
+									htmlElement 'label' @{} {
 										"Display only techniques related to the attack vector 'E-Mail'"
-										htmlElement 'input' @{type = "checkbox"; id = "mailFilterCheckbox"; onchange = "hideMitreTechniques(this, '.MITRETechnique:not(.mailVector)')"} {}
+										htmlElement 'input' @{type = "checkbox"; id = "mailFilterCheckbox"; onchange = "hideMitreTechniques(this, '.MITRETechnique:not(.mailVector)')" } {}
 									}
 								}
 
-								htmlElement 'h2' @{} {"Current ATT&CK heatmap on tested System"}
+								htmlElement 'h2' @{} { "Current ATT&CK heatmap on tested System" }
 
 								ConvertTo-HtmlTable $Mappings.map
 							}
 							htmlElement 'div' @{class = 'tabContent'; id = 'CISA' } {
-								htmlElement 'h1'@{} {"CISA Recommendations"}
+								htmlElement 'h1'@{} { "CISA Recommendations" }
 								htmlElement 'p' @{} {
 									"This table shows the top mitigations, that help against the most used attack techniques. 
 									Implementing these mitigations has the biggest impact on the overall security of the system. 
 									The table is based on the Information from CISAs " 
-									htmlElement 'a' @{href = "https://www.cisa.gov/sites/default/files/publications/RVA_INFOGRAPHIC_508c.pdf"; target="_blank"} {
+									htmlElement 'a' @{href = "https://www.cisa.gov/sites/default/files/publications/RVA_INFOGRAPHIC_508c.pdf"; target = "_blank" } {
 										"Risk and Vulnerability Assessment (RVA) mapped to the MITRE ATT&CK Framework."
 									}
 									"Additionally, the table is sorted based on the number of audits that failed but could be prevented by a given mitigation."
 								}
-								htmlElement 'p'@{} {'The table presents three columns: The first column lists the mitigations recommended by CISA, the second column contains the corresponding mitigation IDs from MITRE, and the third column shows the techniques that have at least one CISA-recommended mitigation and have experienced at least one test failure.'}
-								htmlElement 'h1'@{} {'Mitigation for top techniques'}
+								htmlElement 'p'@{} { 'The table presents three columns: The first column lists the mitigations recommended by CISA, the second column contains the corresponding mitigation IDs from MITRE, and the third column shows the techniques that have at least one CISA-recommended mitigation and have experienced at least one test failure.' }
+								htmlElement 'h1'@{} { 'Mitigation for top techniques' }
 
 								$CISAMitigations = $Mappings.Map | Get-MitigationsFromFailedTests
 								ConvertTo-HtmlCISA $CISAMitigations
@@ -1810,42 +1810,53 @@ function Get-ATAPHtmlReport {
 					}
 
 					Write-Progress -Activity "Creating references page" -Status "Progress:" -PercentComplete 83
-					htmlElement 'div' @{class = 'tabContent'; id = 'references'}{
-						htmlElement 'h1' @{} {"About us"}
-						htmlElement 'h2' @{} {"What makes FB Pro GmbH different"}
-						htmlElement 'h3' @{} {"What do we want?"}
-						htmlElement 'p' @{} {"Protect our customers' data and information - and thus implicitly contribute to the safe use of the Internet."}
-						htmlElement 'h3' @{} {"How do we achieve this? "}
-						htmlElement 'p' @{} {"We implement in-depth IT security for our customers. And we always do so in a state-of-the-art, efficient and automated manner."}
-						htmlElement 'div'@{id="referencesContainer"}{
-							htmlElement 'div'@{}{
-								htmlElement 'h2' @{} {"Check out our hardening solution"}
-								htmlElement 'a' @{href="https://www.fb-pro.com/enforce-administrator-product/"}{
-									htmlElement 'img' @{height="200px"; width="125px"; src=$Settings.EA}{}
-								}
+					htmlElement 'div' @{class = 'tabContent'; id = 'references' } {
+						htmlElement 'h1' @{} { "About us" }
+						htmlElement 'h2' @{} { "What makes FB Pro GmbH different" }
+						htmlElement 'a' @{href = "https://github.com/fbprogmbh/Hardening-Audit-Tool-AuditTAP-Audit-Test-Automation-Package"; target = "_blank" } {
+							htmlElement 'button' @{id = "githubButton" } { "Visit our GitHub Page" }
+						}
 
+						htmlElement 'div' @{class = "columns-container" } {
+							htmlElement 'div' @{class = "left-column" } {
+								htmlElement 'h3' @{} { "What do we want?" }
+								htmlElement 'p' @{} { "Protect our customers' data and information - and thus implicitly contribute to the safe use of the Internet." }
+								htmlElement 'h3' @{} { "How do we achieve this? " }
+								htmlElement 'p' @{} { "We implement in-depth IT security for our customers. And we always do so in a state-of-the-art, efficient and automated manner." }
+
+								htmlElement 'div' @{class = 'video-container' } {
+									htmlElement 'h3' @{} { "What is system hardening?" }
+									htmlElement 'iframe' @{
+										src             = "https://www.youtube-nocookie.com/embed/jbI19FwnBKY?si=_p7JoaNAkxRB0HIL"
+										title           = "YouTube video player"
+										frameborder     = "0"
+										allow           = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+										referrerpolicy  = "strict-origin-when-cross-origin"
+										allowfullscreen = ""
+									} {}
+								}
 							}
 
-							htmlElement 'div'@{}{
-								htmlElement 'h2' @{} {"Check out our Audit Report Tool here"}
-								htmlElement 'a' @{href="https://www.fb-pro.com/audit-tap-product-information/"}{
-									htmlElement 'img' @{height="200px"; width="125px"; src=$Settings.ATAP}{}		
+							htmlElement 'div' @{class = "right-column" } {
+								htmlElement 'div' @{} {
+									htmlElement 'h3' @{} { "Contact us:" }
+									htmlElement 'p' @{} { "FB Pro GmbH" }
+									htmlElement 'p' @{} { "Fon: +49 6727 7559039" }
+									htmlElement 'p' @{} { "Web: "; htmlElement 'a' @{href = "https://www.fb-pro.com/" } { "https://www.fb-pro.com/" } }
+									htmlElement 'p' @{} { "Mail: "; htmlElement 'a' @{href = "mailto:info@fb-pro.com" } { "info@fb-pro.com" } }
+									htmlElement 'h3' @{} { "Can we help you? " }
+									htmlElement 'p' @{} { "Do you need support with system hardening?" }
+									htmlElement 'p' @{} { "Our team of system hardening experts will be happy to provide you with advice and support." }
+									htmlElement 'p' @{} { "Contact us for a no-obligation inquiry!" }
 								}
-							}				
-						}
-						htmlElement 'footer' @{} {
-							htmlElement 'h3' @{} {"Contact us:"}
-							htmlElement 'p' @{} {"FB Pro GmbH"}
-							htmlElement 'p' @{} {"Fon: +49 6727 7559039"}
-							htmlElement 'p' @{} {"Web: ";htmlElement 'a' @{href="https://www.fb-pro.com/"} {"https://www.fb-pro.com/"}}
-							htmlElement 'p' @{} {"Mail: "; htmlElement 'a' @{href="mailto:info@fb-pro.com"} {"info@fb-pro.com"}}
 
-							htmlElement 'h3' @{} {"Can we help you? "}
-							htmlElement 'p' @{} {"Do you need support with system hardening?"}
-							htmlElement 'p' @{} {"Our team of system hardening experts will be happy to provide you with advice and support."}
-							htmlElement 'p' @{} {"Contact us for a no-obligation inquiry!"}
-							htmlElement 'a' @{href="mailto:info@fb-pro.com"} {
-								htmlElement 'button' @{id="contactUsButton"} {"CONTACT US!"}
+								# Bereich "Check out our hardening solution"
+								htmlElement 'div'@{id = "referencesContainer" } {
+									htmlElement 'h2' @{} { "Check out our hardening solution" }
+									htmlElement 'a' @{href = "https://www.fb-pro.com/enforce-administrator-product/"; target = "_blank"; style = "display: block; margin: auto;" } {
+										htmlElement 'img' @{height = "200px"; width = "125px"; src = $Settings.EA } {}
+									}
+								}
 							}
 						}
 					}
@@ -1914,17 +1925,18 @@ function Get-ATAPHtmlReport {
 		"
 	
 		#If Path exists to a folder exists
-		if($Path -match ".html"){
+		if ($Path -match ".html") {
 			$name = Split-Path -Path $Path -Leaf
 			$Path = Split-Path -Path $Path -Parent
 			New-Item -Path $Path -Name $name -ItemType File -Value $html -Force 
 
-		} else {
-			$Title = $Title -replace " Audit Report",""
+		}
+		else {
+			$Title = $Title -replace " Audit Report", ""
 			$auditReport += "$($Title)_$(Get-Date -UFormat %Y%m%d_%H%M%S).html"
 			New-Item -Path $Path -Name $auditReport -ItemType File -Value $html -Force 
 		}
-		if([System.Environment]::OSVersion.Platform -eq 'Unix'){
+		if ([System.Environment]::OSVersion.Platform -eq 'Unix') {
 			# $shellPath = $Path"/"$name
 			# bash -c "chmod o+r $($shellPath)"
 			# Write-Host $shellPath
