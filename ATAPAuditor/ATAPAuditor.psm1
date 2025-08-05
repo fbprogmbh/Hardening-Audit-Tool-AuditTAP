@@ -399,9 +399,6 @@ function checkReportNameWithOSSystem {
 			"Microsoft Windows Server 2022" { 
 				return returnSuitingReportName -ReportName $ReportName -OsName $osName -OsType $osType
 			}
-			"Microsoft Windows Server 2022" { 
-				return returnSuitingReportName -ReportName $ReportName -OsName $osName -OsType $osType
-			}
 			"Microsoft Windows Server 2019" { 
 				return returnSuitingReportName -ReportName $ReportName -OsName $osName -OsType $osType 
 			}
