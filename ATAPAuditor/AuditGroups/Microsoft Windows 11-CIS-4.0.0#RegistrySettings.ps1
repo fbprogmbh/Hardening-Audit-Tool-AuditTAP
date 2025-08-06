@@ -743,35 +743,35 @@ $windefrunning = CheckWindefRunning
             }
         }
         catch {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
-                -Name "RequireSecuritySignature" `
-            | Select-Object -ExpandProperty "RequireSecuritySignature"
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
+                    -Name "RequireSecuritySignature" `
+                | Select-Object -ExpandProperty "RequireSecuritySignature"
 
-            if ($regValue -ne 1) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
+                if ($regValue -ne 1) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: 1"
+                        Status  = "False"
+                    }
                 }
-            }
                 return @{
                     Message = "Compliant"
                     Status  = "True"
                 }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
+            catch [System.Management.Automation.PSArgumentException] {
+                return @{
+                    Message = "Registry value not found."
+                    Status  = "False"
+                }
             }
-        }
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
+            }
         }
     }
 }
@@ -792,35 +792,35 @@ $windefrunning = CheckWindefRunning
             }
         }
         catch {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
-                -Name "EnableSecuritySignature" `
-            | Select-Object -ExpandProperty "EnableSecuritySignature"
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" `
+                    -Name "EnableSecuritySignature" `
+                | Select-Object -ExpandProperty "EnableSecuritySignature"
 
-            if ($regValue -ne 1) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
-                    Status  = "False"
+                if ($regValue -ne 1) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: 1"
+                        Status  = "False"
+                    }
                 }
-            }
                 return @{
                     Message = "Compliant"
                     Status  = "True"
                 }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
+            catch [System.Management.Automation.PSArgumentException] {
+                return @{
+                    Message = "Registry value not found."
+                    Status  = "False"
+                }
             }
-        }
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
+            }
         }
     }
 }
@@ -913,29 +913,29 @@ $windefrunning = CheckWindefRunning
             }
         }
         catch {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
-                -Name "RequireSecuritySignature" `
-            | Select-Object -ExpandProperty "RequireSecuritySignature"
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
+                    -Name "RequireSecuritySignature" `
+                | Select-Object -ExpandProperty "RequireSecuritySignature"
 
                 return @{
                     Message = "Registry value is '$regValue'. Get-SMBServerConfiguration failed, resorted to checking registry, which might not be 100% accurate. See <a href=`"https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/overview-server-message-block-signing#policy-locations-for-smb-signing`">here</a> and <a href=`"https://techcommunity.microsoft.com/t5/storage-at-microsoft/smb-signing-required-by-default-in-windows-insider/ba-p/3831704`">here</a>"
                     Status  = "Warning"
+                }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.PSArgumentException] {
+                return @{
+                    Message = "Registry value not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
         }
     }
 }
@@ -956,29 +956,29 @@ $windefrunning = CheckWindefRunning
             }
         }
         catch {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
-                -Name "EnableSecuritySignature" `
-            | Select-Object -ExpandProperty "EnableSecuritySignature"
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" `
+                    -Name "EnableSecuritySignature" `
+                | Select-Object -ExpandProperty "EnableSecuritySignature"
 
                 return @{
                     Message = "Registry value is '$regValue'. Get-SMBServerConfiguration failed, resorted to checking registry, which might not be 100% accurate. See <a href=`"https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/overview-server-message-block-signing#policy-locations-for-smb-signing`">here</a> and <a href=`"https://techcommunity.microsoft.com/t5/storage-at-microsoft/smb-signing-required-by-default-in-windows-insider/ba-p/3831704`">here</a>"
                     Status  = "Warning"
+                }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.PSArgumentException] {
+                return @{
+                    Message = "Registry value not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
         }
     }
 }
@@ -3809,8 +3809,8 @@ $windefrunning = CheckWindefRunning
     }
 }
 [AuditTest] @{
-    Id   = "9.1.1"
-    Task = "(L1) Ensure 'Windows Firewall: Domain: Firewall state' is set to 'On (recommended)'"
+    Id          = "9.1.1"
+    Task        = "(L1) Ensure 'Windows Firewall: Domain: Firewall state' is set to 'On (recommended)'"
     Constraints = @(
         @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
     )
@@ -3828,8 +3828,8 @@ $windefrunning = CheckWindefRunning
     }
 }
 [AuditTest] @{
-    Id   = "9.1.2"
-    Task = "(L1) Ensure 'Windows Firewall: Domain: Inbound connections' is set to 'Block (default)'"
+    Id          = "9.1.2"
+    Task        = "(L1) Ensure 'Windows Firewall: Domain: Inbound connections' is set to 'Block (default)'"
     Constraints = @(
         @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
     )
@@ -3847,8 +3847,8 @@ $windefrunning = CheckWindefRunning
     }
 }
 [AuditTest] @{
-    Id   = "9.1.3"
-    Task = "(L1) Ensure 'Windows Firewall: Domain: Settings: Display a notification' is set to 'No'"
+    Id          = "9.1.3"
+    Task        = "(L1) Ensure 'Windows Firewall: Domain: Settings: Display a notification' is set to 'No'"
     Constraints = @(
         @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
     )
@@ -3866,8 +3866,8 @@ $windefrunning = CheckWindefRunning
     }
 }
 [AuditTest] @{
-    Id   = "9.1.4"
-    Task = "(L1) Ensure 'Windows Firewall: Domain: Logging: Name' is set to '%SystemRoot%\System32\logfiles\firewall\domainfw.log'"
+    Id          = "9.1.4"
+    Task        = "(L1) Ensure 'Windows Firewall: Domain: Logging: Name' is set to '%SystemRoot%\System32\logfiles\firewall\domainfw.log'"
     Constraints = @(
         @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
     )
@@ -3885,8 +3885,8 @@ $windefrunning = CheckWindefRunning
     }
 }
 [AuditTest] @{
-    Id   = "9.1.5"
-    Task = "(L1) Ensure 'Windows Firewall: Domain: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
+    Id          = "9.1.5"
+    Task        = "(L1) Ensure 'Windows Firewall: Domain: Logging: Size limit (KB)' is set to '16,384 KB or greater'"
     Constraints = @(
         @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
     )
@@ -3904,8 +3904,8 @@ $windefrunning = CheckWindefRunning
     }
 }
 [AuditTest] @{
-    Id   = "9.1.6"
-    Task = "(L1) Ensure 'Windows Firewall: Domain: Logging: Log dropped packets' is set to 'Yes'"
+    Id          = "9.1.6"
+    Task        = "(L1) Ensure 'Windows Firewall: Domain: Logging: Log dropped packets' is set to 'Yes'"
     Constraints = @(
         @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
     )
@@ -3923,8 +3923,8 @@ $windefrunning = CheckWindefRunning
     }
 }
 [AuditTest] @{
-    Id   = "9.1.7"
-    Task = "(L1) Ensure 'Windows Firewall: Domain: Logging: Log successful connections' is set to 'Yes'"
+    Id          = "9.1.7"
+    Task        = "(L1) Ensure 'Windows Firewall: Domain: Logging: Log successful connections' is set to 'Yes'"
     Constraints = @(
         @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
     )
@@ -13702,12 +13702,40 @@ $windefrunning = CheckWindefRunning
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office communication application from creating child processes'"
     Test = {
         try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "26190899-1602-49e8-8b27-eb1d0a1ce869" `
-            | Select-Object -ExpandProperty "26190899-1602-49e8-8b27-eb1d0a1ce869"
+            if ($avstatus) {
 
-            if ($regValue -ne "1") {
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "3b576869-a4ec-4529-8536-b80a7769e899"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "3b576869-a4ec-4529-8536-b80a7769e899"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
@@ -13726,7 +13754,7 @@ $windefrunning = CheckWindefRunning
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -13738,12 +13766,40 @@ $windefrunning = CheckWindefRunning
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from creating executable content'"
     Test = {
         try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "3b576869-a4ec-4529-8536-b80a7769e899" `
-            | Select-Object -ExpandProperty "3b576869-a4ec-4529-8536-b80a7769e899"
+            if ($avstatus) {
 
-            if ($regValue -ne "1") {
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "3b576869-a4ec-4529-8536-b80a7769e899"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "3b576869-a4ec-4529-8536-b80a7769e899"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
@@ -13762,7 +13818,7 @@ $windefrunning = CheckWindefRunning
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -13954,7 +14010,7 @@ $windefrunning = CheckWindefRunning
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -14146,7 +14202,7 @@ $windefrunning = CheckWindefRunning
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -14338,7 +14394,7 @@ $windefrunning = CheckWindefRunning
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
