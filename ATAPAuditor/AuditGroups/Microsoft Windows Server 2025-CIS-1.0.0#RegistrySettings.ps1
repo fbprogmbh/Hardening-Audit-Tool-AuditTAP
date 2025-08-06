@@ -4,7 +4,6 @@ $RootPath = Split-Path $RootPath -Parent
 $avstatus = CheckForActiveAV
 $windefrunning = CheckWindefRunning
 . "$RootPath\Helpers\Firewall.ps1"
-# 2025
 [AuditTest] @{
     Id   = "1.1.6"
     Task = "(L1) Ensure 'Relax minimum password length limits' is set to 'Enabled'"
@@ -10541,12 +10540,15 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office communication application from creating child processes'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
-            }
+            }                  
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
@@ -10590,7 +10592,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -10602,12 +10604,15 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from creating executable content'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
-            }
+            }                  
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
@@ -10651,7 +10656,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -10663,17 +10668,20 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block abuse of exploited vulnerable signed drivers'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
-            }
+            }                  
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value = "56a863a9-875e-4185-98a7-b882c64b5ce5"
- 
+
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -10681,10 +10689,10 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
                     -Name $Value `
                 | Select-Object -ExpandProperty $Value
             }
- 
+
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "56a863a9-875e-4185-98a7-b882c64b5ce5"
- 
+
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
             if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
@@ -10724,12 +10732,15 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block execution of potentially obfuscated scripts'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
-            }
+            }                  
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
@@ -10785,16 +10796,19 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from injecting code into other processes'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
-            }
+            }                  
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
-            $Value = "5beb7efe-fd9a-4556-801d-275e5ffc04cc" 
+            $Value = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
@@ -10805,7 +10819,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
-            $Value2 = "5beb7efe-fd9a-4556-801d-275e5ffc04cc" 
+            $Value2 = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
             if ($asrTest2) {
@@ -10834,7 +10848,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -10846,12 +10860,15 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Adobe Reader from creating child processes'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
-            }
+            }                  
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
@@ -10907,12 +10924,15 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block untrusted and unsigned processes that run from USB'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
-            }
+            }                  
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
@@ -10968,12 +10988,15 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block JavaScript or VBScript from launching downloaded executable content'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
-            }
+            }                  
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
@@ -11017,7 +11040,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -11029,12 +11052,40 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from creating child processes'"
     Test = {
         try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "d4f940ab-401b-4efc-aadc-ad5f3c50688a" `
-            | Select-Object -ExpandProperty "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+            if ($avstatus) {
 
-            if ($regValue -ne "1") {
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
@@ -11065,10 +11116,13 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block executable content from email client and webmail'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
             }
             $regValue = 0;
@@ -11126,12 +11180,15 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block persistence through WMI event subscription'"
     Test = {
         try {
-            if ((-not $windefrunning)) {
-                return @{
-                    Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status  = "None"
+            if ($avstatus) {
+
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
                 }
-            }
+            }                  
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
