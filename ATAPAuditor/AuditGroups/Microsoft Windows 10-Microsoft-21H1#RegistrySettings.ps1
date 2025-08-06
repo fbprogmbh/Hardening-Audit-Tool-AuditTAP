@@ -574,7 +574,7 @@ $hyperVStatus = CheckHyperVStatus
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
-            $Value = "26190899-1602-49e8-8b27-eb1d0a1ce869"
+            $Value = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
@@ -585,7 +585,7 @@ $hyperVStatus = CheckHyperVStatus
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
-            $Value2 = "26190899-1602-49e8-8b27-eb1d0a1ce869"
+            $Value2 = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
             if ($asrTest2) {
@@ -614,7 +614,7 @@ $hyperVStatus = CheckHyperVStatus
                 Status  = "False"
             }
         }
-        
+
         return @{
             Message = "Compliant"
             Status  = "True"
