@@ -1811,21 +1811,31 @@ function Get-ATAPHtmlReport {
 
 					Write-Progress -Activity "Creating references page" -Status "Progress:" -PercentComplete 83
 					htmlElement 'div' @{class = 'tabContent'; id = 'references' } {
+
+						# Überschrift
 						htmlElement 'h1' @{} { "About us" }
 						htmlElement 'h2' @{} { "What makes FB Pro GmbH different" }
-						htmlElement 'a' @{href = "https://github.com/fbprogmbh/Hardening-Audit-Tool-AuditTAP-Audit-Test-Automation-Package"; target = "_blank" } {
-							htmlElement 'button' @{id = "githubButton" } { "Visit our GitHub Page" }
-						}
 
-						htmlElement 'div' @{class = "columns-container" } {
-							htmlElement 'div' @{class = "left-column" } {
+						# Flex-Container
+						htmlElement 'div' @{class = 'columns-container' } {
+
+							# LEFT COLUMN
+							htmlElement 'div' @{class = 'left-column' } {
+
 								htmlElement 'h3' @{} { "What do we want?" }
-								htmlElement 'p' @{} { "Protect our customers' data and information - and thus implicitly contribute to the safe use of the Internet." }
-								htmlElement 'h3' @{} { "How do we achieve this? " }
-								htmlElement 'p' @{} { "We implement in-depth IT security for our customers. And we always do so in a state-of-the-art, efficient and automated manner." }
+								htmlElement 'p' @{} {
+									"Protect our customers' data and information – and thus implicitly contribute to the safe use of the Internet."
+								}
 
-								htmlElement 'div' @{class = 'video-container' } {
-									htmlElement 'h3' @{} { "What is system hardening?" }
+								htmlElement 'h3' @{} { "How do we achieve this?" }
+								htmlElement 'p' @{} {
+									"We implement in-depth IT security for our customers. And we always do so in a state-of-the-art, efficient and automated manner."
+								}
+
+								htmlElement 'h3' @{} { "What is system hardening?" }
+
+								# Video korrekt skaliert
+								htmlElement 'div' @{class = 'video-wrapper' } {
 									htmlElement 'iframe' @{
 										src             = "https://www.youtube-nocookie.com/embed/jbI19FwnBKY?si=_p7JoaNAkxRB0HIL"
 										title           = "YouTube video player"
@@ -1837,29 +1847,56 @@ function Get-ATAPHtmlReport {
 								}
 							}
 
-							htmlElement 'div' @{class = "right-column" } {
-								htmlElement 'div' @{} {
+							# RIGHT COLUMN
+							htmlElement 'div' @{class = 'right-column' } {
+
+								htmlElement 'div' @{class = 'product-block' } {
+									htmlElement 'h2' @{} { "Check out our hardening solution" }
+									htmlElement 'a' @{href = "https://www.fb-pro.com/enforce-administrator-product/"; target = "_blank"} {
+										htmlElement 'img' @{
+											src   = $Settings.EA
+											alt   = "Enforce Admin"
+											style = "width: 125px; height: 200px; object-fit: contain; display: block; margin: 10px auto;"
+										} {}
+									}
+								}
+
+								htmlElement 'div' @{class = 'contact-block' } {
 									htmlElement 'h3' @{} { "Contact us:" }
 									htmlElement 'p' @{} { "FB Pro GmbH" }
 									htmlElement 'p' @{} { "Fon: +49 6727 7559039" }
-									htmlElement 'p' @{} { "Web: "; htmlElement 'a' @{href = "https://www.fb-pro.com/" } { "https://www.fb-pro.com/" } }
-									htmlElement 'p' @{} { "Mail: "; htmlElement 'a' @{href = "mailto:info@fb-pro.com" } { "info@fb-pro.com" } }
-									htmlElement 'h3' @{} { "Can we help you? " }
-									htmlElement 'p' @{} { "Do you need support with system hardening?" }
-									htmlElement 'p' @{} { "Our team of system hardening experts will be happy to provide you with advice and support." }
-									htmlElement 'p' @{} { "Contact us for a no-obligation inquiry!" }
-								}
+									htmlElement 'p' @{} {
+										"Web: "; htmlElement 'a' @{href = "https://www.fb-pro.com/" } { "https://www.fb-pro.com/" }
+									}
+									htmlElement 'p' @{} {
+										"Mail: "; htmlElement 'a' @{href = "mailto:info@fb-pro.com" } { "info@fb-pro.com" }
+									}
 
-								# Bereich "Check out our hardening solution"
-								htmlElement 'div'@{id = "referencesContainer" } {
-									htmlElement 'h2' @{} { "Check out our hardening solution" }
-									htmlElement 'a' @{href = "https://www.fb-pro.com/enforce-administrator-product/"; target = "_blank"; style = "display: block; margin: auto;" } {
-										htmlElement 'img' @{height = "200px"; width = "125px"; src = $Settings.EA } {}
+									htmlElement 'h3' @{} { "Can we help you?" }
+									htmlElement 'p' @{} { "Do you need support with system hardening?" }
+									htmlElement 'p' @{} {
+										"Our team of system hardening experts will be happy to assist you. Contact us for a no-obligation inquiry!"
+									}
+
+									htmlElement 'a' @{
+										href   = "https://github.com/fbprogmbh/Hardening-Audit-Tool-AuditTAP-Audit-Test-Automation-Package"
+										target = "_blank"
+										class  = "github-link"
+									} {
+										htmlElement 'div' @{class = "github-button" } {
+											"AuditTAP  on GitHub"
+										}
+									}
+
+
+									htmlElement 'a' @{href = "mailto:info@fb-pro.com" } {
+										htmlElement 'button' @{id = "contactUsButton" } { "CONTACT US!" }
 									}
 								}
 							}
 						}
 					}
+
 
 
 				}
