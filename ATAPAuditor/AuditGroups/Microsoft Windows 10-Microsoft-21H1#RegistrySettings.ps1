@@ -574,7 +574,7 @@ $hyperVStatus = CheckHyperVStatus
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
-            $Value = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+            $Value = "3b576869-a4ec-4529-8536-b80a7769e899"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
@@ -585,7 +585,7 @@ $hyperVStatus = CheckHyperVStatus
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
-            $Value2 = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+            $Value2 = "3b576869-a4ec-4529-8536-b80a7769e899"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
             if ($asrTest2) {
@@ -742,7 +742,7 @@ $hyperVStatus = CheckHyperVStatus
                 Status  = "False"
             }
         }
-        
+
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -762,7 +762,7 @@ $hyperVStatus = CheckHyperVStatus
                         Status  = "None"
                     }
                 }
-            }  
+            }
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
@@ -826,7 +826,7 @@ $hyperVStatus = CheckHyperVStatus
                         Status  = "None"
                     }
                 }
-            }                  
+            }
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
@@ -870,7 +870,7 @@ $hyperVStatus = CheckHyperVStatus
                 Status  = "False"
             }
         }
-        
+
         return @{
             Message = "Compliant"
             Status  = "True"
