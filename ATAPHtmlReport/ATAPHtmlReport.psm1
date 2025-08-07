@@ -1866,7 +1866,7 @@ function Get-ATAPHtmlReport {
 									htmlElement 'p' @{} { "FB Pro GmbH" }
 									htmlElement 'p' @{} { "Fon: +49 6727 7559039" }
 									htmlElement 'p' @{} {
-										"Web: "; htmlElement 'a' @{href = "https://www.fb-pro.com/" } { "https://www.fb-pro.com/" }
+										"Web: "; htmlElement 'a' @{href = "https://www.fb-pro.com/" ; target="_blank"} { "https://www.fb-pro.com/" }
 									}
 									htmlElement 'p' @{} {
 										"Mail: "; htmlElement 'a' @{href = "mailto:info@fb-pro.com" } { "info@fb-pro.com" }
