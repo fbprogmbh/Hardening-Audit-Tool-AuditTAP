@@ -1814,13 +1814,13 @@ function Get-ATAPHtmlReport {
 
 						# Überschrift
 						htmlElement 'h1' @{} { "About us" }
-						htmlElement 'h2' @{} { "What makes FB Pro GmbH different" }
-
+						
 						# Flex-Container
 						htmlElement 'div' @{class = 'columns-container' } {
-
+							
 							# LEFT COLUMN
 							htmlElement 'div' @{class = 'left-column' } {
+								htmlElement 'h2' @{} { "What makes FB Pro GmbH different" }
 
 								htmlElement 'h3' @{} { "What do we want?" }
 								htmlElement 'p' @{} {
@@ -1852,7 +1852,7 @@ function Get-ATAPHtmlReport {
 
 								htmlElement 'div' @{class = 'product-block' } {
 									htmlElement 'h2' @{} { "Check out our hardening solution" }
-									htmlElement 'a' @{href = "https://www.fb-pro.com/enforce-administrator-product/"; target = "_blank"} {
+									htmlElement 'a' @{href = "https://www.fb-pro.com/enforce-administrator-product/"; target = "_blank" } {
 										htmlElement 'img' @{
 											src   = $Settings.EA
 											alt   = "Enforce Admin"
@@ -1866,7 +1866,7 @@ function Get-ATAPHtmlReport {
 									htmlElement 'p' @{} { "FB Pro GmbH" }
 									htmlElement 'p' @{} { "Fon: +49 6727 7559039" }
 									htmlElement 'p' @{} {
-										"Web: "; htmlElement 'a' @{href = "https://www.fb-pro.com/" ; target="_blank"} { "https://www.fb-pro.com/" }
+										"Web: "; htmlElement 'a' @{href = "https://www.fb-pro.com/" ; target = "_blank" } { "https://www.fb-pro.com/" }
 									}
 									htmlElement 'p' @{} {
 										"Mail: "; htmlElement 'a' @{href = "mailto:info@fb-pro.com" } { "info@fb-pro.com" }

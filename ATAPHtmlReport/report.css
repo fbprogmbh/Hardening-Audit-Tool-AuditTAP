@@ -1066,7 +1066,7 @@ button {
 	width: 100%;
 	max-width: 480px;
 	aspect-ratio: 16 / 9;
-	margin: 20px auto;
+	margin: 20px 0;
 }
 
 .video-wrapper iframe {
