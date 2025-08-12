@@ -1879,12 +1879,12 @@ function Get-ATAPHtmlReport {
 								htmlElement 'div' @{class = 'contact-block' } {
 									htmlElement 'h3' @{} { "Contact us:" }
 									htmlElement 'p' @{} { "FB Pro GmbH" }
-									htmlElement 'p' @{} { "$phoneIcon +49 6727 7559039" }
+									htmlElement 'p' @{} { htmlElement 'span' @{style = "display:inline-block; vertical-align:middle; position:relative; top:2px; margin-right:5px;" } { $phoneIcon }; "+49 6727 7559039" }
 									htmlElement 'p' @{} {
-										"$webIcon "; htmlElement 'a' @{href = "https://www.fb-pro.com/" ; target = "_blank" } { "https://www.fb-pro.com/" }
+										htmlElement 'span' @{style = "display:inline-block; vertical-align:middle; position:relative; top:2px; margin-right:5px;" } { $webIcon }; htmlElement 'a' @{href = "https://www.fb-pro.com/" ; target = "_blank" } { "https://www.fb-pro.com/" }
 									}
 									htmlElement 'p' @{} {
-										"$mailIcon "; htmlElement 'a' @{href = "mailto:info@fb-pro.com" } { "info@fb-pro.com" }
+										htmlElement 'span' @{style = "display:inline-block; vertical-align:middle; position:relative; top:2px; margin-right:5px;" } { $mailIcon }; htmlElement 'a' @{href = "mailto:info@fb-pro.com" } { "info@fb-pro.com" }
 									}
 
 									htmlElement 'h3' @{} { "Can we help you?" }
