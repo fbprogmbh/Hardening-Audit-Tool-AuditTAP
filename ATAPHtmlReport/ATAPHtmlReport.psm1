@@ -1,4 +1,4 @@
-﻿<#
+<#
 BSD 3-Clause License
 Copyright (c) 2023, FB Pro GmbH
 All rights reserved.

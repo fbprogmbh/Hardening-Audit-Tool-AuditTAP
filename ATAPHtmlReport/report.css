@@ -28,8 +28,15 @@ html body div.header.content {
 }
 
 #companyName {
-	font-size: 2.25rem;
+	font-size: 2.5rem;
 	color: #A81A1B !important;
+	font-weight: 900;
+}
+
+#companySlogan {
+	font-size: 1rem;
+	color: #666666;
+	font-weight: 400;
 }
 
 #summary>h1:nth-child(1) {
@@ -43,7 +50,7 @@ html body div.header.content {
 
 #logo {
 	order: 2;
-	padding-top: 8px;
+	padding-top: px;
 }
 
 #reportInformation>ul:nth-child(2) {
@@ -51,7 +58,7 @@ html body div.header.content {
 }
 
 .header {
-	background-color: #c6c9cc;
+	background-color: #d2d2d2;
 }
 
 #reportInformation>ul:nth-child(2)>li:nth-child(1) {
