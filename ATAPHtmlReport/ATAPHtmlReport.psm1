@@ -1889,23 +1889,18 @@ function Get-ATAPHtmlReport {
 
 									htmlElement 'h3' @{} { "Can we help you?" }
 									htmlElement 'p' @{} { "Do you need support with system hardening?" }
-									htmlElement 'p' @{} {
-										"Our team of system hardening experts will be happy to assist you. Contact us for a no-obligation inquiry!"
-									}
+									htmlElement 'p' @{} { "Our team of system hardening experts will be happy to assist you." }
+									htmlElement 'p' @{} { " Contact us for a no-obligation inquiry!" }
 
-									htmlElement 'a' @{
-										href   = "https://github.com/fbprogmbh/Hardening-Audit-Tool-AuditTAP-Audit-Test-Automation-Package"
-										target = "_blank"
-										class  = "github-link"
-									} {
-										htmlElement 'div' @{class = "github-button" } {
-											"AuditTAP  on GitHub"
+									htmlElement 'a' @{href = "https://github.com/fbprogmbh/Hardening-Audit-Tool-AuditTAP-Audit-Test-Automation-Package"; target = "_blank" } {
+										htmlElement 'button' @{id = "githubButton"; class = "button-base" } {
+											"AuditTAP on GitHub"
 										}
 									}
 
 
 									htmlElement 'a' @{href = "mailto:info@fb-pro.com" } {
-										htmlElement 'button' @{id = "contactUsButton" } { "CONTACT US!" }
+										htmlElement 'button' @{id = "contactUsButton"; class = "button-base" } { "CONTACT US!" }
 									}
 								}
 							}

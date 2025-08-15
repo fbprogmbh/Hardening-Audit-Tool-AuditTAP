@@ -1000,18 +1000,6 @@ button {
 	margin-right: 5%;
 }
 
-#contactUsButton {
-	background-color: #A81A1B;
-	border-radius: 4px;
-	padding: 20px;
-	color: #fff;
-	box-shadow: 2px 2px rgba(0, 0, 0, 0.5);
-	display: inline-block;
-	margin-top: 20px;
-	text-transform: uppercase;
-	border-style: none;
-	cursor: pointer;
-}
 
 #hashTableDiv {
 	float: right;
@@ -1084,26 +1072,25 @@ button {
 	background-color: #f8f8f8;
 	padding: 15px;
 	border-radius: 8px;
-	box-shadow: 0 0 5px rgba(0,0,0,0.1);
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.github-link {
-	text-decoration: none;
-}
-
-.github-button {
-	background-color: #24292e; /* GitHub Dunkelgrau */
-	color: white;
-	padding: 10px 20px;
-	border-radius: 5px;
+.button-base {
+	border-radius: 4px;
+	padding: 20px;
+	color: #fff;
+	box-shadow: 2px 2px rgba(0, 0, 0, 0.5);
 	display: inline-block;
-	font-weight: bold;
-	text-align: center;
-	margin: 10px auto;
-	transition: background-color 0.3s ease;
+	border-style: none;
+	cursor: pointer;
+	margin-top: 20px;
+	height: 60px;
 }
 
-.github-button:hover {
-	background-color: #444c56;
-	cursor: pointer;
+#contactUsButton {
+	background-color: #A81A1B;
+}
+
+#githubButton {
+	background-color: #24292e;
 }
