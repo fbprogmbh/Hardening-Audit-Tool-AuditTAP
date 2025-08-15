@@ -377,6 +377,7 @@ function checkReportNameWithOSSystem {
 		}
 		function Get-OsType {		
 			switch ($ReportName) {
+				"Microsoft Windows Server 2025" { return "Microsoft Windows Server 2025" }
 				"Microsoft Windows Server 2022" { return "Microsoft Windows Server 2022" }
 				"Microsoft Windows Server 2019" { return "Microsoft Windows Server 2019" }
 				"Microsoft Windows Server 2016" { return "Microsoft Windows Server 2016" }
@@ -392,6 +393,9 @@ function checkReportNameWithOSSystem {
 		}
 		$osType = Get-OsType
 		switch ($ReportName) {
+			"Microsoft Windows Server 2025" { 
+				return returnSuitingReportName -ReportName $ReportName -OsName $osName -OsType $osType
+			}
 			"Microsoft Windows Server 2022" { 
 				return returnSuitingReportName -ReportName $ReportName -OsName $osName -OsType $osType
 			}

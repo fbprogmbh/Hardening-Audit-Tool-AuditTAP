@@ -3544,7 +3544,7 @@ $windefrunning = CheckWindefRunning
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\W32Time\TimeProviders	pClient" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\W32Time\TimeProviders\NtpClient" `
                 -Name "Enabled" `
                 | Select-Object -ExpandProperty "Enabled"
         
@@ -3580,7 +3580,7 @@ $windefrunning = CheckWindefRunning
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\W32Time\TimeProviders	pServer" `
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\W32Time\TimeProviders\NtpServer" `
                 -Name "Enabled" `
                 | Select-Object -ExpandProperty "Enabled"
         
