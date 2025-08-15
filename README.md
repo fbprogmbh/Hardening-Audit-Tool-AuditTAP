@@ -224,6 +224,7 @@ Microsoft Office 2016 PowerPoint | V1R1 | - | - | - | -
 Microsoft Office 2016 SkypeForBusiness | V1R1 | - | - | - | -
 Microsoft Office 2016 Word | V1R1 | - | - | - | -
 Microsoft Office 2016 | V1R1, V1R2 | 1.1.0 | - | - | -
+Microsoft Office Enterprise<br><sub>for Office 2016, 2019, 2021 and 365 | - | 1.2.0 | - | - | -
 Microsoft SQL Server 2016 | - | 1.3.0 | - | - | -
 
 The report *Microsoft Office 2016* aggregates the results of all *Microsoft Office 2016 \<Product>* reports.  
@@ -250,6 +251,7 @@ Please check the [FAQ-section](https://github.com/fbprogmbh/Audit-Test-Automatio
 * Center for Internet Security: https://www.cisecurity.org/
 * DISA STIGs: https://public.cyber.mil/stigs/
 * Microsoft Security baselines: https://techcommunity.microsoft.com/t5/microsoft-security-baselines/bg-p/Microsoft-Security-Baselines
+
 
 
 
