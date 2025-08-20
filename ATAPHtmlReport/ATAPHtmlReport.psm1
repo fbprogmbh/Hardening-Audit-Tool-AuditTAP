@@ -1839,7 +1839,7 @@ function Get-ATAPHtmlReport {
 
 								htmlElement 'h3' @{} { "What do we want?" }
 								htmlElement 'p' @{} {
-									"Protect our customers' data and information – and thus implicitly contribute to the safe use of the Internet."
+									"Protect our customers' data and information - and thus implicitly contribute to the safe use of the Internet."
 								}
 
 								htmlElement 'h3' @{} { "How do we achieve this?" }
