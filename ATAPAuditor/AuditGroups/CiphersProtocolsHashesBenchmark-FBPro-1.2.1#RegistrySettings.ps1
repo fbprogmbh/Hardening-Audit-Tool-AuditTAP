@@ -23,7 +23,7 @@ $listOfInsecureCipherSuites = getListOfInsecureCipherSuites
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status = "True"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
@@ -59,7 +59,7 @@ $listOfInsecureCipherSuites = getListOfInsecureCipherSuites
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status = "True"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
@@ -95,7 +95,7 @@ $listOfInsecureCipherSuites = getListOfInsecureCipherSuites
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status = "True"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
@@ -131,7 +131,7 @@ $listOfInsecureCipherSuites = getListOfInsecureCipherSuites
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status = "True"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
@@ -210,7 +210,7 @@ $listOfInsecureCipherSuites = getListOfInsecureCipherSuites
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status = "True"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
@@ -253,7 +253,7 @@ $listOfInsecureCipherSuites = getListOfInsecureCipherSuites
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status = "True"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
@@ -296,7 +296,7 @@ $listOfInsecureCipherSuites = getListOfInsecureCipherSuites
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status = "True"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {

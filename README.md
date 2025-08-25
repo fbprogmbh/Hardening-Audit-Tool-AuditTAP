@@ -188,11 +188,12 @@ Microsoft Windows 10 GDPR | - | - | 16082019 | V1.1 | -
 Microsoft Windows 10 BSI | - | - | - | SiSyPHuS 1.3 | -
 Microsoft Windows 10 Stand-alone | - | Stand-alone 2.0.0 | - | SiSyPHuS 1.3 (Stand-alone) | -
 Microsoft Windows 11 Stand-alone | - | Stand-alone 2.0.0 | - | SiSyPHuS 1.3 (Stand-alone) | -
-Microsoft Windows 11 | - | 3.0.0 | 22H2 | SiSyPHuS 1.3 | -
+Microsoft Windows 11 | - | 4.0.0 | 22H2 | SiSyPHuS 1.3 | -
 Microsoft Windows Server 2012 (R2) | V2R19 | 3.0.0 | - | - | -
 Microsoft Windows Server 2016 | V1R12 | 3.0.0 | FINAL | - | -
 Microsoft Windows Server 2019 | V1R5 | 3.0.0 | FINAL | - | -
 Microsoft Windows Server 2022 | V1R1 | 3.0.0 | FINAL | - | -
+Microsoft Windows Server 2025 | V1R1 | 1.0.0 | FINAL | - | -
 
 The report *Microsoft Windows 10 BSI* aggregates the results of all *BSI recommendations for Microsoft Windows 10* reports.
 
@@ -223,6 +224,7 @@ Microsoft Office 2016 PowerPoint | V1R1 | - | - | - | -
 Microsoft Office 2016 SkypeForBusiness | V1R1 | - | - | - | -
 Microsoft Office 2016 Word | V1R1 | - | - | - | -
 Microsoft Office 2016 | V1R1, V1R2 | 1.1.0 | - | - | -
+Microsoft Office Enterprise<br><sub>for Office 2016, 2019, 2021 and 365 | - | 1.2.0 | - | - | -
 Microsoft SQL Server 2016 | - | 1.3.0 | - | - | -
 
 The report *Microsoft Office 2016* aggregates the results of all *Microsoft Office 2016 \<Product>* reports.  
@@ -249,6 +251,7 @@ Please check the [FAQ-section](https://github.com/fbprogmbh/Audit-Test-Automatio
 * Center for Internet Security: https://www.cisecurity.org/
 * DISA STIGs: https://public.cyber.mil/stigs/
 * Microsoft Security baselines: https://techcommunity.microsoft.com/t5/microsoft-security-baselines/bg-p/Microsoft-Security-Baselines
+
 
 
 
