@@ -1,72 +1,136 @@
-﻿[AuditTest] @{
+﻿# Office root folder
+$officePaths = @(
+    "C:\Program Files\Microsoft Office\root\Office16",
+    "C:\Program Files (x86)\Microsoft Office\root\Office16"
+
+    
+    # Office 2016 (MSI)
+    "C:\Program Files\Microsoft Office\Office16",
+    "C:\Program Files (x86)\Microsoft Office\Office16"
+)
+
+# Mapping of applications to exe names
+$exeMap = @{
+    "Groove"              = "GROOVE.EXE"
+    "Excel"               = "EXCEL.EXE"
+    "Publisher"           = "MSPUB.EXE"
+    "PowerPoint"          = "POWERPNT.EXE"
+    "PowerPoint Viewer"   = "PPTVIEW.EXE"
+    "Project"             = "WINPROJ.EXE"
+    "Word"                = "WINWORD.EXE"
+    "Outlook"             = "OUTLOOK.EXE"
+    "SharePoint Designer" = "SPDESIGN.EXE"
+    "Expression Web"      = "EXPRWD.EXE"
+    "Access"              = "MSACCESS.EXE"
+    "OneNote"             = "ONENOTE.EXE"
+    "MS Script Editor"    = "MSE7.EXE"
+    "Visio"               = "VISIO.EXE"
+    
+}
+$installedOfficeApps = @{}
+
+foreach ($app in $exeMap.Keys) {
+    foreach ($path in $officePaths) {
+        $exePath = Join-Path $path $exeMap[$app]
+        if (Test-Path $exePath) {
+            $installedOfficeApps[$app] = $true
+            Write-Output "Found $app at $exePath"
+            break
+        }
+    }
+    if (-not $installedOfficeApps.ContainsKey($app)) {
+        $installedOfficeApps[$app] = $false
+        Write-Output "$app NOT found."
+    }
+}
+
+[AuditTest] @{
     Id   = "1.1.4.1.1 A"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (groove.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "groove.exe" `
-            | Select-Object -ExpandProperty "groove.exe"
-
-            if (($regValue -ne 1)) {
+        # new logic: if app not installed, skip test -> test score None and will not affect overall score
+        if (-not $installedOfficeApps["Groove"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "groove.exe" `
+                | Select-Object -ExpandProperty "groove.exe"
+            
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
+        
             return @{
-                Message = "Registry key not found."
-                Status  = "False"
+                Message = "Compliant"
+                Status  = "True"
             }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
         }
     }
 }
+
 [AuditTest] @{
     Id   = "1.1.4.1.1 B"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (excel.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "excel.exe" `
-            | Select-Object -ExpandProperty "excel.exe"
+        if (-not $installedOfficeApps["Excel"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "excel.exe" `
+                | Select-Object -ExpandProperty "excel.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -74,35 +138,43 @@
     Id   = "1.1.4.1.1 C"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (mspub.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "mspub.exe" `
-            | Select-Object -ExpandProperty "mspub.exe"
-
-            if (($regValue -ne 1)) {
+        if (-not $installedOfficeApps["Publisher"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "mspub.exe" `
+                | Select-Object -ExpandProperty "mspub.exe"
+                
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -110,35 +182,43 @@
     Id   = "1.1.4.1.1 D"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (powerpnt.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "powerpnt.exe" `
-            | Select-Object -ExpandProperty "powerpnt.exe"
-
-            if (($regValue -ne 1)) {
+        if (-not $installedOfficeApps["PowerPoint"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "powerpnt.exe" `
+                | Select-Object -ExpandProperty "powerpnt.exe"
+                
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
+        
             return @{
-                Message = "Registry key not found."
-                Status  = "False"
+                Message = "Compliant"
+                Status  = "True"
             }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
         }
     }
 }
@@ -146,35 +226,43 @@
     Id   = "1.1.4.1.1 E"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (pptview.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "pptview.exe" `
-            | Select-Object -ExpandProperty "pptview.exe"
-
-            if (($regValue -ne 1)) {
+        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "pptview.exe" `
+                | Select-Object -ExpandProperty "pptview.exe"
+            
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
+        
             return @{
-                Message = "Registry key not found."
-                Status  = "False"
+                Message = "Compliant"
+                Status  = "True"
             }
-        }
-
-        return @{
-            Message = "Compliant"
-            Status  = "True"
         }
     }
 }
@@ -182,35 +270,43 @@
     Id   = "1.1.4.1.1 F"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (visio.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "visio.exe" `
-            | Select-Object -ExpandProperty "visio.exe"
+        if (-not $installedOfficeApps["Visio"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "visio.exe" `
+                | Select-Object -ExpandProperty "visio.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -218,35 +314,43 @@
     Id   = "1.1.4.1.1 G"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (winproj.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "winproj.exe" `
-            | Select-Object -ExpandProperty "winproj.exe"
-
-            if (($regValue -ne 1)) {
+        if (-not $installedOfficeApps["Project"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "winproj.exe" `
+                | Select-Object -ExpandProperty "winproj.exe"
+                
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -254,35 +358,43 @@
     Id   = "1.1.4.1.1 H"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (winword.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "winword.exe" `
-            | Select-Object -ExpandProperty "winword.exe"
-
-            if (($regValue -ne 1)) {
+        if (-not $installedOfficeApps["Word"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "winword.exe" `
+                | Select-Object -ExpandProperty "winword.exe"
+                
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -290,35 +402,43 @@
     Id   = "1.1.4.1.1 I"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (outlook.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "outlook.exe" `
-            | Select-Object -ExpandProperty "outlook.exe"
+        if (-not $installedOfficeApps["Outlook"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "outlook.exe" `
+                | Select-Object -ExpandProperty "outlook.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -326,35 +446,43 @@
     Id   = "1.1.4.1.1 J"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (spDesign.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "spDesign.exe" `
-            | Select-Object -ExpandProperty "spDesign.exe"
+        if (-not $installedOfficeApps["SharePoint Designer"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "spDesign.exe" `
+                | Select-Object -ExpandProperty "spDesign.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -362,35 +490,43 @@
     Id   = "1.1.4.1.1 K"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (exprwd.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "exprwd.exe" `
-            | Select-Object -ExpandProperty "exprwd.exe"
+        if (-not $installedOfficeApps["Expression Web"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "exprwd.exe" `
+                | Select-Object -ExpandProperty "exprwd.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -398,35 +534,43 @@
     Id   = "1.1.4.1.1 L"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (msaccess.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "msaccess.exe" `
-            | Select-Object -ExpandProperty "msaccess.exe"
+        if (-not $installedOfficeApps["Access"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "msaccess.exe" `
+                | Select-Object -ExpandProperty "msaccess.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -434,35 +578,43 @@
     Id   = "1.1.4.1.1 M"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (onent.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "onent.exe" `
-            | Select-Object -ExpandProperty "onent.exe"
+        if (-not $installedOfficeApps["OneNote"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "onent.exe" `
+                | Select-Object -ExpandProperty "onent.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -470,35 +622,43 @@
     Id   = "1.1.4.1.1 N"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (mse7.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
-                -Name "mse7.exe" `
-            | Select-Object -ExpandProperty "mse7.exe"
+        if (-not $installedOfficeApps["MS Script Editor"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_ADDON_MANAGEMENT" `
+                    -Name "mse7.exe" `
+                | Select-Object -ExpandProperty "mse7.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -506,35 +666,43 @@
     Id   = "1.1.4.1.2 A"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (groove.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_SAFE_BINDTOOBJECT" `
-                -Name "groove.exe" `
-            | Select-Object -ExpandProperty "groove.exe"
+        if (-not $installedOfficeApps["Groove"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_SAFE_BINDTOOBJECT" `
+                    -Name "groove.exe" `
+                | Select-Object -ExpandProperty "groove.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -542,35 +710,43 @@
     Id   = "1.1.4.1.2 B"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (excel.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_SAFE_BINDTOOBJECT" `
-                -Name "excel.exe" `
-            | Select-Object -ExpandProperty "excel.exe"
+        if (-not $installedOfficeApps["Excel"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_SAFE_BINDTOOBJECT" `
+                    -Name "excel.exe" `
+                | Select-Object -ExpandProperty "excel.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
