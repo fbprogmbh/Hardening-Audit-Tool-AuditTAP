@@ -1,7 +1,6 @@
 ﻿$RootPath = Split-Path $MyInvocation.MyCommand.Path -Parent
 $RootPath = Split-Path $RootPath -Parent
 . "$RootPath\Helpers\AuditGroupFunctions.ps1"
-$avstatus = CheckForActiveAV
 $windefrunning = CheckWindefRunning
 . "$RootPath\Helpers\Firewall.ps1"
 # 2025
