@@ -1,11 +1,19 @@
 ﻿# Office root folder
 $officePaths = @(
+    # Office 365 / 2019 / 2021 (the standard install paths)
     "C:\Program Files\Microsoft Office\root\Office16",
     "C:\Program Files (x86)\Microsoft Office\root\Office16"
     
     # Office 2016 (MSI)
     "C:\Program Files\Microsoft Office\Office16",
-    "C:\Program Files (x86)\Microsoft Office\Office16"
+    "C:\Program Files (x86)\Microsoft Office\Office16",
+
+    # Office 2016 (x32 MSI on x64 OS)
+    "C:\Program Files (x86)\Microsoft Office\root\Office16",
+    "C:\Program Files (x86)\Microsoft Office\Office16\",
+    
+    # Office 2016 (x64 MSI on x64 OS)
+    "C:\Program Files\Microsoft Office\Office16\"
 )
 
 # Mapping of applications to exe names
