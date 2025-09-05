@@ -11,7 +11,7 @@ $windefrunning = CheckWindefRunning
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" ` 
-                -Name "LocalAccountTokenFilterPolicy" `
+            -Name "LocalAccountTokenFilterPolicy" `
             | Select-Object -ExpandProperty "LocalAccountTokenFilterPolicy"
         
             if ($regValue -ne 0) {
@@ -2783,7 +2783,7 @@ $windefrunning = CheckWindefRunning
     }
 }
 [AuditTest] @{
-    Id   = "70 A"
+    Id   = "70"
     Task = "(HD) Ensure 'Turn off Windows Error Reporting' is set to 'Enabled'. (Disabled)"
     Test = {
         try {
@@ -2812,42 +2812,6 @@ $windefrunning = CheckWindefRunning
             }
         }
         
-        return @{
-            Message = "Compliant"
-            Status  = "True"
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "70 B"
-    Task = "(HD) Ensure 'Turn off Windows Error Reporting' is set to 'Enabled'. (DoReport)"
-    Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" `
-                -Name "DoReport" `
-            | Select-Object -ExpandProperty "DoReport"
-
-            if ($regValue -ne 0) {
-                return @{
-                    Message = "Registry value is '$regValue'. Expected: 0"
-                    Status  = "False"
-                }
-            }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
-            }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
-
         return @{
             Message = "Compliant"
             Status  = "True"
