@@ -218,12 +218,6 @@ Mozilla Firefox | V4R24 | 1.0.0 | - | - | -
 Microsoft Edge | - | 2.0.0 | 117 | - | -
 Microsoft Internet Explorer 11 | V1R16 | 1.0.0 | 2004 | - | -
 Microsoft IIS10 | - | 1.1.1 | - | - | -
-Microsoft Office 2016 Excel | V1R2 | - | - | - | -
-Microsoft Office 2016 Outlook | V1R2 | - | - | - | -
-Microsoft Office 2016 PowerPoint | V1R1 | - | - | - | -
-Microsoft Office 2016 SkypeForBusiness | V1R1 | - | - | - | -
-Microsoft Office 2016 Word | V1R1 | - | - | - | -
-Microsoft Office 2016 | V1R1, V1R2 | 1.1.0 | - | - | -
 Microsoft Office Enterprise<br><sub>for Office 2016, 2019, 2021 and 365 | - | 1.2.0 | - | - | -
 Microsoft SQL Server 2016 | - | 1.3.0 | - | - | -
 
