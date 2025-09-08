@@ -10852,35 +10852,48 @@ else {
     Id   = "1.1.5.1"
     Task = "(L1) Ensure 'Enable Automatic Updates' is set to Enabled"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\software\policies\microsoft\office\16.0\common\officeupdate" `
-                -Name "enableautomaticupdates" `
-            | Select-Object -ExpandProperty "enableautomaticupdates"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 1)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\software\policies\microsoft\office\16.0\common\officeupdate" `
+                    -Name "enableautomaticupdates" `
+                | Select-Object -ExpandProperty "enableautomaticupdates"
+
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -10888,35 +10901,48 @@ else {
     Id   = "1.1.5.2"
     Task = "(L1) Ensure 'Hide Option to Enable or Disable Updates' is set to Enabled"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\software\policies\microsoft\office\16.0\common\officeupdate" `
-                -Name "hideenabledisableupdates" `
-            | Select-Object -ExpandProperty "hideenabledisableupdates"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 1)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\software\policies\microsoft\office\16.0\common\officeupdate" `
+                    -Name "hideenabledisableupdates" `
+                | Select-Object -ExpandProperty "hideenabledisableupdates"
+
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -10924,35 +10950,48 @@ else {
     Id   = "1.3.1 A"
     Task = "(L1) Ensure 'Block Flash activation in Office documents' is set to 'Enabled: Block all activation'"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\office\Common\COM Compatibility" `
-                -Name "Comment" `
-            | Select-Object -ExpandProperty "Comment"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if ($regValue -ne "Block all Flash activation") {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\office\Common\COM Compatibility" `
+                    -Name "Comment" `
+                | Select-Object -ExpandProperty "Comment"
+
+                if ($regValue -ne "Block all Flash activation") {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: Block all Flash activation"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: Block all Flash activation"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -10960,35 +10999,48 @@ else {
     Id   = "1.3.1 B"
     Task = "(L1) Ensure 'Block Flash activation in Office documents' is set to 'Enabled: Block all activation' (ActivationFilterOverride)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\Common\COM Compatibility\{D27CDB6E-AE6D-11CF-96B8-444553540000}" `
-                -Name "ActivationFilterOverride" `
-            | Select-Object -ExpandProperty "ActivationFilterOverride"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 0)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\Common\COM Compatibility\{D27CDB6E-AE6D-11CF-96B8-444553540000}" `
+                    -Name "ActivationFilterOverride" `
+                | Select-Object -ExpandProperty "ActivationFilterOverride"
+
+                if (($regValue -ne 0)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 0"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -10996,35 +11048,48 @@ else {
     Id   = "1.3.1 C"
     Task = "(L1) Ensure 'Block Flash activation in Office documents' is set to 'Enabled: Block all activation' (Compatibility Flags)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\Common\COM Compatibility\{D27CDB6E-AE6D-11CF-96B8-444553540000}" `
-                -Name "Compatibility Flags" `
-            | Select-Object -ExpandProperty "Compatibility Flags"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 1024)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\Common\COM Compatibility\{D27CDB6E-AE6D-11CF-96B8-444553540000}" `
+                    -Name "Compatibility Flags" `
+                | Select-Object -ExpandProperty "Compatibility Flags"
+
+                if (($regValue -ne 1024)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1024"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1024"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -11032,35 +11097,48 @@ else {
     Id   = "1.3.1 D"
     Task = "(L1) Ensure 'Block Flash activation in Office documents' is set to 'Enabled: Block all activation' (ActivationFilterOverride)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\Common\COM Compatibility\{D27CDB70-AE6D-11CF-96B8-444553540000}" `
-                -Name "ActivationFilterOverride" `
-            | Select-Object -ExpandProperty "ActivationFilterOverride"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 0)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\Common\COM Compatibility\{D27CDB70-AE6D-11CF-96B8-444553540000}" `
+                    -Name "ActivationFilterOverride" `
+                | Select-Object -ExpandProperty "ActivationFilterOverride"
+
+                if (($regValue -ne 0)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 0"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -11068,35 +11146,48 @@ else {
     Id   = "1.3.1 E"
     Task = "(L1) Ensure 'Block Flash activation in Office documents' is set to 'Enabled: Block all activation' (Compatibility Flags)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\Common\COM Compatibility\{D27CDB70-AE6D-11CF-96B8-444553540000}" `
-                -Name "Compatibility Flags" `
-            | Select-Object -ExpandProperty "Compatibility Flags"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 1024)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\Common\COM Compatibility\{D27CDB70-AE6D-11CF-96B8-444553540000}" `
+                    -Name "Compatibility Flags" `
+                | Select-Object -ExpandProperty "Compatibility Flags"
+
+                if (($regValue -ne 1024)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1024"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1024"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -11104,35 +11195,48 @@ else {
     Id   = "1.3.1 F"
     Task = "(L1) Ensure 'Block Flash activation in Office documents' is set to 'Enabled: Block all activation' (ActivationFilterOverride, WOW6432)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Office\Common\COM Compatibility\{D27CDB6E-AE6D-11CF-96B8-444553540000}" `
-                -Name "ActivationFilterOverride" `
-            | Select-Object -ExpandProperty "ActivationFilterOverride"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 0)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Office\Common\COM Compatibility\{D27CDB6E-AE6D-11CF-96B8-444553540000}" `
+                    -Name "ActivationFilterOverride" `
+                | Select-Object -ExpandProperty "ActivationFilterOverride"
+
+                if (($regValue -ne 0)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 0"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -11140,35 +11244,48 @@ else {
     Id   = "1.3.1 G"
     Task = "(L1) Ensure 'Block Flash activation in Office documents' is set to 'Enabled: Block all activation' (Compatibility Flags, WOW6432)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Office\Common\COM Compatibility\{D27CDB6E-AE6D-11CF-96B8-444553540000}" `
-                -Name "Compatibility Flags" `
-            | Select-Object -ExpandProperty "Compatibility Flags"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 1024)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Office\Common\COM Compatibility\{D27CDB6E-AE6D-11CF-96B8-444553540000}" `
+                    -Name "Compatibility Flags" `
+                | Select-Object -ExpandProperty "Compatibility Flags"
+
+                if (($regValue -ne 1024)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1024"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1024"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -11176,35 +11293,48 @@ else {
     Id   = "1.3.1 H"
     Task = "(L1) Ensure 'Block Flash activation in Office documents' is set to 'Enabled: Block all activation' (ActivationFilterOverride, WOW6432)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Office\Common\COM Compatibility\{D27CDB70-AE6D-11CF-96B8-444553540000}" `
-                -Name "ActivationFilterOverride" `
-            | Select-Object -ExpandProperty "ActivationFilterOverride"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 0)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Office\Common\COM Compatibility\{D27CDB70-AE6D-11CF-96B8-444553540000}" `
+                    -Name "ActivationFilterOverride" `
+                | Select-Object -ExpandProperty "ActivationFilterOverride"
+
+                if (($regValue -ne 0)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 0"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 0"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
@@ -11212,35 +11342,48 @@ else {
     Id   = "1.3.1 I"
     Task = "(L1) Ensure 'Block Flash activation in Office documents' is set to 'Enabled: Block all activation' (Compatibility Flags, WOW6432)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Office\Common\COM Compatibility\{D27CDB70-AE6D-11CF-96B8-444553540000}" `
-                -Name "Compatibility Flags" `
-            | Select-Object -ExpandProperty "Compatibility Flags"
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
 
-            if (($regValue -ne 1024)) {
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Office\Common\COM Compatibility\{D27CDB70-AE6D-11CF-96B8-444553540000}" `
+                    -Name "Compatibility Flags" `
+                | Select-Object -ExpandProperty "Compatibility Flags"
+
+                if (($regValue -ne 1024)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1024"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1024"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
