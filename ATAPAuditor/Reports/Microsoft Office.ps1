@@ -1,5 +1,5 @@
 [Report] @{
-    Title      = 'Microsoft Office Enterprise Audit Report'
+    Title      = 'Microsoft Office Audit Report'
     ModuleName = 'ATAPAuditor'
     BasedOn    = @(
         'CIS Microsoft Office Enterprise Benchmark, Version: 1.2.0, Date: 2024-07-19'
