@@ -4933,8 +4933,8 @@ else {
             try {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_MIME_SNIFFING" `
-                    -Name "pptview" `
-                | Select-Object -ExpandProperty "pptview"
+                    -Name "pptview.exe" `
+                | Select-Object -ExpandProperty "pptview.exe"
 
                 if (($regValue -ne 1)) {
                     return @{
