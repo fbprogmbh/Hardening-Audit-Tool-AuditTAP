@@ -13690,7 +13690,7 @@ $windefrunning = CheckWindefRunning
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"
@@ -13736,14 +13736,42 @@ $windefrunning = CheckWindefRunning
 [AuditTest] @{
     Id   = "18.10.43.6.1.2 B"
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from creating executable content'"
-    Test = {
+        Test = {
         try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "3b576869-a4ec-4529-8536-b80a7769e899" `
-            | Select-Object -ExpandProperty "3b576869-a4ec-4529-8536-b80a7769e899"
+            if ($avstatus) {
 
-            if ($regValue -ne "1") {
+                if ((-not $windefrunning)) {
+                    return @{
+                        Message = "This rule requires Windows Defender Antivirus to be enabled."
+                        Status  = "None"
+                    }
+                }
+            }                  
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "3b576869-a4ec-4529-8536-b80a7769e899"
+
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "3b576869-a4ec-4529-8536-b80a7769e899"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
@@ -13762,7 +13790,7 @@ $windefrunning = CheckWindefRunning
                 Status  = "False"
             }
         }
-
+        
         return @{
             Message = "Compliant"
             Status  = "True"

@@ -6636,7 +6636,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "172 A"
-    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Office communication application  from creating child processes)"
+    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Office communication application from creating child processes)"
     Test = {
         try {
             if ($avstatus) {

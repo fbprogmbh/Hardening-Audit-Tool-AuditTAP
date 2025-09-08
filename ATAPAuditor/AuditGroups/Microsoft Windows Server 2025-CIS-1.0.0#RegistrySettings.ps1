@@ -1,7 +1,6 @@
 ﻿$RootPath = Split-Path $MyInvocation.MyCommand.Path -Parent
 $RootPath = Split-Path $RootPath -Parent
 . "$RootPath\Helpers\AuditGroupFunctions.ps1"
-$avstatus = CheckForActiveAV
 $windefrunning = CheckWindefRunning
 . "$RootPath\Helpers\Firewall.ps1"
 # 2025
@@ -10676,7 +10675,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
  
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
+                $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
                 | Select-Object -ExpandProperty $Value
@@ -10737,7 +10736,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
+                $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
                 | Select-Object -ExpandProperty $Value
@@ -10850,8 +10849,8 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
                     Status  = "None"
+                }
             }
-        }
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
@@ -10859,7 +10858,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
+                $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
                 | Select-Object -ExpandProperty $Value
@@ -10920,7 +10919,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
+                $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
                 | Select-Object -ExpandProperty $Value
@@ -10981,7 +10980,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
+                $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
                 | Select-Object -ExpandProperty $Value
@@ -11029,12 +11028,37 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
     Task = "(L1) Ensure 'Configure Attack Surface Reduction rules: Block Office applications from creating child processes'"
     Test = {
         try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" `
-                -Name "d4f940ab-401b-4efc-aadc-ad5f3c50688a" `
-            | Select-Object -ExpandProperty "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+            if ((-not $windefrunning)) {
+                return @{
+                    Message = "This rule requires Windows Defender Antivirus to be enabled."
+                    Status  = "None"
+                }
+            }
+            $regValue = 0;
+            $regValueTwo = 0;
+            $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
 
-            if ($regValue -ne "1") {
+            $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
+            if ($asrTest1) {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path `
+                    -Name $Value `
+                | Select-Object -ExpandProperty $Value
+            }
+
+            $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
+            $Value2 = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
+
+            $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
+            if ($asrTest2) {
+                $regValueTwo = Get-ItemProperty -ErrorAction Stop `
+                    -Path $Path2 `
+                    -Name $Value2 `
+                | Select-Object -ExpandProperty $Value2
+            }
+
+            if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
                     Status  = "False"
@@ -11078,7 +11102,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
+                $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
                 | Select-Object -ExpandProperty $Value
@@ -11139,7 +11163,7 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
             if ($asrTest1) {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
+                $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
                 | Select-Object -ExpandProperty $Value
@@ -11233,8 +11257,8 @@ $WINSStatus = (Get-WindowsFeature -Name WINS).Installed
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
                     Status  = "None"
-        }
-    }
+                }
+            }
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\NIS" `
                 -Name "EnableConvertWarnToBlock" `
