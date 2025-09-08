@@ -70,9 +70,18 @@ else {
     Id   = "1.1.4.1.1 A"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -117,9 +126,18 @@ else {
     Id   = "1.1.4.1.1 B"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -163,9 +181,18 @@ else {
     Id   = "1.1.4.1.1 C"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -209,9 +236,18 @@ else {
     Id   = "1.1.4.1.1 D"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -255,9 +291,18 @@ else {
     Id   = "1.1.4.1.1 E"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -301,9 +346,18 @@ else {
     Id   = "1.1.4.1.1 F"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -347,9 +401,18 @@ else {
     Id   = "1.1.4.1.1 G"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -393,9 +456,18 @@ else {
     Id   = "1.1.4.1.1 H"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -439,9 +511,18 @@ else {
     Id   = "1.1.4.1.1 I"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -485,9 +566,18 @@ else {
     Id   = "1.1.4.1.1 J"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -531,9 +621,18 @@ else {
     Id   = "1.1.4.1.1 K"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -577,9 +676,18 @@ else {
     Id   = "1.1.4.1.1 L"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -623,9 +731,18 @@ else {
     Id   = "1.1.4.1.1 M"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -669,9 +786,18 @@ else {
     Id   = "1.1.4.1.1 N"
     Task = "(L1) Ensure 'Add-on Management' is set to Enabled (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -715,9 +841,18 @@ else {
     Id   = "1.1.4.1.2 A"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -761,9 +896,18 @@ else {
     Id   = "1.1.4.1.2 B"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -807,9 +951,18 @@ else {
     Id   = "1.1.4.1.2 C"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -853,9 +1006,18 @@ else {
     Id   = "1.1.4.1.2 D"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -899,9 +1061,18 @@ else {
     Id   = "1.1.4.1.2 E"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -945,9 +1116,18 @@ else {
     Id   = "1.1.4.1.2 F"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -991,9 +1171,18 @@ else {
     Id   = "1.1.4.1.2 G"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1037,9 +1226,18 @@ else {
     Id   = "1.1.4.1.2 H"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1083,9 +1281,18 @@ else {
     Id   = "1.1.4.1.2 I"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1129,9 +1336,18 @@ else {
     Id   = "1.1.4.1.2 J"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1175,9 +1391,18 @@ else {
     Id   = "1.1.4.1.2 K"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1221,9 +1446,18 @@ else {
     Id   = "1.1.4.1.2 L"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1267,9 +1501,18 @@ else {
     Id   = "1.1.4.1.2 M"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1313,9 +1556,18 @@ else {
     Id   = "1.1.4.1.2 N"
     Task = "(L1) Ensure 'Bind to object' is set to 'Enabled' (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1359,9 +1611,18 @@ else {
     Id   = "1.1.4.1.3 A"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled'"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1405,9 +1666,18 @@ else {
     Id   = "1.1.4.1.3 B"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1451,9 +1721,18 @@ else {
     Id   = "1.1.4.1.3 C"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1497,9 +1776,18 @@ else {
     Id   = "1.1.4.1.3 D"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1543,9 +1831,18 @@ else {
     Id   = "1.1.4.1.3 E"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1589,9 +1886,18 @@ else {
     Id   = "1.1.4.1.3 F"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1635,9 +1941,18 @@ else {
     Id   = "1.1.4.1.3 G"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1681,9 +1996,18 @@ else {
     Id   = "1.1.4.1.3 H"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1727,9 +2051,18 @@ else {
     Id   = "1.1.4.1.3 I"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1773,9 +2106,18 @@ else {
     Id   = "1.1.4.1.3 J"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1819,9 +2161,18 @@ else {
     Id   = "1.1.4.1.3 K"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1865,9 +2216,18 @@ else {
     Id   = "1.1.4.1.3 L"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1911,9 +2271,18 @@ else {
     Id   = "1.1.4.1.3 M"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -1957,9 +2326,18 @@ else {
     Id   = "1.1.4.1.3 N"
     Task = "(L1) Ensure 'Consistent Mime Handling' is set to 'Enabled' (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2003,9 +2381,18 @@ else {
     Id   = "1.1.4.1.4 A"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2049,9 +2436,18 @@ else {
     Id   = "1.1.4.1.4 B"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2095,9 +2491,18 @@ else {
     Id   = "1.1.4.1.4 C"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2141,9 +2546,18 @@ else {
     Id   = "1.1.4.1.4 D"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2187,9 +2601,18 @@ else {
     Id   = "1.1.4.1.4 E"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2233,9 +2656,18 @@ else {
     Id   = "1.1.4.1.4 F"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2279,9 +2711,18 @@ else {
     Id   = "1.1.4.1.4 G"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2325,9 +2766,18 @@ else {
     Id   = "1.1.4.1.4 H"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2371,9 +2821,18 @@ else {
     Id   = "1.1.4.1.4 I"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2417,9 +2876,18 @@ else {
     Id   = "1.1.4.1.4 J"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2463,9 +2931,18 @@ else {
     Id   = "1.1.4.1.4 K"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2509,9 +2986,18 @@ else {
     Id   = "1.1.4.1.4 L"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2555,9 +3041,18 @@ else {
     Id   = "1.1.4.1.4 M"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2601,9 +3096,18 @@ else {
     Id   = "1.1.4.1.4 N"
     Task = "(L1) Ensure 'Disable user name and password' is set to 'Enabled' (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2647,9 +3151,18 @@ else {
     Id   = "1.1.4.1.5 A"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2693,9 +3206,18 @@ else {
     Id   = "1.1.4.1.5 B"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2739,9 +3261,18 @@ else {
     Id   = "1.1.4.1.5 C"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2785,9 +3316,18 @@ else {
     Id   = "1.1.4.1.5 D"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2831,9 +3371,18 @@ else {
     Id   = "1.1.4.1.5 E"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2877,9 +3426,18 @@ else {
     Id   = "1.1.4.1.5 F"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2923,9 +3481,18 @@ else {
     Id   = "1.1.4.1.5 G"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -2969,9 +3536,18 @@ else {
     Id   = "1.1.4.1.5 H"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3015,9 +3591,18 @@ else {
     Id   = "1.1.4.1.5 I"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3061,9 +3646,18 @@ else {
     Id   = "1.1.4.1.5 J"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3107,9 +3701,18 @@ else {
     Id   = "1.1.4.1.5 K"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3153,9 +3756,18 @@ else {
     Id   = "1.1.4.1.5 L"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3199,9 +3811,18 @@ else {
     Id   = "1.1.4.1.5 M"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3245,9 +3866,18 @@ else {
     Id   = "1.1.4.1.5 N"
     Task = "(L1) Ensure 'Information Bar' is set to 'Enabled' (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3291,9 +3921,18 @@ else {
     Id   = "1.1.4.1.6 K"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3337,9 +3976,18 @@ else {
     Id   = "1.1.4.1.6 L"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3383,9 +4031,18 @@ else {
     Id   = "1.1.4.1.6 M"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3429,9 +4086,18 @@ else {
     Id   = "1.1.4.1.6 N"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3475,9 +4141,18 @@ else {
     Id   = "1.1.4.1.6 B"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3521,9 +4196,18 @@ else {
     Id   = "1.1.4.1.6 C"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3567,9 +4251,18 @@ else {
     Id   = "1.1.4.1.6 D"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3613,9 +4306,18 @@ else {
     Id   = "1.1.4.1.6 E"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3659,9 +4361,18 @@ else {
     Id   = "1.1.4.1.6 F"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3705,9 +4416,18 @@ else {
     Id   = "1.1.4.1.6 G"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3751,9 +4471,18 @@ else {
     Id   = "1.1.4.1.6 I"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3797,9 +4526,18 @@ else {
     Id   = "1.1.4.1.6 J"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled  (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3843,9 +4581,18 @@ else {
     Id   = "1.1.4.1.6 A"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneDrive for Business"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneDrive for Business"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3889,9 +4636,18 @@ else {
     Id   = "1.1.4.1.6 H"
     Task = "(L1) Ensure 'Local Machine Zone Lockdown Security' is set to Enabled (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3935,9 +4691,18 @@ else {
     Id   = "1.1.4.1.7 K"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -3981,9 +4746,18 @@ else {
     Id   = "1.1.4.1.7 L"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4027,9 +4801,18 @@ else {
     Id   = "1.1.4.1.7 M"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4073,9 +4856,18 @@ else {
     Id   = "1.1.4.1.7 N"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4119,9 +4911,18 @@ else {
     Id   = "1.1.4.1.7 B"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4165,9 +4966,18 @@ else {
     Id   = "1.1.4.1.7 C"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4211,9 +5021,18 @@ else {
     Id   = "1.1.4.1.7 D"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4257,9 +5076,18 @@ else {
     Id   = "1.1.4.1.7 E"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4303,9 +5131,18 @@ else {
     Id   = "1.1.4.1.7 F"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4349,9 +5186,18 @@ else {
     Id   = "1.1.4.1.7 G"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4395,9 +5241,18 @@ else {
     Id   = "1.1.4.1.7 I"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4441,9 +5296,18 @@ else {
     Id   = "1.1.4.1.7 J"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4487,9 +5351,18 @@ else {
     Id   = "1.1.4.1.7 A"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4533,9 +5406,18 @@ else {
     Id   = "1.1.4.1.7 H"
     Task = "(L1) Ensure 'Mime Sniffing Safety Feature' is set to Enabled (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4579,9 +5461,18 @@ else {
     Id   = "1.1.4.1.8 K"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4625,9 +5516,18 @@ else {
     Id   = "1.1.4.1.8 L"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4671,9 +5571,18 @@ else {
     Id   = "1.1.4.1.8 N"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4717,9 +5626,18 @@ else {
     Id   = "1.1.4.1.8 B"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4763,9 +5681,18 @@ else {
     Id   = "1.1.4.1.8 C"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4809,9 +5736,18 @@ else {
     Id   = "1.1.4.1.8 D"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4855,9 +5791,18 @@ else {
     Id   = "1.1.4.1.8 E"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4901,9 +5846,18 @@ else {
     Id   = "1.1.4.1.8 F"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4947,9 +5901,18 @@ else {
     Id   = "1.1.4.1.8 G"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -4993,9 +5956,18 @@ else {
     Id   = "1.1.4.1.8 I"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5039,9 +6011,18 @@ else {
     Id   = "1.1.4.1.8 J"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5085,9 +6066,18 @@ else {
     Id   = "1.1.4.1.8 A"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5131,9 +6121,18 @@ else {
     Id   = "1.1.4.1.8 M"
     Task = "(L1) Ensure 'Navigate URL' is set to Enabled  (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5177,9 +6176,18 @@ else {
     Id   = "1.1.4.1.8 H"
     Task = "(L1) Ensure 'Navigate URL' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5223,9 +6231,18 @@ else {
     Id   = "1.1.4.1.9 K"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5269,9 +6286,18 @@ else {
     Id   = "1.1.4.1.9 L"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5315,9 +6341,18 @@ else {
     Id   = "1.1.4.1.9 N"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5361,9 +6396,18 @@ else {
     Id   = "1.1.4.1.9 B"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5407,9 +6451,18 @@ else {
     Id   = "1.1.4.1.9 C"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5453,9 +6506,18 @@ else {
     Id   = "1.1.4.1.9 D"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5499,9 +6561,18 @@ else {
     Id   = "1.1.4.1.9 E"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5545,9 +6616,18 @@ else {
     Id   = "1.1.4.1.9 F"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5591,9 +6671,18 @@ else {
     Id   = "1.1.4.1.9 G"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5637,9 +6726,18 @@ else {
     Id   = "1.1.4.1.9 I"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5683,9 +6781,18 @@ else {
     Id   = "1.1.4.1.9 J"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5729,9 +6836,18 @@ else {
     Id   = "1.1.4.1.9 A"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5775,9 +6891,18 @@ else {
     Id   = "1.1.4.1.9 M"
     Task = "(L1) Ensure 'Object Caching Protection' is set to Enabled  (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5821,9 +6946,18 @@ else {
     Id   = "1.1.4.1.9 H"
     Task = "(L1) Ensure 'Object Caching Protection' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5867,9 +7001,18 @@ else {
     Id   = "1.1.4.1.10 K"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5913,9 +7056,18 @@ else {
     Id   = "1.1.4.1.10 L"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -5959,9 +7111,18 @@ else {
     Id   = "1.1.4.1.10 N"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6005,9 +7166,18 @@ else {
     Id   = "1.1.4.1.10 B"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6051,9 +7221,18 @@ else {
     Id   = "1.1.4.1.10 C"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6097,9 +7276,18 @@ else {
     Id   = "1.1.4.1.10 D"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6143,9 +7331,18 @@ else {
     Id   = "1.1.4.1.10 E"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6189,9 +7386,18 @@ else {
     Id   = "1.1.4.1.10 F"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6235,9 +7441,18 @@ else {
     Id   = "1.1.4.1.10 G"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6281,9 +7496,18 @@ else {
     Id   = "1.1.4.1.10 I"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6327,9 +7551,18 @@ else {
     Id   = "1.1.4.1.10 J"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6373,9 +7606,18 @@ else {
     Id   = "1.1.4.1.10 A"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6419,9 +7661,18 @@ else {
     Id   = "1.1.4.1.10 M"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to Enabled (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6466,9 +7717,18 @@ else {
     Id   = "1.1.4.1.10 H"
     Task = "(L1) Ensure 'Protection From Zone Elevation' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6512,9 +7772,18 @@ else {
     Id   = "1.1.4.1.11 K"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6558,9 +7827,18 @@ else {
     Id   = "1.1.4.1.11 L"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6604,9 +7882,18 @@ else {
     Id   = "1.1.4.1.11 M"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6650,9 +7937,18 @@ else {
     Id   = "1.1.4.1.11 N"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6696,9 +7992,18 @@ else {
     Id   = "1.1.4.1.11 B"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6742,9 +8047,18 @@ else {
     Id   = "1.1.4.1.11 C"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6788,9 +8102,18 @@ else {
     Id   = "1.1.4.1.11 D"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6834,9 +8157,18 @@ else {
     Id   = "1.1.4.1.11 E"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6880,9 +8212,18 @@ else {
     Id   = "1.1.4.1.11 F"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6926,9 +8267,18 @@ else {
     Id   = "1.1.4.1.11 G"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -6972,9 +8322,18 @@ else {
     Id   = "1.1.4.1.11 I"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7018,9 +8377,18 @@ else {
     Id   = "1.1.4.1.11 J"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled  (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7064,9 +8432,18 @@ else {
     Id   = "1.1.4.1.11 A"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to Enabled (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7110,9 +8487,18 @@ else {
     Id   = "1.1.4.1.11 H"
     Task = "(L1) Ensure 'Restrict ActiveX Install' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7156,9 +8542,18 @@ else {
     Id   = "1.1.4.1.12 K"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7202,9 +8597,18 @@ else {
     Id   = "1.1.4.1.12 L"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7248,9 +8652,18 @@ else {
     Id   = "1.1.4.1.12 M"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7294,9 +8707,18 @@ else {
     Id   = "1.1.4.1.12 N"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7340,9 +8762,18 @@ else {
     Id   = "1.1.4.1.12 B"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7386,9 +8817,18 @@ else {
     Id   = "1.1.4.1.12 C"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7432,9 +8872,18 @@ else {
     Id   = "1.1.4.1.12 D"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7478,9 +8927,18 @@ else {
     Id   = "1.1.4.1.12 E"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7524,9 +8982,18 @@ else {
     Id   = "1.1.4.1.12 F"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7570,9 +9037,18 @@ else {
     Id   = "1.1.4.1.12 G"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7616,9 +9092,18 @@ else {
     Id   = "1.1.4.1.12 I"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7662,9 +9147,18 @@ else {
     Id   = "1.1.4.1.12 J"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7708,9 +9202,18 @@ else {
     Id   = "1.1.4.1.12 A"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7754,9 +9257,18 @@ else {
     Id   = "1.1.4.1.12 H"
     Task = "(L1) Ensure 'Restrict File Download' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7800,9 +9312,18 @@ else {
     Id   = "1.1.4.1.13 K"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7846,9 +9367,18 @@ else {
     Id   = "1.1.4.1.13 L"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7892,9 +9422,18 @@ else {
     Id   = "1.1.4.1.13 M"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7938,9 +9477,18 @@ else {
     Id   = "1.1.4.1.13 N"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -7984,9 +9532,18 @@ else {
     Id   = "1.1.4.1.13 B"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8030,9 +9587,18 @@ else {
     Id   = "1.1.4.1.13 C"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8076,9 +9642,18 @@ else {
     Id   = "1.1.4.1.13 D"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8122,9 +9697,18 @@ else {
     Id   = "1.1.4.1.13 E"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8168,9 +9752,18 @@ else {
     Id   = "1.1.4.1.13 F"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8214,9 +9807,18 @@ else {
     Id   = "1.1.4.1.13 G"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8260,9 +9862,18 @@ else {
     Id   = "1.1.4.1.13 I"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8306,9 +9917,18 @@ else {
     Id   = "1.1.4.1.13 J"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled  (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8352,9 +9972,18 @@ else {
     Id   = "1.1.4.1.13 A"
     Task = "(L1) Ensure 'Saved from URL' is set to Enabled (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8398,9 +10027,18 @@ else {
     Id   = "1.1.4.1.13 H"
     Task = "(L1) Ensure 'Saved from URL' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8444,9 +10082,18 @@ else {
     Id   = "1.1.4.1.14 K"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (exprwd.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Expression Web"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8490,9 +10137,18 @@ else {
     Id   = "1.1.4.1.14 L"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8536,9 +10192,18 @@ else {
     Id   = "1.1.4.1.14 M"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (onent.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8582,9 +10247,18 @@ else {
     Id   = "1.1.4.1.14 N"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (mse7.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["MS Script Editor"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8628,9 +10302,18 @@ else {
     Id   = "1.1.4.1.14 B"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8674,9 +10357,18 @@ else {
     Id   = "1.1.4.1.14 C"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8720,9 +10412,18 @@ else {
     Id   = "1.1.4.1.14 D"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8766,9 +10467,18 @@ else {
     Id   = "1.1.4.1.14 E"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (pptview.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint Viewer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint Viewer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8812,9 +10522,18 @@ else {
     Id   = "1.1.4.1.14 F"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8858,9 +10577,18 @@ else {
     Id   = "1.1.4.1.14 G"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8904,9 +10632,18 @@ else {
     Id   = "1.1.4.1.14 I"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8950,9 +10687,18 @@ else {
     Id   = "1.1.4.1.14 J"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (spDesign.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["SharePoint Designer"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["SharePoint Designer"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -8996,9 +10742,18 @@ else {
     Id   = "1.1.4.1.14 A"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (groove.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Groove"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9042,9 +10797,18 @@ else {
     Id   = "1.1.4.1.14 H"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9484,9 +11248,18 @@ else {
     Id   = "1.3.2 A"
     Task = "(L1) Ensure 'Restrict legacy JScript execution for Office' is set to 'Enabled' (excel.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Excel"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Excel"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9530,9 +11303,18 @@ else {
     Id   = "1.3.2 B"
     Task = "(L1) Ensure 'Restrict legacy JScript execution for Office' is set to 'Enabled' (msaccess.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Access"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9576,9 +11358,18 @@ else {
     Id   = "1.3.2 C"
     Task = "(L1) Ensure 'Restrict legacy JScript execution for Office' is set to 'Enabled' (mspub.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Publisher"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Publisher"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9622,9 +11413,18 @@ else {
     Id   = "1.3.2 D"
     Task = "(L1) Ensure 'Restrict legacy JScript execution for Office' is set to 'Enabled' (onenote.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["OneNote"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9668,9 +11468,18 @@ else {
     Id   = "1.3.2 E"
     Task = "(L1) Ensure 'Restrict legacy JScript execution for Office' is set to 'Enabled' (outlook.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Outlook"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Outlook"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9714,9 +11523,18 @@ else {
     Id   = "1.3.2 F"
     Task = "(L1) Ensure 'Restrict legacy JScript execution for Office' is set to 'Enabled' (powerpnt.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["PowerPoint"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["PowerPoint"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9760,9 +11578,18 @@ else {
     Id   = "1.3.2 G"
     Task = "(L1) Ensure 'Restrict legacy JScript execution for Office' is set to 'Enabled' (visio.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Visio"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Visio"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9806,9 +11633,18 @@ else {
     Id   = "1.3.2 H"
     Task = "(L1) Ensure 'Restrict legacy JScript execution for Office' is set to 'Enabled' (winproj.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Project"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Project"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -9852,9 +11688,18 @@ else {
     Id   = "1.3.2 I"
     Task = "(L1) Ensure 'Restrict legacy JScript execution for Office' is set to 'Enabled' (winword.exe)"
     Test = {
-        # new logic: if app not installed, skip test -> test score None and will not affect overall score
-        # else run test as normal
-        if (-not $installedOfficeApps["Word"]) {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
