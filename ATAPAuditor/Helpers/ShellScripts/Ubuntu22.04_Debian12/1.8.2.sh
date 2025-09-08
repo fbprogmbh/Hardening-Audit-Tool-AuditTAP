@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+if command -v dpkg-query >/dev/null 2>&1; then
+    l_pq="dpkg-query -W"
+elif command -v rpm >/dev/null 2>&1; then
+    l_pq="rpm -q"
+fi
+
+found=1
+for gdm in "gdm" "gdm3"; do # Space seporated list of packages to check
+    $l_pq $gdm &>/dev/null && found=0
+done
+
+if [[ $found -eq 0 ]]; then
+    l_gdmfile="$(grep -Prils '^\h*banner-message-enable\b' /etc/dconf/db/*.d)" # can be multipale
+    num_gdmfile=$(wc -l <<< $l_gdmfile)
+    if [[ -n "$l_gdmfile" ]]; then
+        # wc -l because all files need to be set to true; grep -q states min 1 file is set to true
+        [[ $(grep -Pisl '^\h*banner-message-enable\h*=\h*true\b' $l_gdmfile | wc -l) < $num_gdmfile ]] && exit 1
+        [[ $(grep -Pisl '^\h*banner-message-text\h*=\h*.*$' $l_gdmfile | wc -l) < $num_gdmfile ]] && exit 1
+        l_gdmprofile="$(awk -F\/ '{split($(NF-1),a,".");print a[1]}' <<<"$l_gdmfile")" # can be multipale
+        for prof in $l_gdmprofile; do
+            # -r because local db config rules etc. can be listet under /etc/dconf/profile/user or others
+            grep -Prq "^\h*system-db:$prof" /etc/dconf/profile/ || exit 1
+            [ -f "/etc/dconf/db/$prof" ] || exit 1
+        done
+    else
+        exit 1
+    fi
+fi
+
+exit 0

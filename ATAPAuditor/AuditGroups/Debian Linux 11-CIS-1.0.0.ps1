@@ -984,16 +984,24 @@ grep -Eq '^root:\$(y|[0-9])' /etc/shadow || echo 'root is locked'
     Id   = "1.7.4"
     Task = "Ensure permissions on /etc/motd are configured"
     Test = {
-        $test1 = stat /etc/motd | grep 0644
-        if ($test1 -ne $null) {
+        if (Test-Path /etc/motd) {
+            $test1 = stat /etc/motd | grep 0644
+            if ($test1 -ne $null) {
+                return @{
+                    Message = "Compliant"
+                    Status  = "True"
+                }
+            }
             return @{
-                Message = "Compliant"
-                Status  = "True"
+                Message = "Not-Compliant"
+                Status  = "False"
             }
         }
-        return @{
-            Message = "Not-Compliant"
-            Status  = "False"
+        else {
+            return @{
+                Message = "motd not present"
+                Status  = "None"
+            }
         }
     }
 }
@@ -1624,7 +1632,7 @@ find /etc/systemd -type f -name '*timesyncd*' -exec grep -Ehl '^NTP=|^FallbackNT
     Id   = "2.2.9"
     Task = "Ensure HTTP server is not installed"
     Test = {
-        $result = dpkg -l | grep -o apache2
+        $result = dpkg -l | grep -E 'apache2\s'
         if ($result -eq $null) {
             return @{
                 Message = "Compliant"
@@ -1693,8 +1701,8 @@ find /etc/systemd -type f -name '*timesyncd*' -exec grep -Ehl '^NTP=|^FallbackNT
     Id   = "2.2.13"
     Task = "Ensure SNMP Server is not installed"
     Test = {
-        $result = dpkg-query -W -f='${binary:Package}\t${Status}\t${db:Status-Status}\n' snmp
-        if ($result -match "snmp\s+unknown ok not-installed\s+not-installed") {
+        $result = dpkg -l | grep -E 'snmpd\s'
+        if ($result -eq $null) {
             return @{
                 Message = "Compliant"
                 Status  = "True"
@@ -2265,16 +2273,24 @@ find /etc/systemd -type f -name '*timesyncd*' -exec grep -Ehl '^NTP=|^FallbackNT
     Id   = "3.5.1.2"
     Task = "Ensure iptables-persistent is not installed with ufw"
     Test = {
-        $test1 = dpkg -l | grep -o iptables-persistent
-        if ($test1 -eq $null) {
+        $testufw = dpkg-query -s ufw 
+        $statusufw = $?
+        if ($statusufw -match "True") {
+            $test1 = dpkg -l | grep -o iptables-persistent
+            if ($test1 -eq $null) {
+                return @{
+                    Message = "Compliant"
+                    Status  = "True"
+                }
+            }
             return @{
-                Message = "Compliant"
-                Status  = "True"
+                Message = "Not-Compliant"
+                Status  = "False"
             }
         }
         return @{
-            Message = "Not-Compliant"
-            Status  = "False"
+            Message = "Compliant"
+            Status  = "True"
         }
     }
 }
@@ -2854,7 +2870,10 @@ find /etc/systemd -type f -name '*timesyncd*' -exec grep -Ehl '^NTP=|^FallbackNT
     Id   = "4.1.1.3"
     Task = "Ensure auditing for processes that start prior to auditd is enabled"
     Test = {
-        $test = find /boot -type f -name 'grub.cfg' -exec grep -Ph -- '^\h*linux' {} + | grep -v 'audit=1'
+        $command = @'
+        find /boot -type f -name 'grub.cfg' -exec grep -Ph -- '^\h*linux' {} + | grep -v 'audit=1'
+'@
+        $test = bash -c $command
         if ($test -eq $null) {
             return @{
                 Message = "Compliant"
@@ -2871,7 +2890,10 @@ find /etc/systemd -type f -name '*timesyncd*' -exec grep -Ehl '^NTP=|^FallbackNT
     Id   = "4.1.1.4"
     Task = "Ensure audit_backlog_limit is sufficient"
     Test = {
-        $test = find /boot -type f -name 'grub.cfg' -exec grep -Ph -- '^\h*linux' {} + | grep -Pv 'audit_backlog_limit=\d+\b'
+        $command = @'
+        find /boot -type f -name 'grub.cfg' -exec grep -Ph -- '^\h*linux' {} + | grep -Pv 'audit_backlog_limit=\d+\b'
+'@
+        $test = bash -c $command
         if ($test -eq $null) {
             return @{
                 Message = "Compliant"
@@ -3038,7 +3060,7 @@ SUDO_LOG_FILE_ESCAPED=$(grep -r logfile /etc/sudoers* | sed -e 's/.*logfile=//;s
     Task = "Ensure events that modify the system's network environment are collected"
     Test = {
         $test1 = awk '/^ *-a *always,exit/  &&/ -F *arch=b(32|64)/  &&/ -S/  &&(/sethostname/  ||/setdomainname/)  &&(/ key= *[!-~]* *$/||/ -k *[!-~]* *$/)' /etc/audit/rules.d/*.rules
-        $test2 = awk '/^ *-w/ \ &&(/\/etc\/issue/ \ ||/\/etc\/issue.net/ \ ||/\/etc\/hosts/ \ ||/\/etc\/network/) \ &&/ +-p *wa/ \ &&(/ key= *[!-~]* *$/||/ -k *[!-~]* *$/)' /etc/audit/rules.d/*.rules
+        $test2 = awk "/^ *-w/  &&(/\/etc\/issue/ ||/\/etc\/issue.net/  ||/\/etc\/hosts/  ||/\/etc\/network/)  &&/ +-p *wa/  &&(/ key= *[!-~]* *$/||/ -k *[!-~]* *$/)" /etc/audit/rules.d/*.rules
         try {
             $test3 = auditctl -l | awk '/^ *-a *always,exit/  &&/ -F *arch=b(32|64)/  &&/ -S/  &&(/sethostname/  ||/setdomainname/)  &&(/ key= *[!-~]* *$/||/ -k *[!-~]* *$/)'
             $test4 = auditctl -l | awk '/^ *-w/ &&(/\/etc\/issue/ ||/\/etc\/issue.net/ ||/\/etc\/hosts/ ||/\/etc\/network/) &&/ +-p *wa/ &&(/ key= *[!-~]* *$/||/ -k *[!-~]* *$/)'        
@@ -4875,24 +4897,20 @@ dpkg-query -W sudo sudo-ldap > /dev/null 2>&1 && dpkg-query -W -f='${binary:Pack
     Id   = "6.1.10"
     Task = "Ensure no unowned files or directories exist"
     Test = {
-        try {
-            $test1 = df --local -P | awk { 'if (NR!=1) print $6' } | xargs -I '{}' find '{}' -xdev -nouser
-            if ($test1 -eq $null) {
-                return @{
-                    Message = "Compliant"
-                    Status  = "True"
-                }
-            }
+        $command = @'
+df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser
+'@
+        $test1 = bash -c $command
+            
+        if ($test1 -eq $null) {
             return @{
-                Message = "Not-Compliant"
-                Status  = "False"
+                Message = "Compliant"
+                Status  = "True"
             }
         }
-        catch {
-            return @{
-                Message = "Command not found!"
-                Status  = "False"
-            }  
+        return @{
+            Message = "Not-Compliant"
+            Status  = "False"
         }
     }
 }
@@ -4984,12 +5002,12 @@ dpkg-query -W sudo sudo-ldap > /dev/null 2>&1 && dpkg-query -W -f='${binary:Pack
         $parentPath = Split-Path -Parent -Path $PSScriptRoot
         $path = $parentPath + "/Helpers/ShellScripts/Debian_11/CIS-Debian-6.2.3.sh"
         $result = bash $path
-        foreach ($line in $result) {
-            if (!($line -match "PASS")) {
-                return @{
-                    Message = "Compliant"
-                    Status  = "True"
-                }
+        $status = $?
+        
+        if ($status -match "True") {
+            return @{
+                Message = "Compliant"
+                Status  = "True"
             }
         }
         return @{
