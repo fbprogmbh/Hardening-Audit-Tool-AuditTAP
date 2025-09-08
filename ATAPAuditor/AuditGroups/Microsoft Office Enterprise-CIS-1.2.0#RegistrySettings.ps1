@@ -34,19 +34,36 @@ $exeMap = @{
     "Visio"               = "VISIO.EXE"
     
 }
+
+# Check if any Office installation path exists -> if not existend, then Office is not installed
+$OfficeInstalled = $false
+foreach ($path in $officePaths) {
+    if (Test-Path $path) {
+        $OfficeInstalled = $true
+        break
+    }
+}
+
+# Determine which Office apps are installed
 $installedOfficeApps = @{}
 
-foreach ($app in $exeMap.Keys) {
-    foreach ($path in $officePaths) {
-        $exePath = Join-Path $path $exeMap[$app]
-        if (Test-Path $exePath) {
-            $installedOfficeApps[$app] = $true
-            break
+if ($OfficeInstalled) {
+    foreach ($app in $exeMap.Keys) {
+        foreach ($path in $officePaths) {
+            $exePath = Join-Path $path $exeMap[$app]
+            if (Test-Path $exePath) {
+                $installedOfficeApps[$app] = $true
+                break
+            }
+        }
+        if (-not $installedOfficeApps.ContainsKey($app)) {
+            $installedOfficeApps[$app] = $false
         }
     }
-    if (-not $installedOfficeApps.ContainsKey($app)) {
-        $installedOfficeApps[$app] = $false
-    }
+}
+else {
+    Write-Warning "Office could not be found on this system."
+    Write-Warning "If Office is installed, please leave a comment in Issue-718 (https://github.com/fbprogmbh/Hardening-Audit-Tool-AuditTAP/issues/718) and provide requested information from 'What happened?' section."
 }
 
 [AuditTest] @{
@@ -7553,35 +7570,45 @@ foreach ($app in $exeMap.Keys) {
     Id   = "1.1.4.1.12 G"
     Task = "(L1) Ensure 'Restrict File Download' is set to Enabled  (winproj.exe)"
     Test = {
-        try {
-            $regValue = Get-ItemProperty -ErrorAction Stop `
-                -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_RESTRICT_FILEDOWNLOAD" `
-                -Name "winproj.exe" `
-            | Select-Object -ExpandProperty "winproj.exe"
+        # new logic: if app not installed, skip test -> test score None and will not affect overall score
+        # else run test as normal
+        if (-not $installedOfficeApps["Project"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_RESTRICT_FILEDOWNLOAD" `
+                    -Name "winproj.exe" `
+                | Select-Object -ExpandProperty "winproj.exe"
 
-            if (($regValue -ne 1)) {
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: x == 1"
+                    Message = "Registry value not found."
                     Status  = "False"
                 }
             }
-        }
-        catch [System.Management.Automation.PSArgumentException] {
-            return @{
-                Message = "Registry value not found."
-                Status  = "False"
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
             }
-        }
-        catch [System.Management.Automation.ItemNotFoundException] {
-            return @{
-                Message = "Registry key not found."
-                Status  = "False"
-            }
-        }
 
-        return @{
-            Message = "Compliant"
-            Status  = "True"
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
         }
     }
 }
