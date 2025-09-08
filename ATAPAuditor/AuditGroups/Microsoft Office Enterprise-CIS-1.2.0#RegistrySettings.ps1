@@ -10079,8 +10079,8 @@ else {
     }
 }
 [AuditTest] @{
-    Id   = "1.1.4.1.14 K"
-    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (exprwd.exe)"
+    Id   = "1.1.4.1.14 A"
+    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (groove.exe)"
     Test = {
         # new logic: 
         # - if no Office installed at all -> skip test 
@@ -10093,7 +10093,7 @@ else {
                 Status  = "None"
             }
         }
-        elseif (-not $installedOfficeApps["Expression Web"]) {
+        elseif (-not $installedOfficeApps["Groove"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -10103,173 +10103,8 @@ else {
             try {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_WINDOW_RESTRICTIONS" `
-                    -Name "exprwd.exe" `
-                | Select-Object -ExpandProperty "exprwd.exe"
-
-                if (($regValue -ne 1)) {
-                    return @{
-                        Message = "Registry value is '$regValue'. Expected: x == 1"
-                        Status  = "False"
-                    }
-                }
-            }
-            catch [System.Management.Automation.PSArgumentException] {
-                return @{
-                    Message = "Registry value not found."
-                    Status  = "False"
-                }
-            }
-            catch [System.Management.Automation.ItemNotFoundException] {
-                return @{
-                    Message = "Registry key not found."
-                    Status  = "False"
-                }
-            }
-
-            return @{
-                Message = "Compliant"
-                Status  = "True"
-            }
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "1.1.4.1.14 L"
-    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (msaccess.exe)"
-    Test = {
-        # new logic: 
-        # - if no Office installed at all -> skip test 
-        # - if Office installed but app not installed -> skip test
-        # - else run test as normal
-
-        if (-not $OfficeInstalled) {
-            return @{
-                Message = "No Office installation detected, skipping test."
-                Status  = "None"
-            }
-        }
-        elseif (-not $installedOfficeApps["Access"]) {
-            return @{
-                Message = "Application not installed, skipping test."
-                Status  = "None"
-            }
-        }
-        else {
-            try {
-                $regValue = Get-ItemProperty -ErrorAction Stop `
-                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_WINDOW_RESTRICTIONS" `
-                    -Name "msaccess.exe" `
-                | Select-Object -ExpandProperty "msaccess.exe"
-
-                if (($regValue -ne 1)) {
-                    return @{
-                        Message = "Registry value is '$regValue'. Expected: x == 1"
-                        Status  = "False"
-                    }
-                }
-            }
-            catch [System.Management.Automation.PSArgumentException] {
-                return @{
-                    Message = "Registry value not found."
-                    Status  = "False"
-                }
-            }
-            catch [System.Management.Automation.ItemNotFoundException] {
-                return @{
-                    Message = "Registry key not found."
-                    Status  = "False"
-                }
-            }
-
-            return @{
-                Message = "Compliant"
-                Status  = "True"
-            }
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "1.1.4.1.14 M"
-    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (onent.exe)"
-    Test = {
-        # new logic: 
-        # - if no Office installed at all -> skip test 
-        # - if Office installed but app not installed -> skip test
-        # - else run test as normal
-
-        if (-not $OfficeInstalled) {
-            return @{
-                Message = "No Office installation detected, skipping test."
-                Status  = "None"
-            }
-        }
-        elseif (-not $installedOfficeApps["OneNote"]) {
-            return @{
-                Message = "Application not installed, skipping test."
-                Status  = "None"
-            }
-        }
-        else {
-            try {
-                $regValue = Get-ItemProperty -ErrorAction Stop `
-                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_WINDOW_RESTRICTIONS" `
-                    -Name "onent.exe" `
-                | Select-Object -ExpandProperty "onent.exe"
-
-                if (($regValue -ne 1)) {
-                    return @{
-                        Message = "Registry value is '$regValue'. Expected: x == 1"
-                        Status  = "False"
-                    }
-                }
-            }
-            catch [System.Management.Automation.PSArgumentException] {
-                return @{
-                    Message = "Registry value not found."
-                    Status  = "False"
-                }
-            }
-            catch [System.Management.Automation.ItemNotFoundException] {
-                return @{
-                    Message = "Registry key not found."
-                    Status  = "False"
-                }
-            }
-
-            return @{
-                Message = "Compliant"
-                Status  = "True"
-            }
-        }
-    }
-}
-[AuditTest] @{
-    Id   = "1.1.4.1.14 N"
-    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (mse7.exe)"
-    Test = {
-        # new logic: 
-        # - if no Office installed at all -> skip test 
-        # - if Office installed but app not installed -> skip test
-        # - else run test as normal
-
-        if (-not $OfficeInstalled) {
-            return @{
-                Message = "No Office installation detected, skipping test."
-                Status  = "None"
-            }
-        }
-        elseif (-not $installedOfficeApps["MS Script Editor"]) {
-            return @{
-                Message = "Application not installed, skipping test."
-                Status  = "None"
-            }
-        }
-        else {
-            try {
-                $regValue = Get-ItemProperty -ErrorAction Stop `
-                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_WINDOW_RESTRICTIONS" `
-                    -Name "mse7.exe" `
-                | Select-Object -ExpandProperty "mse7.exe"
+                    -Name "groove.exe" `
+                | Select-Object -ExpandProperty "groove.exe"
 
                 if (($regValue -ne 1)) {
                     return @{
@@ -10629,6 +10464,61 @@ else {
     }
 }
 [AuditTest] @{
+    Id   = "1.1.4.1.14 H"
+    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to 'Enabled' (winword.exe)"
+    Test = {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["Word"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_window_restrictions" `
+                    -Name "winword.exe" `
+                | Select-Object -ExpandProperty "winword.exe"
+
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
+                return @{
+                    Message = "Registry value not found."
+                    Status  = "False"
+                }
+            }
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
+            }
+
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
+        }
+    }
+}
+[AuditTest] @{
     Id   = "1.1.4.1.14 I"
     Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (outlook.exe)"
     Test = {
@@ -10739,8 +10629,8 @@ else {
     }
 }
 [AuditTest] @{
-    Id   = "1.1.4.1.14 A"
-    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (groove.exe)"
+    Id   = "1.1.4.1.14 K"
+    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (exprwd.exe)"
     Test = {
         # new logic: 
         # - if no Office installed at all -> skip test 
@@ -10753,7 +10643,7 @@ else {
                 Status  = "None"
             }
         }
-        elseif (-not $installedOfficeApps["Groove"]) {
+        elseif (-not $installedOfficeApps["Expression Web"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -10763,8 +10653,8 @@ else {
             try {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_WINDOW_RESTRICTIONS" `
-                    -Name "groove.exe" `
-                | Select-Object -ExpandProperty "groove.exe"
+                    -Name "exprwd.exe" `
+                | Select-Object -ExpandProperty "exprwd.exe"
 
                 if (($regValue -ne 1)) {
                     return @{
@@ -10794,8 +10684,8 @@ else {
     }
 }
 [AuditTest] @{
-    Id   = "1.1.4.1.14 H"
-    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to 'Enabled' (winword.exe)"
+    Id   = "1.1.4.1.14 L"
+    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (msaccess.exe)"
     Test = {
         # new logic: 
         # - if no Office installed at all -> skip test 
@@ -10808,7 +10698,7 @@ else {
                 Status  = "None"
             }
         }
-        elseif (-not $installedOfficeApps["Word"]) {
+        elseif (-not $installedOfficeApps["Access"]) {
             return @{
                 Message = "Application not installed, skipping test."
                 Status  = "None"
@@ -10817,9 +10707,119 @@ else {
         else {
             try {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
-                    -Path "Registry::HKEY_LOCAL_MACHINE\software\microsoft\internet explorer\main\featurecontrol\feature_window_restrictions" `
-                    -Name "winword.exe" `
-                | Select-Object -ExpandProperty "winword.exe"
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_WINDOW_RESTRICTIONS" `
+                    -Name "msaccess.exe" `
+                | Select-Object -ExpandProperty "msaccess.exe"
+
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
+                return @{
+                    Message = "Registry value not found."
+                    Status  = "False"
+                }
+            }
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
+            }
+
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "1.1.4.1.14 M"
+    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (onent.exe)"
+    Test = {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["OneNote"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_WINDOW_RESTRICTIONS" `
+                    -Name "onent.exe" `
+                | Select-Object -ExpandProperty "onent.exe"
+
+                if (($regValue -ne 1)) {
+                    return @{
+                        Message = "Registry value is '$regValue'. Expected: x == 1"
+                        Status  = "False"
+                    }
+                }
+            }
+            catch [System.Management.Automation.PSArgumentException] {
+                return @{
+                    Message = "Registry value not found."
+                    Status  = "False"
+                }
+            }
+            catch [System.Management.Automation.ItemNotFoundException] {
+                return @{
+                    Message = "Registry key not found."
+                    Status  = "False"
+                }
+            }
+
+            return @{
+                Message = "Compliant"
+                Status  = "True"
+            }
+        }
+    }
+}
+[AuditTest] @{
+    Id   = "1.1.4.1.14 N"
+    Task = "(L1) Ensure 'Scripted Window Security Restrictions' is set to Enabled  (mse7.exe)"
+    Test = {
+        # new logic: 
+        # - if no Office installed at all -> skip test 
+        # - if Office installed but app not installed -> skip test
+        # - else run test as normal
+
+        if (-not $OfficeInstalled) {
+            return @{
+                Message = "No Office installation detected, skipping test."
+                Status  = "None"
+            }
+        }
+        elseif (-not $installedOfficeApps["MS Script Editor"]) {
+            return @{
+                Message = "Application not installed, skipping test."
+                Status  = "None"
+            }
+        }
+        else {
+            try {
+                $regValue = Get-ItemProperty -ErrorAction Stop `
+                    -Path "Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_WINDOW_RESTRICTIONS" `
+                    -Name "mse7.exe" `
+                | Select-Object -ExpandProperty "mse7.exe"
 
                 if (($regValue -ne 1)) {
                     return @{
