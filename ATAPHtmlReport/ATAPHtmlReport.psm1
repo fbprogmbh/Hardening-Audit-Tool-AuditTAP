@@ -1220,8 +1220,10 @@ function Get-ATAPHtmlReport {
 			# Header
 			htmlElement 'div' @{ class = 'header content' } {
 				htmlElement 'div' @{ id = "logo" } {
-					htmlElement 'h1' @{id = "companyName" } { "FB PRO GMBH" }
-					htmlElement 'p' @{} { "System Hardening & Data Protection" }
+					htmlElement 'a' @{id = "companyLink"; href = "https://www.fb-pro.com/"; target = "_blank" } {
+						htmlElement 'h1' @{id = "companyName" } { "FB PRO GMBH" }
+						htmlElement 'p' @{id = "companySlogan" } { "System Hardening & Secure Configuration" }
+					}
 				}
 				htmlElement 'div' @{ id = "reportInformation" } {
 					htmlElement 'h1' @{} { $Title }

@@ -37,6 +37,8 @@ html body div.header.content {
 	font-size: 1rem;
 	color: #666666;
 	font-weight: 400;
+	margin: 0;
+	margin-bottom: 1rem;
 }
 
 #summary>h1:nth-child(1) {
@@ -1100,4 +1102,9 @@ button {
 
 #githubButton {
 	background-color: #24292e;
+}
+
+#companyLink {
+	text-decoration: none;
+	cursor: pointer;
 }
