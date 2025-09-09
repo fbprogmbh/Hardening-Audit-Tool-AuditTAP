@@ -150,7 +150,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "5"
-    Task = "(ND, NE)  Ensure 'WDigest Authentication' is set to 'Disabled'."
+    Task = "(ND, NE) Ensure 'WDigest Authentication' is set to 'Disabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -1406,7 +1406,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "39"
-    Task = "(ND, NE)  Ensure 'Turn off picture password sign-in' is set to 'Enabled'. "
+    Task = "(ND, NE) Ensure 'Turn off picture password sign-in' is set to 'Enabled'. "
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -1478,7 +1478,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "41"
-    Task = "(ND, NE)  Ensure 'Block user from showing account details on signin' is set to 'Enabled'."
+    Task = "(ND, NE) Ensure 'Block user from showing account details on signin' is set to 'Enabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -1730,7 +1730,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "48"
-    Task = "(HD)  Ensure 'Allow upload of User Activities' is set to 'Disabled'."
+    Task = "(HD) Ensure 'Allow upload of User Activities' is set to 'Disabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -3612,7 +3612,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "93"
-    Task = "(HD)  Ensure 'Allow Online Tips' is set to 'Disabled'."
+    Task = "(HD) Ensure 'Allow Online Tips' is set to 'Disabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -3684,7 +3684,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "95"
-    Task = "(ND, NE)  Ensure 'Prevent enabling lock screen camera' is set to 'Enabled'."
+    Task = "(ND, NE) Ensure 'Prevent enabling lock screen camera' is set to 'Enabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -4512,7 +4512,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "117"
-    Task = "(ND, NE)  Ensure 'Turn off heap termination on corruption' is set to 'Disabled'."
+    Task = "(ND, NE) Ensure 'Turn off heap termination on corruption' is set to 'Disabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -4548,7 +4548,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "118"
-    Task = "(ND, NE)  Ensure 'Toggle user control over Insider builds' is set to 'Disabled'."
+    Task = "(ND, NE) Ensure 'Toggle user control over Insider builds' is set to 'Disabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -6636,7 +6636,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id = "172 A"
-    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Office communication application  from creating child processes)"
+    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Office communication application from creating child processes)"
     Test = {
         try {
             if ($avstatus) {
@@ -6700,7 +6700,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id = "172 B"
-    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured  (Block Office applications from creating  executable content)"
+    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Office applications from creating executable content)"
     Test = {
         try {
             if ($avstatus) {
@@ -6828,7 +6828,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id = "172 D"
-    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured  (Block Office applications from injecting code into other processes)"
+    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Office applications from injecting code into other processes)"
     Test = {
         try {
             if ($avstatus) {
@@ -6892,7 +6892,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id = "172 E"
-    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured  (Block Adobe Reader from creating child processes)"
+    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Adobe Reader from creating child processes)"
     Test = {
         try {
             if ($avstatus) {
@@ -6956,7 +6956,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id = "172 F"
-    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured  (Block Win32 API calls from Office macro)"
+    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Win32 API calls from Office macro)"
     Test = {
         try {
             if ($avstatus) {
@@ -7148,7 +7148,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id = "172 I"
-    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured  (Block executable content from email client and webmail)"
+    Task = "(ND, NE) Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block executable content from email client and webmail)"
     Test = {
         try {
             if ($avstatus) {
@@ -7376,7 +7376,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "174"
-    Task = "(ND, NE)  Ensure 'Prevent bypassing Windows Defender SmartScreen prompts for sites' is set to 'Enabled'."
+    Task = "(ND, NE) Ensure 'Prevent bypassing Windows Defender SmartScreen prompts for sites' is set to 'Enabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -7412,7 +7412,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "175"
-    Task = "(ND, NE)  Ensure 'Configure Windows Defender SmartScreen' is set to 'Enabled'."
+    Task = "(ND, NE) Ensure 'Configure Windows Defender SmartScreen' is set to 'Enabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -8322,7 +8322,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "210"
-    Task = "(ND, NE)  Ensure 'User Account Control: Admin Approval Mode for the Built-in Administrator account' is set to 'Enabled'."
+    Task = "(ND, NE) Ensure 'User Account Control: Admin Approval Mode for the Built-in Administrator account' is set to 'Enabled'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -11499,7 +11499,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "342"
-    Task = "(HD)  Ensure 'SNMP Service (SNMP)' is set to 'Disabled' or 'Not Installed'."
+    Task = "(HD) Ensure 'SNMP Service (SNMP)' is set to 'Disabled' or 'Not Installed'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -11715,7 +11715,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "348"
-    Task = "(ND, NE)  Ensure 'Web Management Service (WMSvc)' is set to 'Disabled' or 'Not Installed'."
+    Task = "(ND, NE) Ensure 'Web Management Service (WMSvc)' is set to 'Disabled' or 'Not Installed'."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
