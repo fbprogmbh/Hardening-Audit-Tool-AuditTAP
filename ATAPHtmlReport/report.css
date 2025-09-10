@@ -1073,7 +1073,10 @@ button {
 }
 
 .product-block {
-	text-align: center;
+	display: flex;
+	justify-content: center;
+	gap: 100px;
+	padding: 20px 0;
 	margin-bottom: 20px;
 }
 
@@ -1107,4 +1110,11 @@ button {
 #companyLink {
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.product-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }

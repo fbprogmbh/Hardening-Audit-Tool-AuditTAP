@@ -1829,7 +1829,7 @@ function Get-ATAPHtmlReport {
 					Write-Progress -Activity "Creating references page" -Status "Progress:" -PercentComplete 83
 					htmlElement 'div' @{class = 'tabContent'; id = 'references' } {
 
-						# Überschrift
+						
 						htmlElement 'h1' @{} { "About us" }
 						
 						# Flex-Container
@@ -1851,7 +1851,7 @@ function Get-ATAPHtmlReport {
 
 								htmlElement 'h3' @{} { "What is system hardening?" }
 
-								htmlElement 'p' @{} {
+								htmlElement 'p' @{style = 'font-style: italic;' } {
 									"If you can not see the video below, please check your browser settings to allow loading content from external sources. Or you can watch the video directly "
 									htmlElement 'a' @{href = "https://www.youtube.com/watch?v=jbI19FwnBKY"; target = "_blank" } { "here"
 									}
@@ -1872,23 +1872,27 @@ function Get-ATAPHtmlReport {
 							# RIGHT COLUMN
 							htmlElement 'div' @{class = 'right-column' } {
 
+								htmlElement 'h2' @{} { "Check out our hardening solution Enforce Administrator" }
 								htmlElement 'div' @{class = 'product-block' } {
-									htmlElement 'h2' @{} { "Check out our hardening solution Enforce Administrator" }
-									htmlElement 'a' @{href = "https://www.fb-pro.com/enforce-administrator-product/"; target = "_blank" } {
-										htmlElement 'img' @{
-											src   = $Settings.EA
-											alt   = "Enforce Admin"
-											style = "width: 125px; height: 200px;"
-										} {}
+									htmlElement 'div' @{class = 'product-item '} {
+										htmlElement 'h3'@{} { "Enforce Administrator" }
+										htmlElement 'a' @{href = "https://www.fb-pro.com/enforce-administrator-product/"; target = "_blank" } {
+											htmlElement 'img' @{
+												src   = $Settings.EA
+												alt   = "Enforce Admin"
+												style = "width: 125px; height: 200px;"
+											} {}
+										}
 									}
-									htmlElement 'h2' @{} { "Check out our Audit Report Tool here" }
-									htmlElement 'a' @{href = "https://www.fb-pro.com/audit-tap-product-information/"; target = "_blank" } {
-										htmlElement 'img' @{
-											src   = $Settings.ATAP 
-											alt   = "Audit Test Automation Package"
-											style = "width: 125px; height: 200px;"
-										} {}		
-										
+									htmlElement 'div' @{ class = 'product-item'} {
+										htmlElement 'h3' @{} { " AuditTAP" }
+										htmlElement 'a' @{href = "https://www.fb-pro.com/audit-tap-product-information/"; target = "_blank" } {
+											htmlElement 'img' @{
+												src   = $Settings.ATAP 
+												alt   = "Audit Test Automation Package"
+												style = "width: 125px; height: 200px;"
+											} {}		
+										}
 									}		
 								}
 
