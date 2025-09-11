@@ -1857,8 +1857,7 @@ function Get-ATAPHtmlReport {
 									htmlElement 'li' @{} { "Why is System Hardening so important?" }
 								}
 								htmlElement 'p' @{style = 'font-style: italic;' } {
-									"If you can not see the video below, please check your browser settings to allow loading content from external sources.
-									Or you can watch the video directly "
+									"If you cannot see the video below, please check your browser settings to allow loading content from external sources. Or you can watch the video directly "
 									htmlElement 'a' @{href = "https://www.youtube.com/watch?v=jbI19FwnBKY"; target = "_blank" } { "here"
 									}
 								}
