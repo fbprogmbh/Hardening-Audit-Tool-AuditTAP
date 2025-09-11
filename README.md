@@ -34,9 +34,11 @@ ATAPHtmlReport:\
   - [Prerequisites](#prerequisites)
     - [Windows](#windows)
     - [Linux](#linux)
-  - [Installation from PS Gallery](#installation-from-ps-gallery)
-  - [Video tutorial for manual installation](#video-tutorial-for-manual-installation)
-  - [Installer](#installer)
+  - [Video Tutorials](#video-tutorials)
+  - [Installation Methods](#installation-methods)
+    - [From PowerShell Gallery](#from-powershell-gallery)
+    - [Manual Installation](#manual-installation)
+    - [Installer](#installer)
 - [Usage](#usage)
 - [How to Update](#how-to-update)
 - [Reports](#reports)
@@ -62,11 +64,7 @@ AuditTAP consists of the following PowerShell modules:
 
 ## Installation
 
-There are several ways to install and use ATAP. Choose the method that best fits your environment:
-
-* Installation via PSGallery – Install ATAP directly from the PowerShell Gallery.
-* Manual installation – For systems without internet access, follow the manual installation steps. This option is useful for isolated environments, such as certain datacenter setups.
-* Installer option – Use our installer to install or update ATAP easily.
+There are several ways to install and use ATAP. Choose the method that best fits your environment.
 
 ### Prerequisites
 
@@ -83,31 +81,26 @@ $PSVersionTable.PSVersion
 #### Linux
 A PowerShell installation is required for usage on Linux systems. The installation steps vary by Linux distribution and are documented [here](https://docs.microsoft.com/en-us/PowerShell/scripting/install/installing-PowerShell-on-linux).
 
-### Installation from PS Gallery
+### Video tutorials
+We’ve created brief videos to illustrate the installation process:
+
+| Windows Installation | Linux Installation |
+|----------------------|--------------------|
+| [![Windows Video](https://img.youtube.com/vi/CY3dm1_Wlgc/0.jpg)](https://youtu.be/CY3dm1_Wlgc) | [![Linux Video](https://img.youtube.com/vi/xhADhdKXgfc/0.jpg)](https://www.youtube.com/watch?v=xhADhdKXgfc) |
+
+
+### Installation Methods
+#### From PS Gallery
 Installing from the PowerShell Gallery is simple and straightforward. Run the following command:
 ```PowerShell
 Install-Module -Name ATAPAuditor
 ```
 Note: Ensure you are running PowerShell with administrative privileges to install the module successfully.
 
-### Video tutorial for manual installation
-We’ve created a brief video tutorial (approximately 3 minutes long) to illustrate the installation process.
-
-* **First Part**: A step-by-step guide for manual installation.
-* **Second Part**: Demonstration of installation via the PowerShell Gallery.
-
-Use this video as a helpful resource to ensure a smooth installation!
-
-<div align="center">
-   <a href="https://www.youtube-nocookie.com/embed/5fJGdHCxqpM">
-     <img src="https://img.youtube.com/vi/5fJGdHCxqpM/0.jpg" 
-      alt="How to get a transparent system hardening report?" 
-     >
-   </a>
-</div>
 
 See the [Installing a PowerShell module](https://docs.microsoft.com/en-us/PowerShell/scripting/developer/module/installing-a-PowerShell-module) guide for more specific instructions.
 
+#### Manual Installation
 1. Download the most [recent release](https://github.com/fbprogmbh/Audit-Test-Automation/releases/latest)
 2. If your system's security configuration prevents direct execution or access to internet based ("untrusted") files, you may need to "unblock" the file first to allow execution. 
 
@@ -126,7 +119,7 @@ Expand-Archive -Path ".\Audit-Test-Automation-5.11.0.zip" -DestinationPath "Audi
 4. Copy the `ATAPAuditor` and `ATAPHtmlReport` modules into one of the directories listed in `$env:PSModulePath` to make them accessible in PowerShell. Use the `$env:PSModulePath` command to view available directories.
 
 
-### Installer
+#### Installer
 
 Download the installer from the [releases](https://github.com/fbprogmbh/Audit-Test-Automation/releases) page. The installation wizard will guide you through the steps, including installing the necessary modules and creating a convenient Start menu shortcut.
 
