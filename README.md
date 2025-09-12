@@ -36,7 +36,7 @@ ATAPHtmlReport:\
     - [Linux](#linux)
   - [Video Tutorials](#video-tutorials)
   - [Installation Methods](#installation-methods)
-    - [From PowerShell Gallery](#from-powershell-gallery)
+    - [PowerShell Gallery](#ps-gallery)
     - [Manual Installation](#manual-installation)
     - [Installer](#installer)
 - [Usage](#usage)
@@ -90,7 +90,7 @@ We’ve created brief videos to illustrate the installation process:
 
 
 ### Installation Methods
-#### From PS Gallery
+#### PS Gallery
 Installing from the PowerShell Gallery is simple and straightforward. Run the following command:
 ```PowerShell
 Install-Module -Name ATAPAuditor
