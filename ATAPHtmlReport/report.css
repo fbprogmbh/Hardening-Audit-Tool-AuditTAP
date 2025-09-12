@@ -35,8 +35,8 @@ html body div.header.content {
 
 #companySlogan {
 	font-size: 1rem;
-	color: #666666;
-	font-weight: 400;
+	color: #000000;
+	font-weight: 600;
 	margin: 0;
 	margin-bottom: 1rem;
 }
@@ -1048,7 +1048,9 @@ button {
 	flex-wrap: wrap;
 	gap: 40px;
 	align-items: flex-start;
-	justify-content: space-evenly;
+	justify-content: space-around;
+	text-align: left;
+	overflow-wrap: break-word;
 }
 
 .left-column {
@@ -1076,15 +1078,17 @@ button {
 
 .product-block {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
-	gap: 100px;
+	gap: 20px;
 	padding: 20px 0;
 	margin-bottom: 20px;
 }
 
 .contact-block {
+
 	background-color: #f8f8f8;
-	line-height: 0.8;
+
 }
 
 .button-base {
@@ -1122,4 +1126,19 @@ button {
 .hardening-ul {
 	font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
 	line-height: 1.6;
+}
+
+.contact-flex {
+	display: flex;
+	justify-content: space-around;
+	background-color: #f8f8f8;
+	gap: 30px;
+	line-height: 0.8;
+}
+
+.contact-item {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	text-align: left;
 }
