@@ -1934,16 +1934,16 @@ function Get-ATAPHtmlReport {
 										}
 									}
 
-
-									htmlElement 'a' @{href = "mailto:info@fb-pro.com" } {
-										htmlElement 'button' @{id = "contactUsButton"; class = "button-base" } { "CONTACT US!" }
-									}
-									htmlElement 'a' @{href = "https://github.com/fbprogmbh/Hardening-Audit-Tool-AuditTAP-Audit-Test-Automation-Package"; target = "_blank" } {
-										htmlElement 'button' @{id = "githubButton"; class = "button-base" } {
-											"AuditTAP on GitHub"
+									htmlElement 'div' @{ class = "contact-buttons" } {
+										htmlElement 'a' @{href = "mailto:info@fb-pro.com" } {
+											htmlElement 'button' @{id = "contactUsButton"; class = "button-base" } { "CONTACT US!" }
+										}
+										htmlElement 'a' @{href = "https://github.com/fbprogmbh/Hardening-Audit-Tool-AuditTAP-Audit-Test-Automation-Package"; target = "_blank" } {
+											htmlElement 'button' @{id = "githubButton"; class = "button-base" } {
+												"AuditTAP on GitHub"
+											}
 										}
 									}
-
 								}
 							}
 						}
