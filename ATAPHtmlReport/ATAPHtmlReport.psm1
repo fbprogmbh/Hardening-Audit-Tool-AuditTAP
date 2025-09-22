@@ -1858,7 +1858,7 @@ function Get-ATAPHtmlReport {
 								}
 								htmlElement 'p' @{style = 'font-style: italic;' } {
 									"If you cannot see the video below, please check your browser settings to allow loading content from external sources.
-									Alternatively, you can watch the video directly "
+									Alternatively, you can watch the video "
 									htmlElement 'a' @{href = "https://www.youtube.com/watch?v=jbI19FwnBKY"; target = "_blank" } { "here"
 									}
 								}
@@ -1879,7 +1879,9 @@ function Get-ATAPHtmlReport {
 							htmlElement 'div' @{class = 'right-column' } {
 
 								htmlElement 'h2' @{} { "Check out our solutions" }
+								# Flex-Container for the products
 								htmlElement 'div' @{class = 'product-block' } {
+									# Flex-Container for each product item (order in column and centered)
 									htmlElement 'div' @{class = 'product-item ' } {
 										htmlElement 'h3'@{} { "Enforce Administrator" }
 										htmlElement 'a' @{href = "https://www.fb-pro.com/enforce-administrator-product/"; target = "_blank" } {
@@ -1914,6 +1916,7 @@ function Get-ATAPHtmlReport {
 
 								htmlElement 'div' @{class = 'contact-block' } {
 									htmlElement 'div' @{class = 'contact-flex' } {
+										#Flex-Container for FB Pro Contact information (order in one column, centered)
 										htmlElement 'div' @{ class = 'contact-item'; style = 'white-space: nowrap;' } {
 											
 											htmlElement 'h3' @{} { "Contact information" }
