@@ -53,14 +53,14 @@ ATAPHtmlReport:\
 
 ## Overview
 
-The Audit Test Automation Package (AuditTAP or ATAP) offers a comprehensive overview of your systems' compliance with established hardening guidelines. This package includes a variety of industry standards and hardening guides authored by leading organizations (e.g., Microsoft, CIS, BSI), enabling a robust assessment of security adherence.
+The Audit Test Automation Package (AuditTAP or ATAP) provides a holistic overview of the compliance of your systems based on industry-established, state-of-the-art hardening guidelines created by leading institutions (e.g., CIS, Microsoft, BSI), enabling a reliable and concrete assessment of compliance with security standards.
 
-Generated HTML reports provide a transparent and detailed summary of compliance status for each relevant setting and configuration specified in the selected standards. 
+Generated HTML reports provide a transparent and detailed summary of the compliance status for each relevant setting and configuration specified in the selected hardening guideline.
 
 AuditTAP consists of the following PowerShell modules:
 
-* ATAPHtmlReport – generates comprehensive HTML compliance reports.
-* ATAPAuditor – audits configurations against established hardening guidelines.
+* **ATAPHtmlReport** – generates comprehensive HTML compliance reports.
+* **ATAPAuditor** – audits configurations against established hardening guidelines.
 
 ## Installation
 
@@ -68,21 +68,21 @@ There are several ways to install and use ATAP. Choose the method that best fits
 
 ### Prerequisites
 
-Before proceeding with the installation, please ensure the following prerequisites are met:
+Select the method that best suits your environment.
 
 #### Windows
 
-* PowerShell version 5.1 - To check your PowerShell version, run the following command:
+* PowerShell version 5.1 is required on the system. Please check your current PowerShell version by running the following command:
 ```PowerShell
 $PSVersionTable.PSVersion
 ```
-* Administrative permissions on the system to be audited - Administrative permissions are required to query certain system information. Please note that the tool only generates a report and does not make any changes to the system.
+* Administrative permissions are required on the system to be audited for querying necessary system data. Please note that the tool only generates a report. No changes are made to the system.
 
 #### Linux
-A PowerShell installation is required for usage on Linux systems. The installation steps vary by Linux distribution and are documented [here](https://docs.microsoft.com/en-us/PowerShell/scripting/install/installing-PowerShell-on-linux).
+A PowerShell installation is required for usage on Linux systems. The installation steps vary by Linux distribution and are documented <a href="https://docs.microsoft.com/en-us/PowerShell/scripting/install/installing-PowerShell-on-linux" target="_blank" rel="noopener noreferrer">here</a>.
 
 ### Video tutorials
-We’ve created brief videos to illustrate the installation process:
+Below you will find short tutorials for Windows and Linux systems. These videos explain various installation methods for AuditTAP, how to create an AuditTAP report, and how an AuditTAP HTML report is structured.
 
 | Windows Installation | Linux Installation |
 |----------------------|--------------------|
@@ -90,6 +90,11 @@ We’ve created brief videos to illustrate the installation process:
 
 
 ### Installation Methods
+The following installation options are available for Windows. Detailed instructions can also be found below. 
+- **PS Gallery**
+- **Manual Installation**
+- **Installer**
+
 #### PS Gallery
 Installing from the PowerShell Gallery is simple and straightforward. Run the following command:
 ```PowerShell
