@@ -4,7 +4,7 @@
 #define AppPublisher "FB Pro GmbH"
 #define AppURL "https://www.fb-pro.com/"
 #define AppIcon "AT.ico"
-#define AppVersion "5.11.0"
+#define AppVersion "5.12.0"
 //#define BaseFolder "Audit-Test-Automation"
 #define BaseFolder ".."
 #define AskVersionText "Please select the version to be installed"
@@ -18,8 +18,8 @@ AppPublisher={#AppPublisher}
 AppPublisherURL={#AppURL}
 WizardStyle=modern
 DisableDirPage=yes
-ArchitecturesAllowed=x86 x64
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x86 x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 DefaultDirName={autopf}\WindowsPowerShell\Modules
 OutputDir=.
 OutputBaseFilename={#AppShortName}-{#AppVersion}
