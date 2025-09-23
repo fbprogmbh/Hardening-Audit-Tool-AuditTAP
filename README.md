@@ -17,7 +17,7 @@ ATAPHtmlReport:\
 			</td>
 			<td>
 
-[![ATAP](https://www.fb-pro.com/wp-content/uploads/2022/09/atap-download-button.png)](https://github.com/fbprogmbh/Audit-Test-Automation/releases/tag/v5.11.0)
+[![ATAP](https://www.fb-pro.com/wp-content/uploads/2022/09/atap-download-button.png)](https://github.com/fbprogmbh/Audit-Test-Automation/releases/tag/v5.12.0)
 			</td>
 		</tr>
 	</table>
@@ -34,9 +34,11 @@ ATAPHtmlReport:\
   - [Prerequisites](#prerequisites)
     - [Windows](#windows)
     - [Linux](#linux)
-  - [Installation from PS Gallery](#installation-from-ps-gallery)
-  - [Video tutorial for manual installation](#video-tutorial-for-manual-installation)
-  - [Installer](#installer)
+  - [Video Tutorials](#video-tutorials)
+  - [Installation Methods](#installation-methods)
+    - [PowerShell Gallery](#ps-gallery)
+    - [Manual Installation](#manual-installation)
+    - [Installer](#installer)
 - [Usage](#usage)
 - [How to Update](#how-to-update)
 - [Reports](#reports)
@@ -51,68 +53,64 @@ ATAPHtmlReport:\
 
 ## Overview
 
-The Audit Test Automation Package (AuditTAP or ATAP) offers a comprehensive overview of your systems' compliance with established hardening guidelines. This package includes a variety of industry standards and hardening guides authored by leading organizations (e.g., Microsoft, CIS, BSI), enabling a robust assessment of security adherence.
+The Audit Test Automation Package (AuditTAP or ATAP) provides a holistic overview of the compliance of your systems based on industry-established, state-of-the-art hardening guidelines created by leading institutions (e.g., CIS, Microsoft, BSI), enabling a reliable and concrete assessment of compliance with security standards.
 
-Generated HTML reports provide a transparent and detailed summary of compliance status for each relevant setting and configuration specified in the selected standards. 
+Generated HTML reports provide a transparent and detailed summary of the compliance status for each relevant setting and configuration specified in the selected hardening guideline.
 
 AuditTAP consists of the following PowerShell modules:
 
-* ATAPHtmlReport – generates comprehensive HTML compliance reports.
-* ATAPAuditor – audits configurations against established hardening guidelines.
+* **ATAPHtmlReport** – generates comprehensive HTML compliance reports.
+* **ATAPAuditor** – audits configurations against established hardening guidelines.
 
 ## Installation
 
-There are several ways to install and use ATAP. Choose the method that best fits your environment:
-
-* Installation via PSGallery – Install ATAP directly from the PowerShell Gallery.
-* Manual installation – For systems without internet access, follow the manual installation steps. This option is useful for isolated environments, such as certain datacenter setups.
-* Installer option – Use our installer to install or update ATAP easily.
+There are several ways to install and use ATAP. Choose the method that best fits your environment.
 
 ### Prerequisites
 
-Before proceeding with the installation, please ensure the following prerequisites are met:
+Select the method that best suits your environment.
 
 #### Windows
 
-* PowerShell version 5.1 - To check your PowerShell version, run the following command:
+* PowerShell version 5.1 is required on the system. Please check your current PowerShell version by running the following command:
 ```PowerShell
 $PSVersionTable.PSVersion
 ```
-* Administrative permissions on the system to be audited - Administrative permissions are required to query certain system information. Please note that the tool only generates a report and does not make any changes to the system.
+* Administrative permissions are required on the system to be audited for querying necessary system data. Please note that the tool only generates a report. No changes are made to the system.
 
 #### Linux
-A PowerShell installation is required for usage on Linux systems. The installation steps vary by Linux distribution and are documented [here](https://docs.microsoft.com/en-us/PowerShell/scripting/install/installing-PowerShell-on-linux).
+A PowerShell installation is required for usage on Linux systems. The installation steps vary by Linux distribution and are documented <a href="https://docs.microsoft.com/en-us/PowerShell/scripting/install/installing-PowerShell-on-linux" target="_blank" rel="noopener noreferrer">here</a>.
 
-### Installation from PS Gallery
+### Video tutorials
+Below you will find short tutorials for Windows and Linux systems. These videos explain various installation methods for AuditTAP, how to create an AuditTAP report, and how an AuditTAP HTML report is structured.
+
+| Windows Installation | Linux Installation |
+|----------------------|--------------------|
+| [![Windows Video](https://img.youtube.com/vi/CY3dm1_Wlgc/0.jpg)](https://youtu.be/CY3dm1_Wlgc) | [![Linux Video](https://img.youtube.com/vi/xhADhdKXgfc/0.jpg)](https://www.youtube.com/watch?v=xhADhdKXgfc) |
+
+
+### Installation Methods
+The following installation options are available for Windows. Detailed instructions can also be found below. 
+- **PS Gallery**
+- **Manual Installation**
+- **Installer**
+
+#### PS Gallery
 Installing from the PowerShell Gallery is simple and straightforward. Run the following command:
 ```PowerShell
 Install-Module -Name ATAPAuditor
 ```
 Note: Ensure you are running PowerShell with administrative privileges to install the module successfully.
 
-### Video tutorial for manual installation
-We’ve created a brief video tutorial (approximately 3 minutes long) to illustrate the installation process.
-
-* **First Part**: A step-by-step guide for manual installation.
-* **Second Part**: Demonstration of installation via the PowerShell Gallery.
-
-Use this video as a helpful resource to ensure a smooth installation!
-
-<div align="center">
-   <a href="https://www.youtube-nocookie.com/embed/5fJGdHCxqpM">
-     <img src="https://img.youtube.com/vi/5fJGdHCxqpM/0.jpg" 
-      alt="How to get a transparent system hardening report?" 
-     >
-   </a>
-</div>
 
 See the [Installing a PowerShell module](https://docs.microsoft.com/en-us/PowerShell/scripting/developer/module/installing-a-PowerShell-module) guide for more specific instructions.
 
+#### Manual Installation
 1. Download the most [recent release](https://github.com/fbprogmbh/Audit-Test-Automation/releases/latest)
 2. If your system's security configuration prevents direct execution or access to internet based ("untrusted") files, you may need to "unblock" the file first to allow execution. 
 
 ```PowerShell
-Unblock-File -Path .\Audit-Test-Automation-5.11.0.zip -Verbose
+Unblock-File -Path .\Audit-Test-Automation-5.12.0.zip -Verbose
 ```
 The following screenshot shows the expected output:
 
@@ -121,12 +119,12 @@ The following screenshot shows the expected output:
 3. Extract the archive using PowerShell (adjust the version number as needed) or your preferred unzipping toolset.
 
 ```PowerShell
-Expand-Archive -Path ".\Audit-Test-Automation-5.11.0.zip" -DestinationPath "AuditTAP"
+Expand-Archive -Path ".\Audit-Test-Automation-5.12.0.zip" -DestinationPath "AuditTAP"
 ```
 4. Copy the `ATAPAuditor` and `ATAPHtmlReport` modules into one of the directories listed in `$env:PSModulePath` to make them accessible in PowerShell. Use the `$env:PSModulePath` command to view available directories.
 
 
-### Installer
+#### Installer
 
 Download the installer from the [releases](https://github.com/fbprogmbh/Audit-Test-Automation/releases) page. The installation wizard will guide you through the steps, including installing the necessary modules and creating a convenient Start menu shortcut.
 
@@ -188,11 +186,12 @@ Microsoft Windows 10 GDPR | - | - | 16082019 | V1.1 | -
 Microsoft Windows 10 BSI | - | - | - | SiSyPHuS 1.3 | -
 Microsoft Windows 10 Stand-alone | - | Stand-alone 2.0.0 | - | SiSyPHuS 1.3 (Stand-alone) | -
 Microsoft Windows 11 Stand-alone | - | Stand-alone 2.0.0 | - | SiSyPHuS 1.3 (Stand-alone) | -
-Microsoft Windows 11 | - | 3.0.0 | 22H2 | SiSyPHuS 1.3 | -
+Microsoft Windows 11 | - | 4.0.0 | 22H2 | SiSyPHuS 1.3 | -
 Microsoft Windows Server 2012 (R2) | V2R19 | 3.0.0 | - | - | -
 Microsoft Windows Server 2016 | V1R12 | 3.0.0 | FINAL | - | -
 Microsoft Windows Server 2019 | V1R5 | 3.0.0 | FINAL | - | -
 Microsoft Windows Server 2022 | V1R1 | 3.0.0 | FINAL | - | -
+Microsoft Windows Server 2025 | V1R1 | 1.0.0 | FINAL | - | -
 
 The report *Microsoft Windows 10 BSI* aggregates the results of all *BSI recommendations for Microsoft Windows 10* reports.
 
@@ -202,11 +201,12 @@ Report | DISA | CIS | Microsoft | BSI | ACSC | FB Pro
 --------- | -----| --- | -- | --- | --- | ---
 Debian 10 | - | - | - | - | - | Base
 Debian 11 | - | 1.0.0 | - | - | - | -
+Debian 12 | - | 1.0.1 | - | - | - | -
 Fedora 35 | - | - | - | - | - | Base
 Red Hat Enterprise Linux 9 | - | 1.0.0 | - | - | - | -
 SUSE Linux Enterprise 15 | - | 1.1.1 | - | - | - | -
 Ubuntu 20.04 | - | 1.1.0 | - | - | - | -
-Ubuntu 22.04 | - | 1.0.0 | - | - | - | -
+Ubuntu 22.04 | - | 2.0.0 | - | - | - | -
 
 ### **Application**
 
@@ -217,15 +217,8 @@ Mozilla Firefox | V4R24 | 1.0.0 | - | - | -
 Microsoft Edge | - | 2.0.0 | 117 | - | -
 Microsoft Internet Explorer 11 | V1R16 | 1.0.0 | 2004 | - | -
 Microsoft IIS10 | - | 1.1.1 | - | - | -
-Microsoft Office 2016 Excel | V1R2 | - | - | - | -
-Microsoft Office 2016 Outlook | V1R2 | - | - | - | -
-Microsoft Office 2016 PowerPoint | V1R1 | - | - | - | -
-Microsoft Office 2016 SkypeForBusiness | V1R1 | - | - | - | -
-Microsoft Office 2016 Word | V1R1 | - | - | - | -
-Microsoft Office 2016 | V1R1, V1R2 | 1.1.0 | - | - | -
+Microsoft Office <br><sub>for Office 2016, 2019, 2021 and 365 | - | 1.2.0 | - | - | -
 Microsoft SQL Server 2016 | - | 1.3.0 | - | - | -
-
-The report *Microsoft Office 2016* aggregates the results of all *Microsoft Office 2016 \<Product>* reports.  
 
 
 ## Questions, issues or project support
@@ -249,6 +242,7 @@ Please check the [FAQ-section](https://github.com/fbprogmbh/Audit-Test-Automatio
 * Center for Internet Security: https://www.cisecurity.org/
 * DISA STIGs: https://public.cyber.mil/stigs/
 * Microsoft Security baselines: https://techcommunity.microsoft.com/t5/microsoft-security-baselines/bg-p/Microsoft-Security-Baselines
+
 
 
 

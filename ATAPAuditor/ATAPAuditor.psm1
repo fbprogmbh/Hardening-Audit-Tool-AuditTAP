@@ -123,10 +123,11 @@ class ResultTable {
 function IsIn-FullLanguageMode {
 	try {
 		$languageMode = $ExecutionContext.SessionState.LanguageMode
-		if ($languageMode -eq "FullLanguage"){
+		if ($languageMode -eq "FullLanguage") {
 			return $true
 		}
-	} catch {
+	}
+ catch {
 		return $false
 	}
 	# returns alternate language modes if not FullLanguage
@@ -167,7 +168,7 @@ function Start-ModuleTest {
 
 }
 
-function GetLicenseStatus {
+function Get-LicenseStatus {
 	param(
 		$SkipLicenseCheck
 	)
@@ -191,8 +192,7 @@ function GetLicenseStatus {
 }
 
 function IsIIS10Executable {
-	if((Get-Module -ListAvailable IISAdministration) -eq $null)
-	{
+	if ((Get-Module -ListAvailable IISAdministration) -eq $null) {
 		return $false
 	}
 	return $true
@@ -234,21 +234,6 @@ function Test-ArrayEqual {
 	}
 	return $true
 }
-
-function Get-LicenseStatus {
-	$licenseStatus = (Get-CimInstance SoftwareLicensingProduct -Filter "Name like 'Windows%'" | where { $_.PartialProductKey } | select Description, LicenseStatus -ExpandProperty LicenseStatus)
-	switch ($licenseStatus) {
-		"0" { $lcStatus = "Unlicensed" }
-		"1" { $lcStatus = "Licensed" }
-		"2" { $lcStatus = "OOBGrace" }
-		"3" { $lcStatus = "OOTGrace" }
-		"4" { $lcStatus = "NonGenuineGrace" }
-		"5" { $lcStatus = "Notification" }
-		"6" { $lcStatus = "ExtendedGrace" }
-	}
-	return $lcStatus
-}
-
 
 # Get domain role
 # 0 {"Standalone Workstation"}
@@ -377,6 +362,7 @@ function checkReportNameWithOSSystem {
 		}
 		function Get-OsType {		
 			switch ($ReportName) {
+				"Microsoft Windows Server 2025" { return "Microsoft Windows Server 2025" }
 				"Microsoft Windows Server 2022" { return "Microsoft Windows Server 2022" }
 				"Microsoft Windows Server 2019" { return "Microsoft Windows Server 2019" }
 				"Microsoft Windows Server 2016" { return "Microsoft Windows Server 2016" }
@@ -392,6 +378,9 @@ function checkReportNameWithOSSystem {
 		}
 		$osType = Get-OsType
 		switch ($ReportName) {
+			"Microsoft Windows Server 2025" { 
+				return returnSuitingReportName -ReportName $ReportName -OsName $osName -OsType $osType
+			}
 			"Microsoft Windows Server 2022" { 
 				return returnSuitingReportName -ReportName $ReportName -OsName $osName -OsType $osType
 			}
@@ -427,7 +416,8 @@ function checkReportNameWithOSSystem {
 			}
 		}
 		return $ReportName
-	} catch {
+	}
+ catch {
 		return $ReportName
 	}
 	
@@ -772,7 +762,7 @@ function Invoke-ATAPReport {
 			[Report]$report = (& "$RootPath/Reports/$ReportName.ps1")
 		}
 	}
- 	catch [System.Management.Automation.CommandNotFoundException] {
+	catch [System.Management.Automation.CommandNotFoundException] {
 		Write-Host "Either your input for -Reportname is faulty or the report does not resolve due to a bug. Please report this bug with the following errormessage: 
 		1. ErrorException: $_
 		2. PositionMessage: $($_.InvocationInfo.PositionMessage)
@@ -854,7 +844,8 @@ function Save-ATAPHtmlReport {
 	if (($languagemode = IsIn-FullLanguageMode) -ne $true) {
 		if ($languagemode -eq $false) {
 			Write-Host "The current language mode could not be determined. Ensure that AuditTAP is run in `"FullLanguage`" mode. For further information, contact your administrator. Closing..." -ForegroundColor red
-		} else {
+		}
+		else {
 			Write-Host "The current language mode is `"$languagemode`". Ensure that AuditTAP is run in `"FullLanguage`" mode. For further information, contact your administrator. Closing..." -ForegroundColor red
 		}
 		return
@@ -888,11 +879,9 @@ function Save-ATAPHtmlReport {
 	else {
 		[SystemInformation] $SystemInformation = (& "$PSScriptRoot\Helpers\ReportWindowsOS.ps1")
 		Start-ModuleTest
-		if($ReportName -eq "Microsoft IIS10")
-		{
+		if ($ReportName -eq "Microsoft IIS10") {
 			$isIIS10Executable = IsIIS10Executable
-			if($isIIS10Executable -eq $false)
-			{
+			if ($isIIS10Executable -eq $false) {
 				Write-Warning "IIS10 Report not executable! IISAdministration module not available. Please install this module and try again. Exiting..."
 				return;
 			}
@@ -919,7 +908,7 @@ function Save-ATAPHtmlReport {
 	$report = Invoke-ATAPReport -ReportName $ReportName 
 	#hashes for each recommendation
 	if (!$isUnix) {
-		$SystemInformation.SoftwareInformation.LicenseStatus = GetLicenseStatus $SkipLicenseCheck
+		$SystemInformation.SoftwareInformation.LicenseStatus = Get-LicenseStatus $SkipLicenseCheck
 	}
 	$hashtable_sha256 = GenerateHashTable $report
 	

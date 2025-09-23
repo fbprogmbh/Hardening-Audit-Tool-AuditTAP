@@ -28,8 +28,17 @@ html body div.header.content {
 }
 
 #companyName {
-	font-size: 2.25rem;
+	font-size: 2.5rem;
 	color: #A81A1B !important;
+	font-weight: 900;
+}
+
+#companySlogan {
+	font-size: 1rem;
+	color: #000000;
+	font-weight: 600;
+	margin: 0;
+	margin-bottom: 1rem;
 }
 
 #summary>h1:nth-child(1) {
@@ -43,7 +52,7 @@ html body div.header.content {
 
 #logo {
 	order: 2;
-	padding-top: 8px;
+	padding-top: px;
 }
 
 #reportInformation>ul:nth-child(2) {
@@ -51,7 +60,7 @@ html body div.header.content {
 }
 
 .header {
-	background-color: #c6c9cc;
+	background-color: #d2d2d2;
 }
 
 #reportInformation>ul:nth-child(2)>li:nth-child(1) {
@@ -809,6 +818,7 @@ button {
 	height: 300px;
 	font-family: 'Calibri', 'Segoe UI', sans-serif;
 }
+
 #testGrid div {
 	border: 1px solid #d2d2d2;
 	padding-top: 3px;
@@ -999,18 +1009,6 @@ button {
 	margin-right: 5%;
 }
 
-#contactUsButton {
-	background-color: #A81A1B;
-	border-radius: 4px;
-	padding: 20px;
-	color: #fff;
-	box-shadow: 2px 2px rgba(0, 0, 0, 0.5);
-	display: inline-block;
-	margin-top: 20px;
-	text-transform: uppercase;
-	border-style: none;
-	cursor: pointer;
-}
 
 #hashTableDiv {
 	float: right;
@@ -1042,4 +1040,139 @@ button {
 		line-height: 17px;
 		vertical-align: middle;
 	}
+}
+
+/* Two-column layout with flexible wrapping in the About Us section*/
+.columns-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 40px;
+	align-items: flex-start;
+	justify-content: space-around;
+	text-align: left;
+	overflow-wrap: break-word;
+}
+
+/* Left column takes about 2/3 of space */
+.left-column {
+	flex: 2;
+	min-width: 300px;
+}
+
+/* Right column takes about 1/3 of space */
+.right-column {
+	flex: 1;
+	min-width: 300px;
+}
+
+/* Responsive video container */
+.video-wrapper {
+	width: 100%;
+	max-width: 480px;
+	aspect-ratio: 16 / 9;
+	margin: 20px 0;
+}
+
+.video-wrapper iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+/*bulletpoint list in the right column*/
+.hardening-ul {
+	font-family: "Libre Franklin", "Helvetica Neue", helvetica, arial, sans-serif;
+	line-height: 1.6;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+/* Product section layout */
+.product-block {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 20px 0;
+	margin-bottom: 20px;
+}
+
+.product-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	min-width: 180px;
+}
+
+/* Contact section background and padding */
+.contact-block {
+	background-color: #f8f8f8;
+	padding: 20px 0;
+}
+
+/* Flexbox for contact items */
+.contact-flex {
+	display: flex;
+	justify-content: space-between;
+	gap: 30px;
+	margin: 0 auto;
+	line-height: 1.2;
+	padding: 0 20px;
+	box-sizing: border-box;
+}
+
+/* Flexbox in columns for p elements in each contact-item*/
+.contact-item {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	text-align: left;
+	flex: 1;
+	margin: 5px 0;
+}
+
+/* Compact spacing between paragraphs only in this contact item context*/
+.contact-item p {
+    margin: 4px 0;
+}
+
+/* Button container aligned with contact section */
+.contact-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+    margin-top: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* Base button style inside contact section */
+.contact-buttons .button-base {
+    border-radius: 4px;
+    padding: 15px 25px;
+    color: #fff;
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    height: auto;
+}
+
+/* Contact Us button, that uses the company red color */
+#contactUsButton {
+	background-color: #A81A1B;
+}
+
+/*GitHub button, that uses the dark color of the GitHSub website*/
+#githubButton {
+	background-color: #24292e;
+}
+
+/*this is the link of the company logo in the top right corner*/
+#companyLink {
+	text-decoration: none;
+	cursor: pointer;
 }
