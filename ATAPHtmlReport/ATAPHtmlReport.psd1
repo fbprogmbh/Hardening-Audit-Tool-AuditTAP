@@ -36,7 +36,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 RootModule = 'ATAPHtmlReport.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.13.3'
+ModuleVersion = '1.13.4'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -45,7 +45,7 @@ ModuleVersion = '1.13.3'
 GUID = 'b732e8cd-6500-4da8-ac96-ab60087c739b'
 
 # Author of this module
-Author = 'Benedikt Böhme, Patrick Helbach, Steffen Winternheimer'
+Author = 'Benedikt Böhme, Patrick Helbach, Steffen Winternheimer, Robin Wernz'
 
 # Company or vendor of this module
 CompanyName = 'FB Pro GmbH'
