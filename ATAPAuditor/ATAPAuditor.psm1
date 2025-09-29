@@ -9,6 +9,9 @@ $script:atapReportsPath = $env:ATAPReportPath
 if (-not $script:atapReportsPath) {
 	$script:atapReportsPath = [Environment]::GetFolderPath('MyDocuments') | Join-Path -ChildPath 'ATAPReports'
 }
+
+# for license status function. if called multiple times the cache will be used
+$script:LicenseStatusCache = $null
 #endregion
 
 #region Classes
@@ -173,18 +176,22 @@ function Get-LicenseStatus {
 		$SkipLicenseCheck
 	)
 	if ($SkipLicenseCheck -eq $false) {
-		Write-Host "Checking operating system activation status. This may take a while..."
-		$licenseStatus = (Get-CimInstance SoftwareLicensingProduct -Filter "Name like 'Windows%'" | where { $_.PartialProductKey } | select Description, LicenseStatus -ExpandProperty LicenseStatus)
-		switch ($licenseStatus) {
-			"0" { $lcStatus = "Unlicensed" }
-			"1" { $lcStatus = "Licensed" }
-			"2" { $lcStatus = "OOBGrace" }
-			"3" { $lcStatus = "OOTGrace" }
-			"4" { $lcStatus = "NonGenuineGrace" }
-			"5" { $lcStatus = "Notification" }
-			"6" { $lcStatus = "ExtendedGrace" }
+		if ($script:LicenseStatusCache) {
+			return $script:LicenseStatusCache
 		}
-		return $lcStatus
+		Write-Host "Checking operating system activation status. This may take a while..."
+		$license = Get-CimInstance SoftwareLicensingProduct -Filter "Name like 'Windows%'" | Where-Object { $_.PartialProductKey } | Select-Object -First 1
+		switch ($license.LicenseStatus) {
+			"0" { "Unlicensed" }
+			"1" { "Licensed" }
+			"2" { "OOBGrace" }
+			"3" { "OOTGrace" }
+			"4" { "NonGenuineGrace" }
+			"5" { "Notification" }
+			"6" { "ExtendedGrace" }
+		}
+		Write-Host $script:LicenseStatusCache
+		return $script:LicenseStatusCache
 	}
 	else {
 		return "License check has been skipped."
