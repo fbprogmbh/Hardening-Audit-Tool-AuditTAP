@@ -13,6 +13,12 @@ $RootPath = Split-Path $RootPath -Parent
 				Status  = "True"
 			}
 		}
+		if ($lcStatus -eq "License check has been skipped.") {
+			return @{
+				Message = $lcStatus
+				Status  = "None"
+			}
+		}
 		return @{
 			Message = "System not licensed."
 			Status  = "False"
