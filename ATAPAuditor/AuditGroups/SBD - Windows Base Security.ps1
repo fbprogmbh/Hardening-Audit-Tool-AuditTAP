@@ -7,7 +7,6 @@ $RootPath = Split-Path $RootPath -Parent
 	Task = "Get License status."
 	Test = {
 		$lcStatus = Get-LicenseStatus $SkipLicenseCheck
-		Write-Host "License Status: $lcStatus"
 		if ($lcStatus -eq "Licensed") {
 			return @{
 				Message = "Compliant"

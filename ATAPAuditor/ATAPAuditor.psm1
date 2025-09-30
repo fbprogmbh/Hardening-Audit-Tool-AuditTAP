@@ -181,7 +181,7 @@ function Get-LicenseStatus {
 		}
 		Write-Host "Checking operating system activation status. This may take a while..."
 		$license = Get-CimInstance SoftwareLicensingProduct -Filter "Name like 'Windows%'" | Where-Object { $_.PartialProductKey } | Select-Object -First 1
-		switch ($license.LicenseStatus) {
+		$script:LicenseStatusCache = switch ($license.LicenseStatus) {
 			"0" { "Unlicensed" }
 			"1" { "Licensed" }
 			"2" { "OOBGrace" }
@@ -190,7 +190,7 @@ function Get-LicenseStatus {
 			"5" { "Notification" }
 			"6" { "ExtendedGrace" }
 		}
-		Write-Host $script:LicenseStatusCache
+		$script:LicenseStatusCache
 		return $script:LicenseStatusCache
 	}
 	else {
