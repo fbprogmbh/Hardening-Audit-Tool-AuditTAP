@@ -190,7 +190,7 @@ function Get-LicenseStatus {
 			"5" { "Notification" }
 			"6" { "ExtendedGrace" }
 		}
-		$script:LicenseStatusCache
+
 		return $script:LicenseStatusCache
 	}
 	else {
