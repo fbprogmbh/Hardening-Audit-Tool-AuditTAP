@@ -9,6 +9,9 @@ $script:atapReportsPath = $env:ATAPReportPath
 if (-not $script:atapReportsPath) {
 	$script:atapReportsPath = [Environment]::GetFolderPath('MyDocuments') | Join-Path -ChildPath 'ATAPReports'
 }
+
+# for license status function. if called multiple times the cache will be used
+$LicenseStatusCache = $null
 #endregion
 
 #region Classes
@@ -157,7 +160,6 @@ function Start-ModuleTest {
 			$missingModules += $module
 		}
 	}
-
 	if ($missingModules.Count -gt 0) {
 		Write-Warning "Missing module(s) found. Missing modules can lead to errors. Following modules are missing:"
 		for ($i = 0; $i -lt $missingModules.Count; $i++) {
@@ -172,23 +174,27 @@ function Get-LicenseStatus {
 	param(
 		$SkipLicenseCheck
 	)
-	if ($SkipLicenseCheck -eq $false) {
-		Write-Host "Checking operating system activation status. This may take a while..."
-		$licenseStatus = (Get-CimInstance SoftwareLicensingProduct -Filter "Name like 'Windows%'" | where { $_.PartialProductKey } | select Description, LicenseStatus -ExpandProperty LicenseStatus)
-		switch ($licenseStatus) {
-			"0" { $lcStatus = "Unlicensed" }
-			"1" { $lcStatus = "Licensed" }
-			"2" { $lcStatus = "OOBGrace" }
-			"3" { $lcStatus = "OOTGrace" }
-			"4" { $lcStatus = "NonGenuineGrace" }
-			"5" { $lcStatus = "Notification" }
-			"6" { $lcStatus = "ExtendedGrace" }
-		}
-		return $lcStatus
+	if ($LicenseStatusCache) {
+		return $LicenseStatusCache
 	}
-	else {
-		return "License check has been skipped."
+	
+	if ($SkipLicenseCheck -eq $true) {
+		$LicenseStatusCache = "License check has been skipped."
+		return $LicenseStatusCache
 	}
+
+	Write-Host "Checking operating system activation status. This may take a while..."
+	$license = Get-CimInstance SoftwareLicensingProduct -Filter "Name like 'Windows%'" | Where-Object { $_.PartialProductKey } | Select-Object -First 1
+	$LicenseStatusCache = switch ($license.LicenseStatus) {
+		"0" { "Unlicensed" }
+		"1" { "Licensed" }
+		"2" { "OOBGrace" }
+		"3" { "OOTGrace" }
+		"4" { "NonGenuineGrace" }
+		"5" { "Notification" }
+		"6" { "ExtendedGrace" }
+	}
+	return $LicenseStatusCache
 }
 
 function IsIIS10Executable {
