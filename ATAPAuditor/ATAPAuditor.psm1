@@ -194,7 +194,8 @@ function Get-LicenseStatus {
 		return $script:LicenseStatusCache
 	}
 	else {
-		return "License check has been skipped."
+		$script:LicenseStatusCache = "License check has been skipped."
+		return $script:SkipLicenseCheck
 	}
 }
 
