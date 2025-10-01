@@ -11,7 +11,7 @@ if (-not $script:atapReportsPath) {
 }
 
 # for license status function. if called multiple times the cache will be used
-$script:LicenseStatusCache = $null
+$LicenseStatusCache = $null
 #endregion
 
 #region Classes
@@ -160,7 +160,6 @@ function Start-ModuleTest {
 			$missingModules += $module
 		}
 	}
-
 	if ($missingModules.Count -gt 0) {
 		Write-Warning "Missing module(s) found. Missing modules can lead to errors. Following modules are missing:"
 		for ($i = 0; $i -lt $missingModules.Count; $i++) {
@@ -175,28 +174,27 @@ function Get-LicenseStatus {
 	param(
 		$SkipLicenseCheck
 	)
-	if ($SkipLicenseCheck -eq $false) {
-		if ($script:LicenseStatusCache) {
-			return $script:LicenseStatusCache
-		}
-		Write-Host "Checking operating system activation status. This may take a while..."
-		$license = Get-CimInstance SoftwareLicensingProduct -Filter "Name like 'Windows%'" | Where-Object { $_.PartialProductKey } | Select-Object -First 1
-		$script:LicenseStatusCache = switch ($license.LicenseStatus) {
-			"0" { "Unlicensed" }
-			"1" { "Licensed" }
-			"2" { "OOBGrace" }
-			"3" { "OOTGrace" }
-			"4" { "NonGenuineGrace" }
-			"5" { "Notification" }
-			"6" { "ExtendedGrace" }
-		}
+	if ($LicenseStatusCache) {
+		return $LicenseStatusCache
+	}
+	
+	if ($SkipLicenseCheck -eq $true) {
+		$LicenseStatusCache = "License check has been skipped."
+		return $LicenseStatusCache
+	}
 
-		return $script:LicenseStatusCache
+	Write-Host "Checking operating system activation status. This may take a while..."
+	$license = Get-CimInstance SoftwareLicensingProduct -Filter "Name like 'Windows%'" | Where-Object { $_.PartialProductKey } | Select-Object -First 1
+	$LicenseStatusCache = switch ($license.LicenseStatus) {
+		"0" { "Unlicensed" }
+		"1" { "Licensed" }
+		"2" { "OOBGrace" }
+		"3" { "OOTGrace" }
+		"4" { "NonGenuineGrace" }
+		"5" { "Notification" }
+		"6" { "ExtendedGrace" }
 	}
-	else {
-		$script:LicenseStatusCache = "License check has been skipped."
-		return $script:SkipLicenseCheck
-	}
+	return $LicenseStatusCache
 }
 
 function IsIIS10Executable {
