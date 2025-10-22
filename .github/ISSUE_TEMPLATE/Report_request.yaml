@@ -27,6 +27,6 @@ body:
     attributes:
       label: Which Report would you like us to implement?
       description: Please provide a link to the Baseline/Benchmark you would like us to implement.
-      placeholder: Link to the desired Benchmark/Baseline:  
+      placeholder: Link to the desired Benchmark/Baseline\:  
     validations:
       required: true
