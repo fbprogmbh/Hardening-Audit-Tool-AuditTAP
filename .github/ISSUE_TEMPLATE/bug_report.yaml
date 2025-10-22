@@ -38,6 +38,9 @@ body:
       description: Which report did you execute for the bug to occur?
       options:
         - PLEASE SELECT!
+        - --------------------------------
+        - N/A the issue is independent of the used report
+        - --------------------------------
         - Microsoft Windows 7
         - Microsoft Windows 10
         - Microsoft Windows 10 GDPR
@@ -45,6 +48,7 @@ body:
         - Microsoft Windows 10 Stand-alone
         - Microsoft Windows 11 Stand-alone
         - Microsoft Windows 11
+        - --------------------------------
         - Microsoft Windows Server 2012
         - Microsoft Windows Server 2016
         - Microsoft Windows Server 2016 DC
