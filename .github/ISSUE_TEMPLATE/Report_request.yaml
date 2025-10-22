@@ -1,0 +1,32 @@
+name: Report Request
+description: You want to request a new benchmark to check against / update an existing report.
+labels: ["ReportRequest"]
+projects: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Your feedback and support is greatly appreciated, thank you for your time!
+        **Please make sure there isn't already a request open: [Open requests](https://github.com/fbprogmbh/Hardening-Audit-Tool-AuditTAP/issues?q=is%3Aissue%20state%3Aopen%20label%3AReportRequest)**
+  
+  - type: dropdown
+    id: version_check
+    attributes:
+      label: Current Version?
+      description: Are you using the latest official Version of AuditTAP?
+      options:
+        - PLEASE SELECT!
+        - I used the latest official release.
+        - I used the latest prerelease version.
+    validations:
+      required: true
+    
+  - type: textarea
+    id: RequestedReport
+    attributes:
+      label: Which Report would you like us to implement?
+      description: Please provide a link to the Baseline/Benchmark you would like us to implement.
+      placeholder: Link to the desired Benchmark/Baseline
+    validations:
+      required: true
