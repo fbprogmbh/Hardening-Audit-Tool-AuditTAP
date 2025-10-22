@@ -38,9 +38,9 @@ body:
       description: Which report did you execute for the bug to occur?
       options:
         - PLEASE SELECT!
-        - --------------------------------- 
+        - --------------------------------
         - N/A the issue is independent of the used report
-        - ---------------------------------  
+        - ---------------------------------
         - Microsoft Windows 7
         - Microsoft Windows 10
         - Microsoft Windows 10 GDPR
@@ -48,7 +48,7 @@ body:
         - Microsoft Windows 10 Stand-alone
         - Microsoft Windows 11 Stand-alone
         - Microsoft Windows 11
-        - ---------------------------------   
+        - ----------------------------------
         - Microsoft Windows Server 2012
         - Microsoft Windows Server 2016
         - Microsoft Windows Server 2016 DC
@@ -56,7 +56,7 @@ body:
         - Microsoft Windows Server 2019 DC
         - Microsoft Windows Server 2022
         - Microsoft Windows Server 2022 DC
-        - ---------------------------------    
+        - -----------------------------------
         - Debian 10
         - Debian 11
         - Fedora 35
@@ -64,7 +64,7 @@ body:
         - SUSE Linux Enterprise 15
         - Ubuntu 20.04
         - Ubuntu 22.04
-        - ---------------------------------     
+        - ------------------------------------
         - Google Chrome
         - Mozilla Firefox
         - Microsoft Edge
