@@ -1191,15 +1191,12 @@ if ($domainRole -ge 4) {
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block abuse of exploited vulnerable signed drivers)"
     Test = {
         try {
-            if ($avstatus) {
-
-                if ((-not $windefrunning)) {
-                    return @{
-                        Message = "This rule requires Windows Defender Antivirus to be enabled."
-                        Status  = "None"
-                    }
+            if ((-not $windefrunning)) {
+                return @{
+                    Message = "This rule requires Windows Defender Antivirus to be enabled."
+                    Status  = "None"
                 }
-            }                  
+            }
             $regValue = 0;
             $regValueTwo = 0;
             $Path = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
