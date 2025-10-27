@@ -34,14 +34,14 @@ $listOfInsecureCipherSuites = getListOfInsecureCipherSuites
         }
     }
 }
-if($domainRole -eq 3){
+if ($domainRole -eq 3) {
     [AuditTest] @{
-        Id   = "2.2.38"
-        Task = "Ensure 'Manage auditing and security log' is set to 'Administrators' (MS only)"
+        Id          = "2.2.38"
+        Task        = "Ensure 'Manage auditing and security log' is set to 'Administrators' (MS only)"
         Constraints = @(
             @{ "Property" = "DomainRole"; "Values" = "Member Server" }
         )
-        Test = {
+        Test        = {
             $securityPolicy = Get-AuditResource "WindowsSecurityPolicy"
             $currentUserRights = $securityPolicy["Privilege Rights"]["SeSecurityPrivilege"]
             $identityAccounts = @(
@@ -74,14 +74,14 @@ if($domainRole -eq 3){
         }
     }
 }
-if($domainRole -ge 4){
+if ($domainRole -ge 4) {
     [AuditTest] @{
-        Id   = "2.3.5.2"
-        Task = "Ensure 'Domain controller: LDAP server signing requirements' is set to 'Require signing' (DC only)"
+        Id          = "2.3.5.2"
+        Task        = "Ensure 'Domain controller: LDAP server signing requirements' is set to 'Require signing' (DC only)"
         Constraints = @(
             @{ "Property" = "DomainRole"; "Values" = "Primary Domain Controller", "Backup Domain Controller" }
         )
-        Test = {
+        Test        = {
             try {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path "Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\NTDS\Parameters" `
@@ -188,12 +188,12 @@ if($domainRole -ge 4){
     }
 }
 [AuditTest] @{
-    Id   = "9.1.7"
-    Task = "Ensure 'Windows Firewall: Domain: Logging: Log dropped packets' is set to 'Yes'"
+    Id          = "9.1.7"
+    Task        = "Ensure 'Windows Firewall: Domain: Logging: Log dropped packets' is set to 'Yes'"
     Constraints = @(
-        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller"}
+        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
     )
-    Test = {
+    Test        = {
         $path1 = "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging"
         $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile\Logging"      
         $key = "LogDroppedPackets"
@@ -202,17 +202,17 @@ if($domainRole -ge 4){
         $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
             Message = $($result.Message)
-            Status = $($result.Status)
+            Status  = $($result.Status)
         }
     }
 }
 [AuditTest] @{
-    Id   = "9.1.8"
-    Task = "Ensure 'Windows Firewall: Domain: Logging: Log successful connections' is set to 'Yes'"
+    Id          = "9.1.8"
+    Task        = "Ensure 'Windows Firewall: Domain: Logging: Log successful connections' is set to 'Yes'"
     Constraints = @(
-        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller"}
+        @{ "Property" = "DomainRole"; "Values" = "Member Workstation", "Member Server", "Primary Domain Controller", "Backup Domain Controller" }
     )
-    Test = {
+    Test        = {
         $path1 = "Registry::HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging"
         $path2 = "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile\Logging"      
         $key = "LogSuccessfulConnections"
@@ -221,7 +221,7 @@ if($domainRole -ge 4){
         $result = $path1, $path2 | Test-FirewallPaths -Key $key -ExpectedValue $expectedValue -ProfileType $profileType
         return @{
             Message = $($result.Message)
-            Status = $($result.Status)
+            Status  = $($result.Status)
         }
     }
 }
@@ -420,7 +420,7 @@ if($domainRole -ge 4){
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -455,14 +455,14 @@ if($domainRole -ge 4){
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 A"
+    Id   = "18.9.47.5.1.2 A"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Office communication application  from creating child processes)"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -471,59 +471,59 @@ if($domainRole -ge 4){
             $Value = "26190899-1602-49e8-8b27-eb1d0a1ce869"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "26190899-1602-49e8-8b27-eb1d0a1ce869"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 B"
+    Id   = "18.9.47.5.1.2 B"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured  (Block Office applications from creating  executable content)"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -532,59 +532,59 @@ if($domainRole -ge 4){
             $Value = "3b576869-a4ec-4529-8536-b80a7769e899"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "3b576869-a4ec-4529-8536-b80a7769e899"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 C"
+    Id   = "18.9.47.5.1.2 C"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block execution of potentially obfuscated scripts)"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -593,59 +593,59 @@ if($domainRole -ge 4){
             $Value = "5beb7efe-fd9a-4556-801d-275e5ffc04cc" 
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "5beb7efe-fd9a-4556-801d-275e5ffc04cc" 
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 D"
+    Id   = "18.9.47.5.1.2 D"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Block Office applications from injecting code into other processes' is configured"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -654,59 +654,59 @@ if($domainRole -ge 4){
             $Value = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 E"
+    Id   = "18.9.47.5.1.2 E"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured  (Block Adobe Reader from creating child processes)"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -715,59 +715,59 @@ if($domainRole -ge 4){
             $Value = "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 F"
+    Id   = "18.9.47.5.1.2 F"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured  (Block Win32 API calls from Office macro)"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -776,59 +776,59 @@ if($domainRole -ge 4){
             $Value = "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 G"
+    Id   = "18.9.47.5.1.2 G"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block credential stealing from the Windows local security authority subsystem (lsass.exe))"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -837,59 +837,59 @@ if($domainRole -ge 4){
             $Value = "9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 H"
+    Id   = "18.9.47.5.1.2 H"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block untrusted and unsigned processes that run from USB)"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -898,59 +898,59 @@ if($domainRole -ge 4){
             $Value = "b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 I"
+    Id   = "18.9.47.5.1.2 I"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured  (Block executable content from email client and webmail)"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -959,59 +959,59 @@ if($domainRole -ge 4){
             $Value = "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 J"
+    Id   = "18.9.47.5.1.2 J"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block JavaScript or VBScript from launching downloaded executable content)"
     Test = {
-       try {
+        try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -1020,59 +1020,59 @@ if($domainRole -ge 4){
             $Value = "d3e037e1-3eb8-44c8-a917-57927947596d"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "d3e037e1-3eb8-44c8-a917-57927947596d"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 K"
+    Id   = "18.9.47.5.1.2 K"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block Office applications from creating child processes)"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -1081,59 +1081,59 @@ if($domainRole -ge 4){
             $Value = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "d4f940ab-401b-4efc-aadc-ad5f3c50688a"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.9.47.5.1.2 L"
+    Id   = "18.9.47.5.1.2 L"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block persistence through WMI event subscription)"
     Test = {
         try {
             if ((-not $windefrunning)) {
                 return @{
                     Message = "This rule requires Windows Defender Antivirus to be enabled."
-                    Status = "None"
+                    Status  = "None"
                 }
             }
             $regValue = 0;
@@ -1142,61 +1142,61 @@ if($domainRole -ge 4){
             $Value = "e6db77e5-3df2-4cf1-b95a-636979351e5b"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "e6db77e5-3df2-4cf1-b95a-636979351e5b"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "18.10.43.6.1.2 M"
+    Id   = "18.10.43.6.1.2 M"
     Task = "Ensure 'Configure Attack Surface Reduction rules: Set the state for each ASR rule' is configured (Block abuse of exploited vulnerable signed drivers)"
     Test = {
         try {
-            if($avstatus){
+            if ($avstatus) {
 
                 if ((-not $windefrunning)) {
                     return @{
                         Message = "This rule requires Windows Defender Antivirus to be enabled."
-                        Status = "None"
+                        Status  = "None"
                     }
                 }
             }                  
@@ -1206,47 +1206,47 @@ if($domainRole -ge 4){
             $Value = "56a863a9-875e-4185-98a7-b882c64b5ce5"
 
             $asrTest1 = Test-ASRRules -Path $Path -Value $Value 
-            if($asrTest1){
+            if ($asrTest1) {
                 $regValue = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path `
                     -Name $Value `
-                    | Select-Object -ExpandProperty $Value
+                | Select-Object -ExpandProperty $Value
             }
 
             $Path2 = "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules"
             $Value2 = "56a863a9-875e-4185-98a7-b882c64b5ce5"
 
             $asrTest2 = Test-ASRRules -Path $Path2 -Value $Value2 
-            if($asrTest2){
+            if ($asrTest2) {
                 $regValueTwo = Get-ItemProperty -ErrorAction Stop `
                     -Path $Path2 `
                     -Name $Value2 `
-                    | Select-Object -ExpandProperty $Value2
+                | Select-Object -ExpandProperty $Value2
             }
 
             if ($regValue -ne 1 -and $regValueTwo -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
@@ -1323,1067 +1323,1067 @@ if($domainRole -ge 4){
     }
 }
 [AuditTest] @{
-    Id = "1.1.1"
+    Id   = "1.1.1"
     Task = "Disable SSLv2 Protocol (Server)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.1.2"
+    Id   = "1.1.2"
     Task = "Disable SSLv2 Protocol (Server DisabledByDefault)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Server" `
                 -Name "DisabledByDefault" `
-                | Select-Object -ExpandProperty "DisabledByDefault"
+            | Select-Object -ExpandProperty "DisabledByDefault"
         
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.1.3"
+    Id   = "1.1.3"
     Task = "Disable SSLv2 Protocol (Client)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Client" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.1.4"
+    Id   = "1.1.4"
     Task = "Disable SSLv2 Protocol (Client DisabledByDefault)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 2.0\Client" `
                 -Name "DisabledByDefault" `
-                | Select-Object -ExpandProperty "DisabledByDefault"
+            | Select-Object -ExpandProperty "DisabledByDefault"
         
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.2.1"
+    Id   = "1.2.1"
     Task = "Disable SSLv3 Protocol (Server)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.2.2"
+    Id   = "1.2.2"
     Task = "Disable SSLv3 Protocol (Server DisabledByDefault)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server" `
                 -Name "DisabledByDefault" `
-                | Select-Object -ExpandProperty "DisabledByDefault"
+            | Select-Object -ExpandProperty "DisabledByDefault"
         
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.2.3"
+    Id   = "1.2.3"
     Task = "Disable SSLv3 Protocol (Client)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.2.4"
+    Id   = "1.2.4"
     Task = "Disable SSLv3 Protocol (Client DisabledByDefault)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client" `
                 -Name "DisabledByDefault" `
-                | Select-Object -ExpandProperty "DisabledByDefault"
+            | Select-Object -ExpandProperty "DisabledByDefault"
         
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.3.1"
+    Id   = "1.3.1"
     Task = "Disable TLS1.0 Protocol (Server)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.3.2"
+    Id   = "1.3.2"
     Task = "Disable TLS1.0 Protocol (Server DisabledByDefault)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Server" `
                 -Name "DisabledByDefault" `
-                | Select-Object -ExpandProperty "DisabledByDefault"
+            | Select-Object -ExpandProperty "DisabledByDefault"
         
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.3.3"
+    Id   = "1.3.3"
     Task = "Disable TLS1.0 Protocol (Client)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.3.4"
+    Id   = "1.3.4"
     Task = "Disable TLS1.0 Protocol (Client DisabledByDefault)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client" `
                 -Name "DisabledByDefault" `
-                | Select-Object -ExpandProperty "DisabledByDefault"
+            | Select-Object -ExpandProperty "DisabledByDefault"
         
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.4.1"
+    Id   = "1.4.1"
     Task = "Disable TLS1.1 Protocol (Server)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.4.2"
+    Id   = "1.4.2"
     Task = "Disable TLS1.1 Protocol (Server DisabledByDefault)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server" `
                 -Name "DisabledByDefault" `
-                | Select-Object -ExpandProperty "DisabledByDefault"
+            | Select-Object -ExpandProperty "DisabledByDefault"
         
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.4.3"
+    Id   = "1.4.3"
     Task = "Disable TLS1.1 Protocol (Client)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.4.4"
+    Id   = "1.4.4"
     Task = "Disable TLS1.1 Protocol (Client DisabledByDefault)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client" `
                 -Name "DisabledByDefault" `
-                | Select-Object -ExpandProperty "DisabledByDefault"
+            | Select-Object -ExpandProperty "DisabledByDefault"
         
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.5.1"
+    Id   = "1.5.1"
     Task = "Enable TLS1.2 Protocol (Server)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "1.5.2"
+    Id   = "1.5.2"
     Task = "Enable TLS1.2 Protocol (Server Default)"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server" `
                 -Name "DisabledByDefault" `
-                | Select-Object -ExpandProperty "DisabledByDefault"
+            | Select-Object -ExpandProperty "DisabledByDefault"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "2.1"
+    Id   = "2.1"
     Task = "Disable NULL Cipher"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\NULL" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "2.2"
+    Id   = "2.2"
     Task = "Disable DES Cipher Suite"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\DES 56/56" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "2.3.1"
+    Id   = "2.3.1"
     Task = "Disable RC4 Cipher Suite - 40/128"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 40/128" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "2.3.2"
+    Id   = "2.3.2"
     Task = "Disable RC4 Cipher Suite - 56/128"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 56/128" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "2.3.3"
+    Id   = "2.3.3"
     Task = "Disable RC4 Cipher Suite - 64/128"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 64/128" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "2.3.4"
+    Id   = "2.3.4"
     Task = "Disable RC4 Cipher Suite - 128/128"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\RC4 128/128" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "2.4"
+    Id   = "2.4"
     Task = "Disable AES 128/128 Cipher Suite"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\AES 128/128" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "2.5"
+    Id   = "2.5"
     Task = "Enable AES 256/256 Cipher Suite"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\AES 256/256" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -eq 4294967295) {
                 return @{
                     Message = "The current registry value is '$regValue', which is no longer supported by Microsoft. For more information, please refer to this link:<br/>"`
-                    +'<a href="https://learn.microsoft.com/en-us/windows-server/security/tls/tls-registry-settings?tabs=diffie-hellman#tls-dtls-and-ssl-protocol-version-settings">'`
-                    +'Learn.microsoft.com - TLS, DTLS, and SSL protocol version settings<a/>'
-                    Status = "False"
+                        + '<a href="https://learn.microsoft.com/en-us/windows-server/security/tls/tls-registry-settings?tabs=diffie-hellman#tls-dtls-and-ssl-protocol-version-settings">'`
+                        + 'Learn.microsoft.com - TLS, DTLS, and SSL protocol version settings<a/>'
+                    Status  = "False"
                 }
             }
             if ($regValue -ne 1) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 1"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "2.6"
+    Id   = "2.6"
     Task = "Disable Triple DES Cipher Suite"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\Triple DES 168" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "3.1"
+    Id   = "3.1"
     Task = "Disable SHA-1 hash"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\SHA" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "3.2"
+    Id   = "3.2"
     Task = "Disable MD5 hash"
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
                 -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Hashes\MD5" `
                 -Name "Enabled" `
-                | Select-Object -ExpandProperty "Enabled"
+            | Select-Object -ExpandProperty "Enabled"
         
             if ($regValue -ne 0) {
                 return @{
                     Message = "Registry value is '$regValue'. Expected: 0"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
                 Message = "Registry value not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
                 Message = "Registry key not found."
-                Status = "False"
+                Status  = "False"
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
 [AuditTest] @{
-    Id = "4.1"
+    Id   = "4.1"
     Task = "Configure Cipher Suite Ordering"
     Test = {
         #check if correct type 
         $typeTable = @{
-            "String" = "String Value"
-            "Byte" = "Byte Value"
-            "Int32" = "DWORD (32-bit) Value"
-            "Int64" = "QWORD (64-bit) Value"
+            "String"   = "String Value"
+            "Byte"     = "Byte Value"
+            "Int32"    = "DWORD (32-bit) Value"
+            "Int64"    = "QWORD (64-bit) Value"
             "String[]" = "Multi-String Value"
         }
         #Default status
@@ -2395,8 +2395,8 @@ if($domainRole -ge 4){
     
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-            -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002" `
-            -Name "Functions"
+                -Path "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002" `
+                -Name "Functions"
             $reference = "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
             $res = $regValue.Functions.GetType().Name
     
@@ -2405,7 +2405,7 @@ if($domainRole -ge 4){
             if ($res -ne [String]) {
                 return @{  
                     Message = "Wrong Registry type! Registry type is '$currentType'. Expected: 'String Value'"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
     
@@ -2414,45 +2414,45 @@ if($domainRole -ge 4){
             $regValues = $regValues -replace ' ', ''
             $weakRulesFound = @()
             $insecureRulesFound = @()
-            foreach($element in $regValues){
-                if($listOfWeakCipherSuites.Contains($element)){
+            foreach ($element in $regValues) {
+                if ($listOfWeakCipherSuites.Contains($element)) {
                     $weakRulesFound += $element
                 }
-                if($listOfInsecureCipherSuites.Contains($element)){
+                if ($listOfInsecureCipherSuites.Contains($element)) {
                     $insecureRulesFound += $element
                 }
             }
-            if($insecureRulesFound.Count -eq 1){$verbInsecure = "rule has"}
-            if($weakRulesFound.Count -eq 1){$verbWeak = "rule has"}
+            if ($insecureRulesFound.Count -eq 1) { $verbInsecure = "rule has" }
+            if ($weakRulesFound.Count -eq 1) { $verbWeak = "rule has" }
             $insecureMessage = "$($insecureRulesFound.Count) insecure $($verbInsecure) been found! List of insecure rules: <br/>"
             $weakMessage = "$($weakRulesFound.Count) weak $($verbWeak) been found! List of weak rules: <br/>"
     
             #Preparing message
-            foreach($member in $weakRulesFound){
+            foreach ($member in $weakRulesFound) {
                 $status = "Warning"
                 $weakMessage += "$($member)<br/>"
             }          
-            foreach($member in $insecureRulesFound){
+            foreach ($member in $insecureRulesFound) {
                 $status = "False"
                 $insecureMessage += "$($member)<br/>"
             }          
             #Combine or shorten message
-            if($insecureRulesFound.Count -gt 0 -or $weakRulesFound.Count -gt 0){
+            if ($insecureRulesFound.Count -gt 0 -or $weakRulesFound.Count -gt 0) {
                 $message = ""
-                if($weakRulesFound.Count -eq 0){ $weakMessage = "" }
-                if($insecureRulesFound.Count -eq 0){ $insecureMessage = "" }
+                if ($weakRulesFound.Count -eq 0) { $weakMessage = "" }
+                if ($insecureRulesFound.Count -eq 0) { $insecureMessage = "" }
     
                 $message = $insecureMessage + $weakMessage
                 return @{
                     Message = $message
-                    Status = $status
+                    Status  = $status
                 }
             }
         }
         catch {
             $regValue = Get-ItemProperty -ErrorAction Stop `
-            -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Cryptography\Configuration\Local\SSL\00010002" `
-            -Name "Functions"
+                -Path "Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Cryptography\Configuration\Local\SSL\00010002" `
+                -Name "Functions"
             $reference = "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
             $res = $regValue.Functions.GetType().Name
     
@@ -2460,7 +2460,7 @@ if($domainRole -ge 4){
             if ($res -ne [String[]]) {
                 return @{  
                     Message = "Wrong Registry type! Registry type is '$currentType'. Expected: 'Multi-String Value'"
-                    Status = "False"
+                    Status  = "False"
                 }
             }
     
@@ -2468,45 +2468,45 @@ if($domainRole -ge 4){
             $regValues = $regValue -replace ' ', ''
             $weakRulesFound = @()
             $insecureRulesFound = @()
-            foreach($element in $regValues){
-                if($listOfWeakCipherSuites.Contains($element)){
+            foreach ($element in $regValues) {
+                if ($listOfWeakCipherSuites.Contains($element)) {
                     $weakRulesFound += $element
                 }
-                if($listOfInsecureCipherSuites.Contains($element)){
+                if ($listOfInsecureCipherSuites.Contains($element)) {
                     $insecureRulesFound += $element
                 }
             }
-            if($insecureRulesFound.Count -eq 1){$verbInsecure = "rule has"}
-            if($weakRulesFound.Count -eq 1){$verbWeak = "rule has"}
+            if ($insecureRulesFound.Count -eq 1) { $verbInsecure = "rule has" }
+            if ($weakRulesFound.Count -eq 1) { $verbWeak = "rule has" }
             $insecureMessage = "$($insecureRulesFound.Count) insecure $($verbInsecure) been found! List of insecure rules: <br/>"
             $weakMessage = "$($weakRulesFound.Count) weak $($verbWeak) been found! List of weak rules: <br/>"
     
             #Preparing message
-            foreach($member in $weakRulesFound){
+            foreach ($member in $weakRulesFound) {
                 $status = "Warning"
                 $weakMessage += "$($member)<br/>"
             }          
-            foreach($member in $insecureRulesFound){
+            foreach ($member in $insecureRulesFound) {
                 $status = "False"
                 $insecureMessage += "$($member)<br/>"
             }          
             #Combine or shorten message
-            if($insecureRulesFound.Count -gt 0 -or $weakRulesFound.Count -gt 0){
+            if ($insecureRulesFound.Count -gt 0 -or $weakRulesFound.Count -gt 0) {
                 $message = ""
-                if($weakRulesFound.Count -eq 0){ $weakMessage = "" }
-                if($insecureRulesFound.Count -eq 0){ $insecureMessage = "" }
+                if ($weakRulesFound.Count -eq 0) { $weakMessage = "" }
+                if ($insecureRulesFound.Count -eq 0) { $insecureMessage = "" }
     
                 $message = $insecureMessage + $weakMessage
                 return @{
                     Message = $message
-                    Status = $status
+                    Status  = $status
                 }
             }
         }
         
         return @{
             Message = "Compliant"
-            Status = "True"
+            Status  = "True"
         }
     }
 }
