@@ -2738,26 +2738,26 @@ $windefrunning = CheckWindefRunning
         
             if ($regValue -ne 1) {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: 1"
+                    Message = "Registry value is '$regValue'. Expected: 1" + "</br><strong>Warning</strong>: Defender Application Guard is deprecated. <a href='https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/microsoft-defender-application-guard/configure-md-app-guard\' target=\'_blank\'>More info</a>."
                     Status  = "False"
                 }
             }
         }
         catch [System.Management.Automation.PSArgumentException] {
             return @{
-                Message = "Registry value not found."
+                Message = "Registry value not found." + "</br><strong>Warning</strong>: Defender Application Guard is deprecated. <a href='https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/microsoft-defender-application-guard/configure-md-app-guard\' target=\'_blank\'>More info</a>."
                 Status  = "False"
             }
         }
         catch [System.Management.Automation.ItemNotFoundException] {
             return @{
-                Message = "Registry key not found."
+                Message = "Registry key not found." + "</br><strong>Warning</strong>: Defender Application Guard is deprecated. <a href='https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/microsoft-defender-application-guard/configure-md-app-guard\' target=\'_blank\'>More info</a>."
                 Status  = "False"
             }
         }
         
         return @{
-            Message = "Compliant"
+            Message = "Compliant" + "</br><strong>Warning</strong>: Defender Application Guard is deprecated. <a href='https://learn.microsoft.com/en-us/windows/security/application-security/application-isolation/microsoft-defender-application-guard/configure-md-app-guard\' target=\'_blank\'>More info</a>."
             Status  = "True"
         }
     }
