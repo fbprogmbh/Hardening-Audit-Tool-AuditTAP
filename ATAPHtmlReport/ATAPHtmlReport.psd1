@@ -36,7 +36,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 RootModule = 'ATAPHtmlReport.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.13.4'
+ModuleVersion = '1.13.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -54,7 +54,7 @@ CompanyName = 'FB Pro GmbH'
 Copyright = '(c) 2023 FB Pro GmbH. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'A module part of the Audit Test Automation Package that creates html reports with tables and sections for audit reporting'
+Description = 'ATAPHtmlReport serves as the basis for HTML reports generated via ATAPAuditor.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '5.0'

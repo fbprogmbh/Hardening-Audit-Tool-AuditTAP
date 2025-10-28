@@ -1,11 +1,11 @@
 ﻿@{
 RootModule = 'ATAPAuditor.psm1'
-ModuleVersion = '5.12.0'
+ModuleVersion = '5.12.1'
 GUID = '1662a599-4e3a-4f72-a844-9582077b589e'
 Author = 'Phan Quang Nguyen, Daniel Ströher, Robin Wernz'
 CompanyName = 'FB Pro GmbH'
 Copyright = '(c) 2025 FB Pro GmbH. All rights reserved.'
-Description = 'Allows you to tests your system with the included reports.'
+Description = 'AuditTAP allows you to check operating systems and applications against industry approved standards for secure configuration and delivers the results in form of a HTML based report document.'
 PowerShellVersion = '5.0'
 RequiredModules = @(
 	'ATAPHtmlReport'
