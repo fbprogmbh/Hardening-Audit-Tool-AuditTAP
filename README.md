@@ -17,7 +17,7 @@ ATAPHtmlReport:\
 			</td>
 			<td>
 
-[![ATAP](https://www.fb-pro.com/wp-content/uploads/2022/09/atap-download-button.png)](https://github.com/fbprogmbh/Audit-Test-Automation/releases/tag/v5.12.0)
+[![ATAP](https://www.fb-pro.com/wp-content/uploads/2022/09/atap-download-button.png)](https://github.com/fbprogmbh/Audit-Test-Automation/releases/tag/v5.12)
 			</td>
 		</tr>
 	</table>
