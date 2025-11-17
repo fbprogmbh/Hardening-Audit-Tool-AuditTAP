@@ -1086,7 +1086,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id   = "Registry-031"
-    Task = "Set registry value '\\*\NETLOGON' to RequireMutualAuthentication=1,RequireIntegrity=1."
+    Task = "Set registry value '\\*\NETLOGON' to RequireMutualAuthentication=1, RequireIntegrity=1."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
