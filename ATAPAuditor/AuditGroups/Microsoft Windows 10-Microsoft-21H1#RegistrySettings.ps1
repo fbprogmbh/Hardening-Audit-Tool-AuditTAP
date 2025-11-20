@@ -3053,7 +3053,7 @@ $hyperVStatus = CheckHyperVStatus
         
             if ($regValue -notmatch "^(?:RequireMutualAuthentication=1,\s*RequireIntegrity=1|RequireIntegrity=1,\s*RequireMutualAuthentication=1)$") {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1,RequireIntegrity=1"
+                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1, RequireIntegrity=1"
                     Status = "False"
                 }
             }
@@ -3089,7 +3089,7 @@ $hyperVStatus = CheckHyperVStatus
         
             if ($regValue -notmatch "^(?:RequireMutualAuthentication=1,\s*RequireIntegrity=1|RequireIntegrity=1,\s*RequireMutualAuthentication=1)$") {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1,RequireIntegrity=1"
+                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1, RequireIntegrity=1"
                     Status = "False"
                 }
             }

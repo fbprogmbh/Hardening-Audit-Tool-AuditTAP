@@ -1,14 +1,22 @@
 $RootPath = Split-Path $MyInvocation.MyCommand.Path -Parent
 $RootPath = Split-Path $RootPath -Parent
 . "$RootPath\Helpers\AuditGroupFunctions.ps1"
+
 [AuditTest] @{
 	Id   = "SBD-201"
 	Task = "Get License status."
-	Test = {	
+	Test = {
+		$lcStatus = Get-LicenseStatus $SkipLicenseCheck
 		if ($lcStatus -eq "Licensed") {
 			return @{
 				Message = "Compliant"
 				Status  = "True"
+			}
+		}
+		if ($lcStatus -eq "License check has been skipped.") {
+			return @{
+				Message = $lcStatus
+				Status  = "None"
 			}
 		}
 		return @{

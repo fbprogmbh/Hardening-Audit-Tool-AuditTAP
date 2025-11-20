@@ -581,7 +581,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id = "Registry-017"
-    Task = "Set registry value '\\*\SYSVOL' to RequireMutualAuthentication=1,RequireIntegrity=1."
+    Task = "Set registry value '\\*\SYSVOL' to RequireMutualAuthentication=1, RequireIntegrity=1."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -591,7 +591,7 @@ $windefrunning = CheckWindefRunning
         
             if ($regValue -notmatch "^(?:RequireMutualAuthentication=1,\s*RequireIntegrity=1|RequireIntegrity=1,\s*RequireMutualAuthentication=1)$") {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1,RequireIntegrity=1"
+                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1, RequireIntegrity=1"
                     Status = "False"
                 }
             }
@@ -617,7 +617,7 @@ $windefrunning = CheckWindefRunning
 }
 [AuditTest] @{
     Id = "Registry-018"
-    Task = "Set registry value '\\*\NETLOGON' to RequireMutualAuthentication=1,RequireIntegrity=1."
+    Task = "Set registry value '\\*\NETLOGON' to RequireMutualAuthentication=1, RequireIntegrity=1."
     Test = {
         try {
             $regValue = Get-ItemProperty -ErrorAction Stop `
@@ -627,7 +627,7 @@ $windefrunning = CheckWindefRunning
         
             if ($regValue -notmatch "^(?:RequireMutualAuthentication=1,\s*RequireIntegrity=1|RequireIntegrity=1,\s*RequireMutualAuthentication=1)$") {
                 return @{
-                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1,RequireIntegrity=1"
+                    Message = "Registry value is '$regValue'. Expected: RequireMutualAuthentication=1, RequireIntegrity=1"
                     Status = "False"
                 }
             }
