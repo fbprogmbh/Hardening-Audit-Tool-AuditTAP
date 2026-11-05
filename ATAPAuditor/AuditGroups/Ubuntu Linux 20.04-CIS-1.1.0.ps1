@@ -2916,7 +2916,7 @@ elseif($chrony -match "False" -and $timesyncd -notmatch "enabled"){
         $results = @()
         $mountPoints = mount | grep -v "/var/lib/snapd" | grep -v "cgroup on " | grep -v "noexec" | grep -v " fuse" | cut -f 3 -d ' '
         foreach($mountPoint in $mountPoints){                                  
-            $res=bash -c "find $($mountPoint) -xdev \( -perm -4000 -o -perm -2000 \) -type f" 
+            $res=bash -c "find '$($mountPoint)' -xdev \( -perm -4000 -o -perm -2000 \) -type f" 
             $results += $res | awk '{print "-a always,exit -F path=" $1 " -F perm=x -F auid>=1000 -F auid!=4294967295 \ -k privileged" }'
         }
         $viablePaths = @()
