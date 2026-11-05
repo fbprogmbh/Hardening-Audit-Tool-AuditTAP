@@ -82,12 +82,8 @@ function Get-FullPath {
 
 	$FullPath = ""
 	if ($Path.Length -gt 0) {
-		if ($Path[$Path.Length - 1] -ne "\") {
-			$FullPath = $Path + "\" + $File
-		}
-		else {
-			$FullPath = $Path + $File
-		}
+		# Join-Path uses the correct directory separator for the current platform
+		$FullPath = Join-Path -Path $Path -ChildPath $File
 	}
 
 	return $FullPath
