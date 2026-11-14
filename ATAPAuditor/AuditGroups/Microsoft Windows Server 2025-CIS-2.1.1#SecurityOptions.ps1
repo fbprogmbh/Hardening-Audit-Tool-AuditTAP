@@ -106,7 +106,7 @@
     }
 }
 [AuditTest] @{
-    Id   = "2.3.11.6"
+    Id   = "2.3.11.5"
     Task = "(L1) Ensure 'Network security: Force logoff when logon hours expire' is set to 'Enabled'"
     Test = {
         $securityOption = Get-AuditResource "WindowsSecurityPolicy"

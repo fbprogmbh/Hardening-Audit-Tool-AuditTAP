@@ -1694,7 +1694,7 @@ function Get-AuditPolicySubcategoryGUID {
 }
 [AuditTest] @{
     Id   = "17.8.1"
-    Task = "(L1) Ensure 'Audit Sensitive Privilege Use' is set to 'Success and Failure'"
+    Task = "(L1) Ensure 'Audit Sensitive Privilege Use' is set to 'Success'"
     Test = {
         # Get the audit policy for the subcategory Sensitive Privilege Use
         $subCategoryGUID = Get-AuditPolicySubcategoryGUID -Subcategory "Sensitive Privilege Use"
@@ -1736,7 +1736,7 @@ function Get-AuditPolicySubcategoryGUID {
 
         $setting = $Matches[0]
 
-        if ($setting -ne "Success and Failure" -And $setting -ne "Erfolg und Fehler") {
+        if ($setting -ne "Success" -and $setting -ne "Success and Failure" -And $setting -ne "Erfolg" -And $setting -ne "Erfolg und Fehler") {
             return @{
                 Status  = "False"
                 Message = "Set to: $setting"
